@@ -14,9 +14,9 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
 .score-board li{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#121214;margin-bottom:5px;border-radius:4px;border-left:4px solid #a370f7;}
 .score-board li:first-child{border-left-color:#ffd700;font-weight:bold;}
 </style></head><body>
-<h2>📚 Min Studieportal med Valfri Tid</h2>
+<h2>📚 Min Studieportal med Telefonbok</h2>
 <div class="grid">
-  <!-- POMODORO MED TEXTRUTA FÖR MINUTER -->
+  <!-- POMODORO -->
   <div class="box">
     <h3>⏱️ Timer: <span id="t">25:00</span></h3>
     <div style="display:flex;gap:10px;margin-bottom:10px;">
@@ -30,6 +30,20 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
   <!-- GRUPPSTUDIER -->
   <div class="box"><h3>👥 Gruppstudier (Ring)</h3><p style="margin:5px 0;font-size:0.85rem;color:#aaa;">Klicka för att starta ett nytt möte direkt:</p><a href="https://meet.new" target="_blank" class="link-btn" style="background:#137333;">📞 Starta Google Meet</a><a href="https://zoom.new" target="_blank" class="link-btn" style="background:#0b5cff;">📹 Starta Zoom-möte</a></div>
   
+  <!-- TELEFONBOK / KONTAKTER -->
+  <div class="box" style="grid-column:span 2;">
+    <h3>📞 Telefonbok / Kontakter</h3>
+    <p style="margin:5px 0;font-size:0.85rem;color:#aaa;">Spara dina och dina kompisars nummer för snabb tillgång:</p>
+    <div style="display:flex;gap:10px;margin-bottom:10px;">
+      <input id="contactName" placeholder="Namn..." style="width:45%;">
+      <input id="contactPhone" placeholder="Telefonnummer..." style="width:35%;">
+      <button onclick="addContact()" style="width:20%;margin:0;background:#2ecc71;">+ Spara</button>
+    </div>
+    <ul id="contactList" style="list-style:none;padding:0;margin:0;">
+      <li style="display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;"><span>👤 Exempel (Yusuf)</span><span>070-123 45 67</span></li>
+    </ul>
+  </div>
+
   <!-- TOPPLISTA -->
   <div class="box" style="grid-column:span 2;">
     <h3>🏆 Topplista - Poäng räknas när man svarar rätt!</h3>
@@ -52,7 +66,6 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
   <div class="box" style="grid-column:span 2;"><h3>📝 Ämnesquizzer</h3>
     <label for="playerSelect" style="font-size:0.85rem;color:#aaa;"><b>Vem ska svara nu?</b></label>
     <select id="playerSelect" style="width:100%;margin-bottom:10px;"><option value="0">Du</option></select>
-    
     <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
       <div><b>Matte:</b> <button id="btn-m" onclick="shQ('m')">Öppna</button><div id="m" class="q-box">Vad blir arean om basen är 6 och höjden 4?<br><input type="radio" name="m" value="12"> 12 cm² &nbsp; <input type="radio" name="m" value="24"> 24 cm²<button onclick="ckQ('m','12')">Rätta svar</button></div></div>
       <div><b>🇪🇸 Spanska:</b> <button id="btn-s" onclick="shQ('s')">Öppna</button><div id="s" class="q-box">Vad betyder "manzana"?<br><input type="radio" name="s" value="a"> Äpple &nbsp; <input type="radio" name="s" value="b"> Banan<button onclick="ckQ('s','a')">Rätta svar</button></div></div>
@@ -65,10 +78,19 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
 let tm=25*60,ti=null,run=false,players=[{id:0,name:"Du",score:0}];
 function upT(){let m=Math.floor(tm/60),s=tm%60;document.getElementById('t').textContent=`${m}:${s<10?'0':''}${s}`;}
 function setCustomTime(){if(!run){let v=parseInt(document.getElementById('customMin').value); if(!isNaN(v)&&v>0){tm=v*60;upT();}}}
-function tgT(){const b=event.target;if(run){clearInterval(ti);run=false;}else{run=true;ti=setInterval(()=>{if(tm>0){tm--;upT();}else{clearInterval(ti);alert("Bra jobbat! Dags för en paus.");rsT();}},1000);}}
+function tgT(){if(run){clearInterval(ti);run=false;}else{run=true;ti=setInterval(()=>{if(tm>0){tm--;upT();}else{clearInterval(ti);alert("Bra jobbat! Dags för en paus.");rsT();}},1000);}}
 function rsT(){clearInterval(ti);let v=parseInt(document.getElementById('customMin').value);tm=(!isNaN(v)&&v>0)?v*60:25*60;upT();run=false;}
 function adT(){let i=document.getElementById('ti'),v=i.value.trim();if(!v)return;document.getElementById('tl').innerHTML+=`<li><input type="checkbox" onclick="this.nextSibling.classList.toggle('done')"><span>${v}</span></li>`;i.value='';}
 function shQ(id){let x=document.getElementById(id);x.style.display=x.style.display==='block'?'none':'block';}
+
+// Telefonbok logik
+function addContact(){
+    let n=document.getElementById('contactName').value.trim(), p=document.getElementById('contactPhone').value.trim();
+    if(!n || !p) return alert("Skriv både namn och telefonnummer!");
+    document.getElementById('contactList').innerHTML+=`<li style="display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;"><span>👤 ${n}</span><span>${p}</span></li>`;
+    document.getElementById('contactName').value='';document.getElementById('contactPhone').value='';
+}
+
 function updateLeaderboard(){
     let sorted = [...players].sort((a,b)=>b.score - a.score);
     let html=""; sorted.forEach((p,index)=>{let icon=index===0?"👑 ":""; html+=`<li><span>${icon}${p.name}</span><span><b>${p.score}</b> p</span></li>`;});
