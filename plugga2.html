@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Studieportal med Automatisk Topplista</title>
+<style>
+body{font-family:sans-serif;background:#121214;color:#e0e0e6;padding:15px;margin:0;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
+.box{background:#1a1a1e;padding:15px;border-radius:8px;border:1px solid #29292e;margin-bottom:15px;}
+button, .link-btn{background:#29292e;color:#fff;border:none;padding:10px;border-radius:4px;cursor:pointer;width:100%;margin-top:5px;display:block;text-align:center;text-decoration:none;box-sizing:border-box;font-size:0.9rem;font-weight:bold;}
+button:hover, .link-btn:hover {background:#4fa8ff;}
+input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;border:1px solid #29292e;border-radius:4px;box-sizing:border-box;}
+select{width:100%;margin-bottom:10px;}
+.send-btn{width:80px;display:inline-block;margin:0;vertical-align:middle;}
+.chat{height:120px;overflow-y:auto;background:#121214;padding:8px;border-radius:4px;margin-bottom:5px;font-size:0.9rem;}
+.q-box{display:none;background:#222226;padding:10px;border-radius:4px;margin-top:5px;}
+.score-board{list-style:none;padding:0;margin:10px 0 0 0;}
+.score-board li{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#121214;margin-bottom:5px;border-radius:4px;border-left:4px solid #a370f7;}
+.score-board li:first-child{border-left-color:#ffd700;font-weight:bold;}
+</style></head><body>
+<h2>📚 Min Studieportal med Automatisk Topplista</h2>
+<div class="grid">
+  <!-- POMODORO -->
+  <div class="box"><h3>⏱️ Pomodoro: <span id="t">25:00</span></h3><button onclick="tgT()">Start/Paus</button><button onclick="rsT()" style="background:#333;">Nollställ</button></div>
+  
+  <!-- GRUPPSTUDIER -->
+  <div class="box"><h3>👥 Gruppstudier (Ring)</h3><p style="margin:5px 0;font-size:0.85rem;color:#aaa;">Klicka för att starta ett nytt möte direkt:</p><a href="https://meet.new" target="_blank" class="link-btn" style="background:#137333;">📞 Starta Google Meet</a><a href="https://zoom.new" target="_blank" class="link-btn" style="background:#0b5cff;">📹 Starta Zoom-möte</a></div>
+  
+  <!-- TOPPLISTA -->
+  <div class="box" style="grid-column:span 2;">
+    <h3>🏆 Topplista - Poäng räknas när man svarar rätt!</h3>
+    <div style="display:flex;gap:10px;margin-bottom:10px;">
+      <input id="pName" placeholder="Skriv namnet på en kompis..." style="width:75%;">
+      <button onclick="addFriend()" style="width:25%;margin:0;">+ Lägg till i matchen</button>
+    </div>
+    <ul id="leaderboard" class="score-board">
+      <li><span>👑 Du</span><span>0 p</span></li>
+    </ul>
+  </div>
+
+  <!-- AI COACH -->
+  <div class="box"><h3>🤖 AI-Coach</h3><div class="chat" id="cb">AI: Hej! Vad pluggar du idag?</div><input id="ci" placeholder="Skriv..."><button class="send-btn" onclick="sdA()">Skicka</button></div>
+  
+  <!-- UPPGIFTER -->
+  <div class="box"><h3>✅ Uppgifter</h3><input id="ti" placeholder="Ny läxa..."><button class="send-btn" onclick="adT()">+ Spara</button><ul id="tl" style="list-style:none;padding:0;"></ul></div>
+  
+  <!-- QUIZZER -->
+  <div class="box" style="grid-column:span 2;"><h3>📝 Ämnesquizzer</h3>
+    <label for="playerSelect" style="font-size:0.85rem;color:#aaa;"><b>Vem ska svara nu?</b></label>
+    <select id="playerSelect"><option value="0">Du</option></select>
+    
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+      <div><b>Matte:</b> <button id="btn-m" onclick="shQ('m')">Öppna</button><div id="m" class="q-box">Vad blir arean om basen är 6 och höjden 4?<br><input type="radio" name="m" value="12"> 12 cm² &nbsp; <input type="radio" name="m" value="24"> 24 cm²<button onclick="ckQ('m','12')">Rätta svar</button></div></div>
+      <div><b>🇪🇸 Spanska:</b> <button id="btn-s" onclick="shQ('s')">Öppna</button><div id="s" class="q-box">Vad betyder "manzana"?<br><input type="radio" name="s" value="a"> Äpple &nbsp; <input type="radio" name="s" value="b"> Banan<button onclick="ckQ('s','a')">Rätta svar</button></div></div>
+      <div><b>🇩🇪 Tyska:</b> <button id="btn-d" onclick="shQ('d')">Öppna</button><div id="d" class="q-box">Vad betyder "Vielen Dank"?<br><input type="radio" name="d" value="a"> Tack &nbsp; <input type="radio" name="d" value="b"> Hej då<button onclick="ckQ('d','a')">Rätta svar</button></div></div>
+      <div><b>🇫🇷 Franska:</b> <button id="btn-f" onclick="shQ('f')">Öppna</button><div id="f" class="q-box">Vad betyder "Bonjour"?<br><input type="radio" name="f" value="a"> Hej/Goddag &nbsp; <input type="radio" name="f" value="b"> Tack<button onclick="ckQ('f','a')">Rätta svar</button></div></div>
+    </div>
+  </div>
+</div>
+<script>
+let tm=25*60,ti=null,run=false,players=[{id:0,name:"Du",score:0}];
+function upT(){let m=Math.floor(tm/60),s=tm%60;document.getElementById('t').textContent=`${m}:${s<10?'0':''}${s}`;}
+function tgT(){if(run){clearInterval(ti);run=false;}else{run=true;ti=setInterval(()=>{if(tm>0){tm--;upT();}else{clearInterval(ti);alert("Bra jobbat!");rsT();}},1000);}}
+function rsT(){clearInterval(ti);tm=25*60;upT();run=false;}
+function adT(){let i=document.getElementById('ti'),v=i.value.trim();if(!v)return;document.getElementById('tl').innerHTML+=`<li><input type="checkbox" onclick="this.nextSibling.classList.toggle('done')"><span>${v}</span></li>`;i.value='';}
+function shQ(id){let x=document.getElementById(id);x.style.display=x.style.display==='block'?'none':'block';}
+
+// Uppdatera listan automatiskt
+function updateLeaderboard(){
+    let sorted = [...players].sort((a,b)=>b.score - a.score);
+    let html="";
+    sorted.forEach((p,index)=>{
+        let icon = index === 0 ? "👑 " : `${index+1}. `;
+        html+=`<li><span>${icon}${p.name}</span><span><b>${p.score}</b> p</span></li>`;
+    });
+    document.getElementById('leaderboard').innerHTML=html;
+    
+    let select = document.getElementById('playerSelect');
+    let currentSel = select.value;
+    select.innerHTML = "";
+    players.forEach(p=>{
+        select.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+    });
+    select.value = currentSel;
+}
+
+function addFriend(){
+    let n=document.getElementById('pName').value.trim();
+    if(!n) return alert("Skriv ett namn!");
+    players.push({id:Date.now(),name:n,score:0});
+    document.getElementById('pName').value='';
+    updateLeaderboard();
+}
+
+// Rätta och ge poäng i bakgrunden
+function ckQ(n,c){
+    let r=document.getElementsByName(n),v='';for(let o of r)if(o.checked)v=o.value;
+    if(v===''){alert('Välj ett svar först!');return;}
+    
+    if(v===c){
+        let activePlayerId = parseInt(document.getElementById('playerSelect').value);
+        let p = players.find(x=>x.id===activePlayerId);
+        if(p){
+            p.score++;
+            alert(`🎉 Rätt svar! 1 poäng till ${p.name}!`);
+            updateLeaderboard();
+        }
+        document.getElementById(n).innerHTML="✅ Denna fråga är besvarad!";
+        document.getElementById('btn-'+n).disabled=true;
+    }else{
+        alert('❌ Fel svar. Försök igen!');
+    }
+}
+
+function sdA(){let i=document.getElementById('ci'),v=i.value.trim(),b=document.getElementById('cb');if(!v)return;b.innerHTML+=`<br><b>Du:</b> ${v}`;let l=v.toLowerCase(),r="Kör hårt med timern!";if(l.includes('hej'))r="Hej! Vad vill du fokusera på?";else if(l.includes('matte'))r="Matte kräver fokus.";else if(l.includes('spanska')||l.includes('tyska')||l.includes('franska'))r="Öva glosor varje dag!";b.innerHTML+=`<br><b>AI:</b> ${r}`;i.value='';b.scrollTop=b.scrollHeight;}
+</script></body></html>
