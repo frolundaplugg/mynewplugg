@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Studieportal Åk 7</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Studieportal Åk 7 - Maxad Utmaning</title>
 <style>
 body{font-family:sans-serif;background:#121214;color:#e0e0e6;padding:15px;margin:0;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
@@ -16,8 +16,9 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
 .phone-link{color:#4fa8ff;text-decoration:none;font-weight:bold;}
 .write-input{width:100%;margin:5px 0;background:#121214;color:#fff;border:1px solid #29292e;}
 </style></head><body>
-<h2>📚 Min Studieportal - Årskurs 7 Edition</h2>
+<h2>📚 Min Studieportal - Årskurs 7 (Blandad Frågesport)</h2>
 <div class="grid">
+  <!-- TIMER -->
   <div class="box">
     <h3>⏱️ Timer: <span id="t">25:00</span></h3>
     <div style="display:flex;gap:10px;margin-bottom:10px;">
@@ -26,7 +27,9 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
     </div>
     <button onclick="tgT()">Start/Paus</button><button onclick="rsT()" style="background:#333;">Nollställ</button>
   </div>
+  <!-- SAMTAL -->
   <div class="box"><h3>👥 Gruppstudier (Ring)</h3><a href="https://meet.new" target="_blank" class="link-btn" style="background:#137333;">📞 Starta Google Meet</a><a href="https://zoom.new" target="_blank" class="link-btn" style="background:#0b5cff;">📹 Starta Zoom-möte</a></div>
+  <!-- TELEFONBOK -->
   <div class="box" style="grid-column:span 2;">
     <h3>📞 Telefonbok</h3>
     <div style="display:flex;gap:10px;margin-bottom:10px;">
@@ -35,6 +38,7 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
     </div>
     <ul id="contactList" style="list-style:none;padding:0;"></ul>
   </div>
+  <!-- TOPPLISTA -->
   <div class="box" style="grid-column:span 2;">
     <h3>🏆 Topplista - Tävla live!</h3>
     <div style="display:flex;gap:10px;margin-bottom:10px;">
@@ -42,10 +46,135 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
     </div>
     <ul id="leaderboard" class="score-board"><li><span>👑 Du</span><span>0 p</span></li></ul>
   </div>
-  <div class="box"><h3>🤖 AI-Coach</h3><div class="chat" id="cb">AI: Tjena! Redo att krossa plugget för åk 7?</div><input id="ci" placeholder="Skriv..."><button class="send-btn" onclick="sdA()">Skicka</button></div>
+  <!-- AI COACH & LÄXOR -->
+  <div class="box"><h3>🤖 AI-Coach</h3><div class="chat" id="cb">AI: Tjena! Dags för den stora mixade utmaningen för sjuan!</div><input id="ci" placeholder="Skriv..."><button class="send-btn" onclick="sdA()">Skicka</button></div>
   <div class="box"><h3>✅ Uppgifter</h3><input id="ti" placeholder="Ny läxa..."><button class="send-btn" onclick="adT()">+ Spara</button><ul id="tl" style="list-style:none;padding:0;"></ul></div>
+  
+  <!-- UTMANINGAR -->
   <div class="box" style="grid-column:span 2;">
-    <h3>📝 Ämnesutmaningar (Åk 7 Nivå)</h3>
+    <h3>📝 Ämnesutmaningar (3 Frågor - Blandad Typ)</h3>
     <label for="playerSelect" style="font-size:0.85rem;color:#aaa;"><b>Vem svarar?</b></label>
     <select id="playerSelect" style="width:100%;margin-bottom:10px;"><option value="0">Du</option></select>
     <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;">
+      <!-- MATTE -->
+      <div><b>Matte (Blandat):</b> <button id="btn-m" onclick="shQ('m')">Öppna</button>
+        <div id="m" class="q-box">
+          <p>F1 (Quiz): Vad blir (-4) + (-5)?</p>
+          <input type="radio" name="m1" value="a"> -9 &nbsp; <input type="radio" name="m1" value="b"> -1<br>
+          <p>F2 (Quiz): Förenkla uttrycket: 3x + 5 + 2x - 2</p>
+          <input type="radio" name="m2" value="a"> 5x + 3 &nbsp; <input type="radio" name="m2" value="b"> 5x - 3<br>
+          <p>F3 (Skriv): Lös ekvationen: 2x = 16 (Skriv bara siffran för vad x är)</p>
+          <input id="m_ans3" class="write-input" placeholder="Svar...">
+          <button onclick="ckMix('m', ['m1','m2'], ['a','a'], ['m_ans3'], ['8'])">Rätta</button>
+        </div>
+      </div>
+      
+      <!-- NO -->
+      <div><b>🔬 NO (Blandat):</b> <button id="btn-no" onclick="shQ('no')">Öppna</button>
+        <div id="no" class="q-box">
+          <p>F1 (Skriv): Vilken del i växtcellen sköter fotosyntesen?</p>
+          <input id="no_ans1" class="write-input" placeholder="Svar...">
+          <p>F2 (Skriv): Vilket kemiskt tecken har Syre? (En stor bokstav)</p>
+          <input id="no_ans2" class="write-input" placeholder="Svar...">
+          <p>F3 (Quiz): Vilken pH-siffra har en helt neutral vätska (t.ex. rent vatten)?</p>
+          <input type="radio" name="no3" value="5"> pH 5 &nbsp; <input type="radio" name="no3" value="7"> pH 7
+          <button onclick="ckMix('no', ['no3'], ['7'], ['no_ans1','no_ans2'], ['kloroplasten','O'])">Rätta</button>
+        </div>
+      </div>
+      
+      <!-- SO -->
+      <div><b>🌍 SO (Blandat):</b> <button id="btn-so" onclick="shQ('so')">Öppna</button>
+        <div id="so" class="q-box">
+          <p>F1 (Quiz): Hur många mandat finns det i Sveriges riksdag?</p>
+          <input type="radio" name="so1" value="349"> 349 &nbsp; <input type="radio" name="so1" value="249"> 249<br>
+          <p>F2 (Quiz): Vilken är världens äldsta abrahamitiska monoteistiska religion?</p>
+          <input type="radio" name="so2" value="j"> Judendomen &nbsp; <input type="radio" name="so2" value="i"> Islam<br>
+          <p>F3 (Skriv): Vilken helig byggnad går muslimer till för att be? (Skriv i bestämd form, t.ex. kyrkan/moskén)</p>
+          <input id="so_ans3" class="write-input" placeholder="Svar...">
+          <button onclick="ckMix('so', ['so1','so2'], ['349','j'], ['so_ans3'], ['moskén'])">Rätta</button>
+        </div>
+      </div>
+      
+      <!-- SPANSKA -->
+      <div><b>🇪🇸 Spanska (Blandat):</b> <button id="btn-s" onclick="shQ('s')">Öppna</button>
+        <div id="s" class="q-box">
+          <p>F1 (Skriv): Skriv <b>"Skola"</b> på spanska (med "la", ex: la escuela):</p>
+          <input id="s_ans1" class="write-input" placeholder="Svar...">
+          <p>F2 (Skriv): Hur säger man <b>"Vad är klockan?"</b> på spanska?</p>
+          <input id="s_ans2" class="write-input" placeholder="Svar...">
+          <p>F3 (Quiz): Vad betyder ordet <b>"Perro"</b> på svenska?</p>
+          <input type="radio" name="s3" value="katt"> Katt &nbsp; <input type="radio" name="s3" value="hund"> Hund
+          <button onclick="ckMix('s', ['s3'], ['hund'], ['s_ans1','s_ans2'], ['la escuela','que hora es'])">Rätta</button>
+        </div>
+      </div>
+      
+      <!-- TYSKA -->
+      <div><b>🇩🇪 Tyska (Blandat):</b> <button id="btn-d" onclick="shQ('d')">Öppna</button>
+        <div id="d" class="q-box">
+          <p>F1 (Skriv): Vad heter siffran <b>"4"</b> på tyska?</p>
+          <input id="d_ans1" class="write-input" placeholder="Svar...">
+          <p>F2 (Skriv): Hur säger man <b>"Vad heter du?"</b> på tyska?</p>
+          <input id="d_ans2" class="write-input" placeholder="Svar...">
+          <p>F3 (Quiz): Vad betyder det tyska ordet <b>"Katze"</b>?</p>
+          <input type="radio" name="d3" value="katt"> Katt &nbsp; <input type="radio" name="d3" value="hund"> Hund
+          <button onclick="ckMix('d', ['d3'], ['katt'], ['d_ans1','d_ans2'], ['vier','wie heisst du'])">Rätta</button>
+        </div>
+      </div>
+      
+      <!-- FRANSKA -->
+      <div><b>🇫🇷 Franska (Blandat):</b> <button id="btn-f" onclick="shQ('f')">Öppna</button>
+        <div id="f" class="q-box">
+          <p>F1 (Skriv): Vad heter färgen <b>"Röd"</b> på franska?</p>
+          <input id="f_ans1" class="write-input" placeholder="Svar...">
+          <p>F2 (Skriv): Vad heter siffran <b>"3"</b> på franska?</p>
+          <input id="f_ans2" class="write-input" placeholder="Svar...">
+          <p>F3 (Quiz): Vad betyder det franska ordet <b>"Chat"</b>?</p>
+          <input type="radio" name="f3" value="katt"> Katt &nbsp; <input type="radio" name="f3" value="hund"> Hund
+          <button onclick="ckMix('f', ['f3'], ['katt'], ['f_ans1','f_ans2'], ['rouge','trois'])">Rätta</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script>
+let tm=25*60,ti=null,run=false,players=[{id:0,name:"Du",score:0}];
+function upT(){let m=Math.floor(tm/60),s=tm%60;document.getElementById('t').textContent=`${m}:${s<10?'0':''}${s}`;}
+function setCustomTime(){if(!run){let v=parseInt(document.getElementById('customMin').value); if(!isNaN(v)&&v>0){tm=v*60;upT();}}}
+function tgT(){if(run){clearInterval(ti);run=false;}else{run=true;ti=setInterval(()=>{if(tm>0){tm--;upT();}else{clearInterval(ti);alert("Bra pluggat!");rsT();}},1000);}}
+function rsT(){clearInterval(ti);let v=parseInt(document.getElementById('customMin').value);tm=(!isNaN(v)&&v>0)?v*60:25*60;upT();run=false;}
+function adT(){let i=document.getElementById('ti'),v=i.value.trim();if(!v)return;document.getElementById('tl').innerHTML+=`<li><input type="checkbox" onclick="this.nextSibling.classList.toggle('done')"><span>${v}</span></li>`;i.value='';}
+function shQ(id){let x=document.getElementById(id);x.style.display=x.style.display==='block'?'none':'block';}
+function addContact(){
+    let n=document.getElementById('contactName').value.trim(), p=document.getElementById('contactPhone').value.trim(); if(!n||!p)return alert("Fyll i båda!");
+    document.getElementById('contactList').innerHTML+=`<li style="display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;"><span>👤 ${n}</span><span><a href="tel:${p.replace(/\s|-/g,'')}" class="phone-link">📞 ${p}</a></span></li>`;
+    document.getElementById('contactName').value='';document.getElementById('contactPhone').value='';
+}
+function updateLeaderboard(){
+    let sorted = [...players].sort((a,b)=>b.score - a.score); let html="";
+    sorted.forEach((p,index)=>{let icon=index===0?"👑 ":""; html+=`<li><span>${icon}${p.name}</span><span><b>${p.score}</b> p</span></li>`;});
+    document.getElementById('leaderboard').innerHTML=html;
+    let select = document.getElementById('playerSelect'), currentSel = select.value; select.innerHTML = "";
+    players.forEach(p=>{select.innerHTML += `<option value="${p.id}">${p.name}</option>`;}); select.value = currentSel;
+}
+function addFriend(){let n=document.getElementById('pName').value.trim(); if(!n) return alert("Skriv ett namn!"); players.push({id:Date.now(),name:n,score:0}); document.getElementById('pName').value=''; updateLeaderboard();}
+function reward(){let p=players.find(x=>x.id===parseInt(document.getElementById('playerSelect').value)); if(p){p.score++; updateLeaderboard(); return p.name;} return "";}
+
+// Gemensam rättningsmotor för blandade frågor
+function ckMix(boxId, radNames, radAns, wrtIds, wrtAns){
+    let points = 0;
+    for(let i=0; i<radNames.length; i++){
+        let r = document.getElementsByName(radNames[i]), v='';
+        for(let o of r) if(o.checked) v=o.value;
+        if(v === radAns[i]) points++;
+    }
+    for(let i=0; i<wrtIds.length; i++){
+        let v = document.getElementById(wrtIds[i]).value.trim().toLowerCase();
+        if(v === wrtAns[i].toLowerCase()) points++;
+    }
+    let total = radNames.length + wrtIds.length;
+    if(points === total){ let name = reward(); alert(`🎉 Super! Allt rätt på mixen! 1 poäng till ${name}!`); document.getElementById(boxId).innerHTML="✅ Godkänd!"; document.getElementById('btn-'+boxId).disabled=true; }
+    else{ alert(`❌ Någon av frågorna eller skrivrutorna är felaktig! (${points} av ${total} rätt). Kontrollera stavningen och försök igen!`); }
+}
+function sdA(){let i=document.getElementById('ci'),v=i.value.trim(),b=document.getElementById('cb');if(!v)return;b.innerHTML+=`<br><b>Du:</b> ${v}`;b.innerHTML+=`<br><b>AI:</b> Nu snackar vi riktigt åk 7-plugg! Kör hårt!`;i.value='';b.scrollTop=b.scrollHeight;}
+</script></body></html>
