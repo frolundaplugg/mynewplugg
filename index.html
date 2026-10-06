@@ -16,7 +16,7 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
 .phone-link{color:#4fa8ff;text-decoration:none;font-weight:bold;}
 .phone-link:hover{text-decoration:underline;}
 </style></head><body>
-<h2>📚 Min Studieportal med Klickbara Nummer</h2>
+<h2>📚 Min Studieportal med Fler Ämnen</h2>
 <div class="grid">
   <!-- POMODORO -->
   <div class="box">
@@ -70,6 +70,8 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
     <select id="playerSelect" style="width:100%;margin-bottom:10px;"><option value="0">Du</option></select>
     <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
       <div><b>Matte:</b> <button id="btn-m" onclick="shQ('m')">Öppna</button><div id="m" class="q-box">Vad blir arean om basen är 6 och höjden 4?<br><input type="radio" name="m" value="12"> 12 cm² &nbsp; <input type="radio" name="m" value="24"> 24 cm²<button onclick="ckQ('m','12')">Rätta svar</button></div></div>
+      <div><b>🔬 NO-ämnen:</b> <button id="btn-no" onclick="shQ('no')">Öppna</button><div id="no" class="q-box">Vilken gas behöver vi människor andas in för att leva?<br><input type="radio" name="no" value="a"> Koldioxid &nbsp; <input type="radio" name="no" value="b"> Syre<button onclick="ckQ('no','b')">Rätta svar</button></div></div>
+      <div><b>🌍 SO-ämnen:</b> <button id="btn-so" onclick="shQ('so')">Öppna</button><div id="so" class="q-box">Vilket land gränsar Sverige till i väster?<br><input type="radio" name="so" value="a"> Norge &nbsp; <input type="radio" name="so" value="b"> Finland<button onclick="ckQ('so','a')">Rätta svar</button></div></div>
       <div><b>🇪🇸 Spanska:</b> <button id="btn-s" onclick="shQ('s')">Öppna</button><div id="s" class="q-box">Vad betyder "manzana"?<br><input type="radio" name="s" value="a"> Äpple &nbsp; <input type="radio" name="s" value="b"> Banan<button onclick="ckQ('s','a')">Rätta svar</button></div></div>
       <div><b>🇩🇪 Tyska:</b> <button id="btn-d" onclick="shQ('d')">Öppna</button><div id="d" class="q-box">Vad betyder "Vielen Dank"?<br><input type="radio" name="d" value="a"> Tack &nbsp; <input type="radio" name="d" value="b"> Hej då<button onclick="ckQ('d','a')">Rätta svar</button></div></div>
       <div><b>🇫🇷 Franska:</b> <button id="btn-f" onclick="shQ('f')">Öppna</button><div id="f" class="q-box">Vad betyder "Bonjour"?<br><input type="radio" name="f" value="a"> Hej/Goddag &nbsp; <input type="radio" name="f" value="b"> Tack<button onclick="ckQ('f','a')">Rätta svar</button></div></div>
@@ -106,5 +108,5 @@ function ckQ(n,c){
     if(v===c){let p=players.find(x=>x.id===parseInt(document.getElementById('playerSelect').value)); if(p){p.score++; alert(`🎉 Rätt! Poäng till ${p.name}!`); updateLeaderboard();} document.getElementById(n).innerHTML="✅ Klar!"; document.getElementById('btn-'+n).disabled=true;}
     else{alert('❌ Fel svar!');}
 }
-function sdA(){let i=document.getElementById('ci'),v=i.value.trim(),b=document.getElementById('cb');if(!v)return;b.innerHTML+=`<br><b>Du:</b> ${v}`;let l=v.toLowerCase(),r="Kör hårt!";if(l.includes('hej'))r="Hej! Vad pluggar vi?";b.innerHTML+=`<br><b>AI:</b> ${r}`;i.value='';b.scrollTop=b.scrollHeight;}
+function sdA(){let i=document.getElementById('ci'),v=i.value.trim(),b=document.getElementById('cb');if(!v)return;b.innerHTML+=`<br><b>Du:</b> ${v}`;let l=v.toLowerCase(),r="Kör hårt!";if(l.includes('hej'))r="Hej! Vad pluggar vi?";else if(l.includes('no'))r="NO är spännande! Biologi, kemi och fysik.";else if(l.includes('so'))r="SO handlar om samhället, geografi och historia.";b.innerHTML+=`<br><b>AI:</b> ${r}`;i.value='';b.scrollTop=b.scrollHeight;}
 </script></body></html>
