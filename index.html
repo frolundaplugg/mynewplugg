@@ -22,6 +22,12 @@ input, select{width:100%;padding:6px;background:#121214;color:#fff;border:1px so
   <div class="box" style="grid-column:span 2;"><h3>🏆 Topplista</h3><input id="pName" placeholder="Namn..." style="width:calc(100% - 110px);display:inline;"><button onclick="addFriend()" style="width:100px;display:inline;margin:0 0 0 10px;">+ Spelare</button><button onclick="resetScores()" style="background:#ff6b6b;margin-top:10px;">Nollställ matchen</button><ul id="leaderboard" class="score-board"><li><span>👑 Du</span><span>0 p</span></li></ul></div>
   <div class="box"><h3>🤖 AI-Coach</h3><div class="chat" id="cb">AI: Tjena! Dags för mixad frågesport för sjuan!</div><input id="ci" placeholder="Skriv..."><button onclick="sdA()">Skicka</button></div>
   <div class="box"><h3>✅ Uppgifter</h3><input id="ti" placeholder="Ny läxa..."><button onclick="adT()">+ Spara</button><ul id="tl" style="list-style:none;padding:0;"></ul></div>
+  
+  <div class="box" style="grid-column:span 2;">
+    <h3>🌐 Global Live-chatt (För alla kompisar)</h3>
+    <p style="margin:0 0 10px 0;font-size:0.85rem;color:#aaa;">Här kan alla chatta live i realtid!</p>
+    <iframe src="https://minnit.chat" style="border:none;width:100%;height:350px;" allowTransparency="true"></iframe>
+  </div>
   <div class="box" style="grid-column:span 2;"><h3>📝 Ämnesutmaningar</h3>
     <label><b>Vem svarar?</b></label><select id="playerSelect"><option value="0">Du</option></select>
     <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
