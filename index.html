@@ -65,5 +65,5 @@ function ckMix(boxId,radNames,radAns,wrtIds,wrtAns){
     if(points===total){let name=reward();alert(`🎉 Rätt! Poäng till ${name}!`);document.getElementById(boxId).innerHTML="✅ Avklarad!";document.getElementById('btn-'+boxId).disabled=true;}
     else{alert(`❌ Något svar var fel! (${points} av ${total} rätt)`);}
 }
-function sdA(){let i=document.getElementById('ci'),v=i.value.trim(),b=document.getElementById('cb');if(!v)return;b.innerHTML+=`<br><b>Du:</b> ${v}`;let l=v.toLowerCase(),r="Kör hårt med sjuanpasset!";if(l.includes('hej'))r="Tjena! Vilket ämne kör vi?";else if(l.includes('matte'))r="Negativa tal är enkla: minus och minus blir plus vid multiplikation!";else if(l.includes('no'))r="Kom ihåg att fotosyntes kräver solljus, vatten och koldioxid!";b.innerHTML+=`<br><b>AI:</b> ${r}`;i.value='';b.scrollTop=b.scrollHeight;}
+function sdA(){let i=document.getElementById('ci'),v=i.value.trim(),b=document.getElementById('cb');if(!v)return;b.innerHTML+=`<br><b>Du:</b> ${v}<br><b>AI:</b> Kör hårt med sjuanpasset!`;i.value='';b.scrollTop=b.scrollHeight;}
 </script></body></html>
