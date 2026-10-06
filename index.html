@@ -13,8 +13,10 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
 .score-board{list-style:none;padding:0;margin:10px 0 0 0;}
 .score-board li{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#121214;margin-bottom:5px;border-radius:4px;border-left:4px solid #a370f7;}
 .score-board li:first-child{border-left-color:#ffd700;font-weight:bold;}
+.phone-link{color:#4fa8ff;text-decoration:none;font-weight:bold;}
+.phone-link:hover{text-decoration:underline;}
 </style></head><body>
-<h2>📚 Min Studieportal med Telefonbok</h2>
+<h2>📚 Min Studieportal med Klickbara Nummer</h2>
 <div class="grid">
   <!-- POMODORO -->
   <div class="box">
@@ -33,14 +35,14 @@ input, select{width:calc(100% - 90px);padding:6px;background:#121214;color:#fff;
   <!-- TELEFONBOK / KONTAKTER -->
   <div class="box" style="grid-column:span 2;">
     <h3>📞 Telefonbok / Kontakter</h3>
-    <p style="margin:5px 0;font-size:0.85rem;color:#aaa;">Spara dina och dina kompisars nummer för snabb tillgång:</p>
+    <p style="margin:5px 0;font-size:0.85rem;color:#aaa;">Klicka på numret för att ringa upp direkt:</p>
     <div style="display:flex;gap:10px;margin-bottom:10px;">
       <input id="contactName" placeholder="Namn..." style="width:45%;">
       <input id="contactPhone" placeholder="Telefonnummer..." style="width:35%;">
       <button onclick="addContact()" style="width:20%;margin:0;background:#2ecc71;">+ Spara</button>
     </div>
     <ul id="contactList" style="list-style:none;padding:0;margin:0;">
-      <li style="display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;"><span>👤 Exempel (Yusuf)</span><span>070-123 45 67</span></li>
+      <li style="display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;"><span>👤 Exempel (Yusuf)</span><span><a href="tel:0701234567" class="phone-link">📞 070-123 45 67</a></span></li>
     </ul>
   </div>
 
@@ -80,14 +82,14 @@ function upT(){let m=Math.floor(tm/60),s=tm%60;document.getElementById('t').text
 function setCustomTime(){if(!run){let v=parseInt(document.getElementById('customMin').value); if(!isNaN(v)&&v>0){tm=v*60;upT();}}}
 function tgT(){if(run){clearInterval(ti);run=false;}else{run=true;ti=setInterval(()=>{if(tm>0){tm--;upT();}else{clearInterval(ti);alert("Bra jobbat! Dags för en paus.");rsT();}},1000);}}
 function rsT(){clearInterval(ti);let v=parseInt(document.getElementById('customMin').value);tm=(!isNaN(v)&&v>0)?v*60:25*60;upT();run=false;}
-function adT(){let i=document.getElementById('ti'),v=i.value.trim();if(!v)return;document.getElementById('tl').innerHTML+=`<li><input type="checkbox" onclick="this.nextSibling.classList.toggle('done')"><span>${v}</span></li>`;i.value='';}
+function adT(){let i=document.getElementById('ti'),v=i.value.trim();if(!v)return;document.getElementById('tl').innerHTML+=`<li><input type="checkbox" onclick="this.toggleDone(this)"><span>${v}</span></li>`;i.value='';}
 function shQ(id){let x=document.getElementById(id);x.style.display=x.style.display==='block'?'none':'block';}
 
-// Telefonbok logik
 function addContact(){
     let n=document.getElementById('contactName').value.trim(), p=document.getElementById('contactPhone').value.trim();
     if(!n || !p) return alert("Skriv både namn och telefonnummer!");
-    document.getElementById('contactList').innerHTML+=`<li style="display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;"><span>👤 ${n}</span><span>${p}</span></li>`;
+    let cleanPhone = p.replace(/\s|-/g, '');
+    document.getElementById('contactList').innerHTML+=`<li style="display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;"><span>👤 ${n}</span><span><a href="tel:${cleanPhone}" class="phone-link">📞 ${p}</a></span></li>`;
     document.getElementById('contactName').value='';document.getElementById('contactPhone').value='';
 }
 
