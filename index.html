@@ -526,6 +526,7 @@
       localStorage.setItem('studyportal-user', name);
       greeting.textContent = `Hej, ${name}!`;
       input.value = name;
+      aiCoachMessage(`Hej ${name}! Dagens plan: börja med 10 min matte och avsluta med repetition.`);
     }
 
     function loadUserName() {
@@ -537,6 +538,33 @@
         input.value = savedName;
         greeting.textContent = `Hej, ${savedName}!`;
       }
+    }
+
+    function aiCoachMessage(message) {
+      const cb = document.getElementById('cb');
+      const name = localStorage.getItem('studyportal-user');
+      const greetingName = name ? name : 'elev';
+      cb.innerHTML += `<br><b>AI:</b> ${message}`;
+      cb.scrollTop = cb.scrollHeight;
+    }
+
+    function getCoachAdvice() {
+      const totalScore = players.reduce((sum, p) => sum + p.score, 0);
+      const name = localStorage.getItem('studyportal-user') || 'elev';
+
+      if (tm <= 10 * 60) {
+        return `${name}, du har lite tid kvar. Gör en snabb repetition och avsluta med det lättaste ämnet.`;
+      }
+
+      if (totalScore >= 20) {
+        return `${name}, du ligger riktigt bra till! Fortsätt med det ämne du är bäst på och avsluta med repetition.`;
+      }
+
+      if (totalScore >= 8) {
+        return `${name}, du är på gång! Börja med matte eller NO och kör 5 minuter till.`;
+      }
+
+      return `${name}, börja med ett enkelt ämne och bygg upp tempo. 10 min fokus ger bra resultat.`;
     }
 
     function upT() {
@@ -644,6 +672,7 @@
     function resetScores() {
       players.forEach(p => p.score = 0);
       updateLeaderboard();
+      aiCoachMessage('Poängen är nollställd. Nu kör vi igen från noll!');
     }
 
     function sdA() {
@@ -653,10 +682,22 @@
 
       let cb = document.getElementById('cb');
       cb.innerHTML += `<br><b>Du:</b> ${msg}`;
+
+      const lower = msg.toLowerCase();
+      let reply = getCoachAdvice();
+
+      if (lower.includes('matte')) reply = 'Matte är smart att börja med när du är alert. Gör 5 frågor först, sedan tar du en liten paus.';
+      if (lower.includes('no')) reply = 'NO går snabbt om du repeterar begreppen. Skriv viktigaste ord från kapitlet och lär dig dem.';
+      if (lower.includes('so')) reply = 'SO blir lättare om du tänker på nyckelord. Gör en kort sammanfattning innan du svarar.';
+      if (lower.includes('språk') || lower.includes('spanska') || lower.includes('tyska') || lower.includes('franska')) reply = 'Språk är lättast att träna genom repetition. Säg orden högt och öva 5 minuter i rad.';
+      if (lower.includes('hjälp') || lower.includes('tips')) reply = 'Börja med det lättaste ämnet, sedan det svåraste. Kort och fokuserat ger bäst resultat.';
+      if (lower.includes('tack')) reply = 'Självklart! Du gör bra arbete. Fortsätt så.';
+
       setTimeout(() => {
-        cb.innerHTML += `<br><b>AI:</b> Grymt jobbat! Fortsätt plugga hårt! 💪`;
+        cb.innerHTML += `<br><b>AI:</b> ${reply}`;
         cb.scrollTop = cb.scrollHeight;
-      }, 800);
+      }, 600);
+
       chatInput.value = '';
     }
 
@@ -680,6 +721,7 @@
       let player = players.find(p => p.id === activePlayerId);
       if (player) {
         player.score += points;
+        aiCoachMessage(`${player.name} fick ${points} poäng i den här uppgiften. ${getCoachAdvice()}`);
         alert(`${player.name} fick ${points} rätta svar!`);
       }
 
