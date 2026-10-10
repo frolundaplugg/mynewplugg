@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Studieportal Åk 7</title>
+  <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
+  <meta name="theme-color" content="#8b5cf6" />
+  <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white' text-anchor='middle' font-weight='bold'>📚</text></svg>" />
   <style>
     :root {
       --bg-1: #120b1d;
@@ -31,7 +34,7 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background:
         radial-gradient(circle at top left, rgba(139, 92, 246, 0.22), transparent 28%),
         radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 24%),
@@ -53,14 +56,19 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04);
-      margin-bottom: 22px;
+      margin-bottom: 28px;
       backdrop-filter: blur(12px);
       position: sticky;
       top: 12px;
       z-index: 30;
     }
 
-    .brand-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .brand-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
 
     .brand {
       font-weight: 800;
@@ -72,8 +80,8 @@
     }
 
     .brand-mark {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
       background: linear-gradient(135deg, #8b5cf6, #38bdf8);
       display: inline-flex;
@@ -82,22 +90,15 @@
       box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
       position: relative;
       overflow: hidden;
-    }
-
-    .brand-mark::before {
-      content: "";
-      width: 10px;
-      height: 10px;
-      border-radius: 3px;
-      background: rgba(255,255,255,0.9);
-      transform: rotate(45deg);
-      display: block;
+      font-size: 16px;
+      font-weight: bold;
     }
 
     .welcome-text {
       color: var(--muted);
       font-size: 0.9rem;
       font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
     .user-name-box {
@@ -108,7 +109,7 @@
       border: 1px solid rgba(148, 163, 184, 0.16);
       border-radius: 14px;
       padding: 8px 12px;
-      min-width: min(100%, 320px);
+      min-width: min(100%, 280px);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
       transition: border-color 0.2s ease, transform 0.2s ease;
     }
@@ -132,9 +133,9 @@
     .user-name-box button {
       margin: 0;
       width: auto;
-      min-width: 90px;
-      padding: 9px 12px;
-      font-size: 0.82rem;
+      min-width: 85px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
     }
 
     .badge {
@@ -144,28 +145,35 @@
       background: rgba(139, 92, 246, 0.12);
       border: 1px solid rgba(139, 92, 246, 0.35);
       border-radius: 999px;
-      padding: 8px 12px;
+      padding: 8px 14px;
       color: var(--muted);
       font-size: 0.8rem;
       font-weight: 700;
       box-shadow: inset 0 0 18px rgba(139, 92, 246, 0.08);
+      white-space: nowrap;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 18px;
+      gap: 20px;
     }
 
     .box {
       background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84));
       border: 1px solid var(--border);
       border-radius: 22px;
-      padding: 18px;
+      padding: 20px;
       box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04);
       position: relative;
       overflow: hidden;
       animation: floatIn 0.55s ease both;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .box:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.06);
     }
 
     .box::before {
@@ -186,29 +194,34 @@
 
     .box h3 {
       font-size: 1.15rem;
-      margin-bottom: 14px;
+      margin: 0 0 14px 0;
       color: var(--text);
       font-weight: 800;
       display: flex;
       align-items: center;
       gap: 8px;
+      letter-spacing: 0.02em;
     }
 
-    button, .link-btn, input, select { font: inherit; }
+    button, .link-btn, input, select {
+      font: inherit;
+      font-family: inherit;
+    }
 
     button, .link-btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-strong));
       color: white;
       border: none;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 11px 16px;
       cursor: pointer;
       width: 100%;
-      margin-top: 8px;
+      margin-top: 10px;
       text-align: center;
       text-decoration: none;
       display: block;
-      font-weight: 800;
+      font-weight: 700;
+      font-size: 0.95rem;
       transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
       box-shadow: 0 10px 18px rgba(109, 78, 251, 0.3);
       position: relative;
@@ -230,8 +243,12 @@
 
     button:hover, .link-btn:hover {
       filter: brightness(1.08);
-      transform: translateY(-1px);
-      box-shadow: 0 12px 22px rgba(109, 78, 251, 0.34);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(109, 78, 251, 0.38);
+    }
+
+    button:active {
+      transform: translateY(0px);
     }
 
     .secondary {
@@ -239,9 +256,17 @@
       box-shadow: 0 10px 18px rgba(37, 99, 235, 0.28);
     }
 
+    .secondary:hover {
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.35);
+    }
+
     .danger {
       background: linear-gradient(135deg, #ef4444, #dc2626);
       box-shadow: 0 10px 18px rgba(220, 38, 38, 0.25);
+    }
+
+    .danger:hover {
+      box-shadow: 0 12px 26px rgba(220, 38, 38, 0.3);
     }
 
     .success {
@@ -249,10 +274,20 @@
       box-shadow: 0 10px 18px rgba(34, 197, 94, 0.25);
     }
 
+    .success:hover {
+      box-shadow: 0 12px 26px rgba(34, 197, 94, 0.3);
+    }
+
     .outline {
       background: rgba(148, 163, 184, 0.08);
       border: 1px solid rgba(148, 163, 184, 0.2);
       box-shadow: none;
+      color: var(--text);
+    }
+
+    .outline:hover {
+      background: rgba(148, 163, 184, 0.12);
+      box-shadow: 0 4px 12px rgba(148, 163, 184, 0.1);
     }
 
     input, select {
@@ -265,6 +300,7 @@
       margin-bottom: 10px;
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      font-size: 0.95rem;
     }
 
     input:focus, select:focus {
@@ -272,57 +308,90 @@
       box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
     }
 
-    input::placeholder { color: rgba(226, 232, 240, 0.72); }
+    input::placeholder {
+      color: rgba(226, 232, 240, 0.5);
+    }
 
     .inline-row {
       display: flex;
-      gap: 8px;
-      align-items: center;
+      gap: 10px;
+      align-items: flex-end;
     }
 
-    .inline-row input { flex: 1; margin: 0; }
+    .inline-row input {
+      flex: 1;
+      margin: 0;
+      margin-bottom: 10px;
+    }
 
     .inline-row button {
       width: auto;
       margin: 0;
-      min-width: 90px;
+      margin-bottom: 10px;
+      min-width: 95px;
+      flex-shrink: 0;
     }
 
     .timer-value {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 900;
       letter-spacing: 0.05em;
-      margin: 10px 0 14px;
+      margin: 14px 0 20px;
       font-variant-numeric: tabular-nums;
-      text-shadow: 0 0 18px rgba(139, 92, 246, 0.28);
+      text-shadow: 0 0 20px rgba(139, 92, 246, 0.32);
+      color: #60a5fa;
     }
 
     .chat {
-      height: 130px;
+      height: 150px;
       overflow-y: auto;
       background: rgba(10, 16, 24, 0.9);
-      padding: 12px 14px;
+      padding: 14px;
       border-radius: 14px;
       border: 1px solid rgba(148, 163, 184, 0.14);
       margin-bottom: 10px;
-      line-height: 1.5;
+      line-height: 1.6;
       color: var(--muted);
+      font-size: 0.9rem;
     }
 
-    .score-board, .task-list, .contact-list { list-style: none; padding: 0; margin: 0; }
+    .chat::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat::-webkit-scrollbar-track {
+      background: rgba(148, 163, 184, 0.05);
+      border-radius: 10px;
+    }
+
+    .chat::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 10px;
+    }
+
+    .chat::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.3);
+    }
+
+    .score-board, .task-list, .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
     .score-board li, .task-list li, .contact-list li {
       background: rgba(15, 23, 42, 0.82);
       border: 1px solid rgba(148, 163, 184, 0.08);
       border-left: 4px solid var(--secondary);
       border-radius: 12px;
-      padding: 11px 12px;
+      padding: 12px 14px;
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
       transition: transform 0.15s ease, border-color 0.15s ease;
+      word-break: break-word;
     }
 
     .score-board li:first-child {
@@ -332,63 +401,110 @@
 
     .task-list li {
       justify-content: flex-start;
-      gap: 10px;
+      gap: 12px;
       border-left-color: var(--success);
     }
 
+    .task-list input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--success);
+    }
+
     .score-board li:hover, .task-list li:hover, .contact-list li:hover {
-      transform: translateX(2px);
+      transform: translateX(4px);
       border-color: rgba(139, 92, 246, 0.26);
     }
 
-    .done { text-decoration: line-through; opacity: 0.6; }
+    .done {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
 
     .q-box {
       display: none;
       background: rgba(15, 20, 30, 0.96);
       border: 1px solid rgba(148, 163, 184, 0.14);
       border-radius: 14px;
-      padding: 14px;
-      margin-top: 10px;
+      padding: 16px;
+      margin-top: 12px;
       animation: slideDown 0.25s ease;
     }
 
-    .q-box p { margin: 8px 0; color: var(--text); }
+    .q-box p {
+      margin: 10px 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .q-box input[type="text"],
+    .q-box input[type="number"] {
+      margin-bottom: 8px;
+    }
 
     .challenge-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-top: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
     }
 
     .challenge-card {
       background: rgba(15, 23, 42, 0.72);
       border: 1px solid rgba(148, 163, 184, 0.1);
       border-radius: 16px;
-      padding: 12px;
+      padding: 14px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .challenge-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 22px rgba(15, 23, 42, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 28px rgba(15, 23, 42, 0.25);
+      border-color: rgba(139, 92, 246, 0.2);
     }
 
-    .challenge-card b { display: block; margin-bottom: 8px; font-size: 1rem; }
+    .challenge-card b {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
 
     .question-row {
       display: flex;
       align-items: center;
       gap: 10px;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .question-row button {
       width: auto;
       margin: 0;
-      min-width: 95px;
+      min-width: 85px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(34, 197, 94, 0.95);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+      animation: slideInRight 0.3s ease;
+      z-index: 40;
+      max-width: 300px;
+      font-weight: 600;
+    }
+
+    .notification.error {
+      background: rgba(239, 68, 68, 0.95);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
     }
 
     @keyframes floatIn {
@@ -397,21 +513,34 @@
     }
 
     @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-4px); }
+      from { opacity: 0; transform: translateY(-8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 600px) {
-      body { padding: 16px 10px 40px; }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(100px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 16px 12px 40px; }
 
       .topbar {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 12px;
       }
+
+      .brand-wrap { width: 100%; }
 
       .user-name-box {
         width: 100%;
         min-width: 0;
+      }
+
+      .badge {
+        width: 100%;
+        justify-content: center;
       }
 
       .inline-row {
@@ -419,7 +548,72 @@
         align-items: stretch;
       }
 
-      .inline-row button { width: 100%; }
+      .inline-row input { margin-bottom: 0; }
+      .inline-row button { width: 100%; margin-bottom: 0; margin-top: 10px; }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      button, .link-btn {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+      }
+
+      .timer-value {
+        font-size: 2.2rem;
+      }
+
+      .challenge-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 12px 8px 32px; }
+
+      .topbar {
+        padding: 14px 12px;
+        margin-bottom: 16px;
+      }
+
+      .brand {
+        font-size: 1.3rem;
+      }
+
+      .box {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .box h3 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+      }
+
+      input, select {
+        padding: 10px 10px;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      button {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+
+      .chat {
+        height: 120px;
+        padding: 10px;
+        font-size: 0.85rem;
+      }
+
+      .score-board li, .task-list li {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -427,16 +621,16 @@
   <div class="container">
     <header class="topbar">
       <div class="brand-wrap">
-        <div class="brand"><span class="brand-mark"></span> Min Studieportal</div>
+        <div class="brand"><span class="brand-mark">📚</span> Min Studieportal</div>
         <div id="welcomeText" class="welcome-text">Hej, elev!</div>
       </div>
 
       <div class="user-name-box">
-        <input id="usernameInput" type="text" placeholder="Ditt namn" />
+        <input id="usernameInput" type="text" placeholder="Ditt namn" autocomplete="off" />
         <button class="secondary" onclick="saveUserName()">Spara</button>
       </div>
 
-      <div class="badge">Årskurs 7 • Fokus & repetition</div>
+      <div class="badge">Årskurs 7 • Fokus & Repetition</div>
     </header>
 
     <div class="grid">
@@ -444,11 +638,11 @@
         <h3>⏱️ Timer</h3>
         <div class="timer-value" id="t">25:00</div>
         <div class="inline-row">
-          <input id="customMin" type="number" min="1" value="25" />
+          <input id="customMin" type="number" min="1" max="180" value="25" placeholder="Minuter" />
           <button class="secondary" onclick="setCustomTime()">Sätt</button>
         </div>
-        <button onclick="tgT()">Start / Paus</button>
-        <button class="outline" onclick="rsT()">Nollställ</button>
+        <button onclick="tgT()">▶️ Start / Paus</button>
+        <button class="outline" onclick="rsT()">🔄 Nollställ</button>
       </div>
 
       <div class="box">
@@ -479,9 +673,9 @@
 
       <div class="box">
         <h3>🤖 AI-Coach</h3>
-        <div id="cb" class="chat">AI: Tjena! Dags för mixad frågesport för sjuan!</div>
-        <input id="ci" placeholder="Skriv..." />
-        <button onclick="sdA()">Skicka</button>
+        <div id="cb" class="chat">AI: Tjena! Dags för fokuserad studier! Säg till om du behöver tips eller motivation.</div>
+        <input id="ci" placeholder="Skriv fråga..." />
+        <button onclick="sdA()">📤 Skicka</button>
       </div>
 
       <div class="box">
@@ -502,78 +696,86 @@
           <div class="challenge-card">
             <div class="question-row"><b>Matte</b><button onclick="shQ('m')">Öppna</button></div>
             <div id="m" class="q-box">
-              <p>(-4)+(-5)?</p>
-              <input type="radio" name="m1" value="a"> -9 &nbsp; <input type="radio" name="m1" value="b"> -1<br>
-              <p>3x+5+2x-2?</p>
-              <input type="radio" name="m2" value="a"> 5x+3 &nbsp; <input type="radio" name="m2" value="b"> 5x-3<br>
-              <p>2x=16. Vad är x?</p>
-              <input id="m_ans3" class="write-input" />
-              <button onclick="ckMix('m',['m1','m2'],['a','a'],['m_ans3'],['8'])">Rätta</button>
+              <p><strong>Fråga 1:</strong> (-4)+(-5)?</p>
+              <label><input type="radio" name="m1" value="a"> -9</label>
+              <label><input type="radio" name="m1" value="b"> -1</label>
+              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> 3x+5+2x-2?</p>
+              <label><input type="radio" name="m2" value="a"> 5x+3</label>
+              <label><input type="radio" name="m2" value="b"> 5x-3</label>
+              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> 2x=16. Vad är x?</p>
+              <input id="m_ans3" class="write-input" placeholder="Svar..." />
+              <button onclick="ckMix('m',['m1','m2'],['a','a'],['m_ans3'],['8'])">✓ Rätta</button>
             </div>
           </div>
 
           <div class="challenge-card">
             <div class="question-row"><b>🔬 NO</b><button onclick="shQ('no')">Öppna</button></div>
             <div id="no" class="q-box">
-              <p>Fotosyntes sker i?</p>
-              <input id="no_ans1" class="write-input" />
-              <p>Tecken för Syre?</p>
-              <input id="no_ans2" class="write-input" />
-              <p>Neutralt pH?</p>
-              <input type="radio" name="no3" value="5"> 5 &nbsp; <input type="radio" name="no3" value="7"> 7
-              <button onclick="ckMix('no',['no3'],['7'],['no_ans1','no_ans2'], ['kloroplasten','O'])">Rätta</button>
+              <p><strong>Fråga 1:</strong> Fotosyntes sker i?</p>
+              <input id="no_ans1" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> Tecken för Syre?</p>
+              <input id="no_ans2" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> Neutralt pH?</p>
+              <label><input type="radio" name="no3" value="5"> 5</label>
+              <label><input type="radio" name="no3" value="7"> 7</label>
+              <button onclick="ckMix('no',['no3'],['7'],['no_ans1','no_ans2'], ['kloroplasten','O'])">✓ Rätta</button>
             </div>
           </div>
 
           <div class="challenge-card">
             <div class="question-row"><b>🌍 SO</b><button onclick="shQ('so')">Öppna</button></div>
             <div id="so" class="q-box">
-              <p>Mandat i riksdagen?</p>
-              <input type="radio" name="so1" value="349"> 349 &nbsp; <input type="radio" name="so1" value="249"> 249<br>
-              <p>Äldsta religionen?</p>
-              <input type="radio" name="so2" value="j"> Judendomen &nbsp; <input type="radio" name="so2" value="i"> Islam<br>
-              <p>Muslimers heliga byggnad?</p>
-              <input id="so_ans3" class="write-input" />
-              <button onclick="ckMix('so',['so1','so2'],['349','j'],['so_ans3'],['moskén'])">Rätta</button>
+              <p><strong>Fråga 1:</strong> Mandat i riksdagen?</p>
+              <label><input type="radio" name="so1" value="349"> 349</label>
+              <label><input type="radio" name="so1" value="249"> 249</label>
+              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> Äldsta religionen?</p>
+              <label><input type="radio" name="so2" value="j"> Judendomen</label>
+              <label><input type="radio" name="so2" value="i"> Islam</label>
+              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> Muslimers heliga byggnad?</p>
+              <input id="so_ans3" class="write-input" placeholder="Svar..." />
+              <button onclick="ckMix('so',['so1','so2'],['349','j'],['so_ans3'],['moskén'])">✓ Rätta</button>
             </div>
           </div>
 
           <div class="challenge-card">
             <div class="question-row"><b>🇪🇸 Spanska</b><button onclick="shQ('s')">Öppna</button></div>
             <div id="s" class="q-box">
-              <p>"Skola" på spanska?</p>
-              <input id="s_ans1" class="write-input" />
-              <p>"Vad är klockan?"</p>
-              <input id="s_ans2" class="write-input" />
-              <p>"Perro" betyder?</p>
-              <input type="radio" name="s3" value="k"> Katt &nbsp; <input type="radio" name="s3" value="h"> Hund
-              <button onclick="ckMix('s',['s3'],['h'],['s_ans1','s_ans2'], ['la escuela','que hora es'])">Rätta</button>
+              <p><strong>Fråga 1:</strong> "Skola" på spanska?</p>
+              <input id="s_ans1" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> "Vad är klockan?"</p>
+              <input id="s_ans2" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> "Perro" betyder?</p>
+              <label><input type="radio" name="s3" value="k"> Katt</label>
+              <label><input type="radio" name="s3" value="h"> Hund</label>
+              <button onclick="ckMix('s',['s3'],['h'],['s_ans1','s_ans2'], ['la escuela','que hora es'])">✓ Rätta</button>
             </div>
           </div>
 
           <div class="challenge-card">
             <div class="question-row"><b>🇩🇪 Tyska</b><button onclick="shQ('d')">Öppna</button></div>
             <div id="d" class="q-box">
-              <p>"4" på tyska?</p>
-              <input id="d_ans1" class="write-input" />
-              <p>"Vad heter du?"</p>
-              <input id="d_ans2" class="write-input" />
-              <p>"Katze" betyder?</p>
-              <input type="radio" name="d3" value="k"> Katt &nbsp; <input type="radio" name="d3" value="h"> Hund
-              <button onclick="ckMix('d',['d3'],['k'],['d_ans1','d_ans2'], ['vier','wie heisst du'])">Rätta</button>
+              <p><strong>Fråga 1:</strong> "4" på tyska?</p>
+              <input id="d_ans1" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> "Vad heter du?"</p>
+              <input id="d_ans2" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> "Katze" betyder?</p>
+              <label><input type="radio" name="d3" value="k"> Katt</label>
+              <label><input type="radio" name="d3" value="h"> Hund</label>
+              <button onclick="ckMix('d',['d3'],['k'],['d_ans1','d_ans2'], ['vier','wie heisst du'])">✓ Rätta</button>
             </div>
           </div>
 
           <div class="challenge-card">
             <div class="question-row"><b>🇫🇷 Franska</b><button onclick="shQ('f')">Öppna</button></div>
             <div id="f" class="q-box">
-              <p>"Röd" på franska?</p>
-              <input id="f_ans1" class="write-input" />
-              <p>"3" på franska?</p>
-              <input id="f_ans2" class="write-input" />
-              <p>"Chat" betyder?</p>
-              <input type="radio" name="f3" value="k"> Katt &nbsp; <input type="radio" name="f3" value="h"> Hund
-              <button onclick="ckMix('f',['f3'],['k'],['f_ans1','f_ans2'], ['rouge','trois'])">Rätta</button>
+              <p><strong>Fråga 1:</strong> "Röd" på franska?</p>
+              <input id="f_ans1" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> "3" på franska?</p>
+              <input id="f_ans2" class="write-input" placeholder="Svar..." />
+              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> "Chat" betyder?</p>
+              <label><input type="radio" name="f3" value="k"> Katt</label>
+              <label><input type="radio" name="f3" value="h"> Hund</label>
+              <button onclick="ckMix('f',['f3'],['k'],['f_ans1','f_ans2'], ['rouge','trois'])">✓ Rätta</button>
             </div>
           </div>
         </div>
@@ -582,10 +784,29 @@
   </div>
 
   <script>
+    const STORAGE_KEYS = {
+      userName: 'studyportal-user',
+      contacts: 'studyportal-contacts',
+      players: 'studyportal-players',
+      tasks: 'studyportal-tasks',
+      timerSettings: 'studyportal-timer-settings'
+    };
+
     let tm = 25 * 60;
     let ti = null;
     let run = false;
     let players = [{ id: 0, name: 'Du', score: 0 }];
+
+    function showNotification(message, isError = false) {
+      const notif = document.createElement('div');
+      notif.className = 'notification' + (isError ? ' error' : '');
+      notif.textContent = message;
+      document.body.appendChild(notif);
+      setTimeout(() => {
+        notif.style.animation = 'slideInRight 0.3s ease reverse';
+        setTimeout(() => notif.remove(), 300);
+      }, 3000);
+    }
 
     function saveUserName() {
       const input = document.getElementById('usernameInput');
@@ -594,18 +815,20 @@
 
       if (!name) {
         greeting.textContent = 'Hej, elev!';
-        localStorage.removeItem('studyportal-user');
+        localStorage.removeItem(STORAGE_KEYS.userName);
+        showNotification('Namn borttaget');
         return;
       }
 
-      localStorage.setItem('studyportal-user', name);
+      localStorage.setItem(STORAGE_KEYS.userName, name);
       greeting.textContent = `Hej, ${name}!`;
       input.value = name;
-      aiCoachMessage(`Hej ${name}! Dagens plan: börja med 10 min matte och avsluta med repetition.`);
+      aiCoachMessage(`Hej ${name}! Välkommen till din personliga studieportal. Börja med timer eller quiz när du är redo!`);
+      showNotification(`Hej ${name}! 👋`);
     }
 
     function loadUserName() {
-      const savedName = localStorage.getItem('studyportal-user');
+      const savedName = localStorage.getItem(STORAGE_KEYS.userName);
       const input = document.getElementById('usernameInput');
       const greeting = document.getElementById('welcomeText');
 
@@ -617,27 +840,28 @@
 
     function aiCoachMessage(message) {
       const cb = document.getElementById('cb');
-      cb.innerHTML += `<br><b>AI:</b> ${message}`;
+      const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+      cb.innerHTML += `<br><b>AI ${time}:</b> ${message}`;
       cb.scrollTop = cb.scrollHeight;
     }
 
     function getCoachAdvice() {
       const totalScore = players.reduce((sum, p) => sum + p.score, 0);
-      const name = localStorage.getItem('studyportal-user') || 'elev';
+      const name = localStorage.getItem(STORAGE_KEYS.userName) || 'elev';
 
       if (tm <= 10 * 60) {
         return `${name}, du har lite tid kvar. Gör en snabb repetition och avsluta med det lättaste ämnet.`;
       }
 
       if (totalScore >= 20) {
-        return `${name}, du ligger riktigt bra till! Fortsätt med det ämne du är bäst på och avsluta med repetition.`;
+        return `${name}, du ligger riktigt bra till! Fortsätt med det ämne du är bäst på.`;
       }
 
       if (totalScore >= 8) {
-        return `${name}, du är på gång! Börja med matte eller NO och kör 5 minuter till.`;
+        return `${name}, du är på gång! Fortsätt bara du.`;
       }
 
-      return `${name}, börja med ett enkelt ämne och bygg upp tempo. 10 min fokus ger bra resultat.`;
+      return `${name}, börja med ett enkelt ämne. Varje rätt svar ger dig momentum!`;
     }
 
     function upT() {
@@ -649,9 +873,13 @@
     function setCustomTime() {
       if (!run) {
         let v = parseInt(document.getElementById('customMin').value, 10);
-        if (!isNaN(v) && v > 0) {
+        if (!isNaN(v) && v > 0 && v <= 180) {
           tm = v * 60;
+          localStorage.setItem(STORAGE_KEYS.timerSettings, v);
           upT();
+          showNotification(`Timer satt till ${v} min`);
+        } else {
+          showNotification('Ange 1-180 minuter', true);
         }
       }
     }
@@ -660,17 +888,21 @@
       if (run) {
         clearInterval(ti);
         run = false;
+        showNotification('⏸️ Pausad');
         return;
       }
 
       run = true;
+      showNotification('⏱️ Timer igång');
       ti = setInterval(() => {
         if (tm > 0) {
           tm--;
           upT();
         } else {
           clearInterval(ti);
-          alert('Bra pluggat!');
+          run = false;
+          showNotification('🎉 Bra pluggat!');
+          aiCoachMessage('Grattis! Du har fokuserat tills tiden tog slut. Bra jobbat!');
           rsT();
         }
       }, 1000);
@@ -684,16 +916,48 @@
       run = false;
     }
 
+    function saveTasks() {
+      const taskList = document.getElementById('tl');
+      const tasks = [];
+      taskList.querySelectorAll('li').forEach(li => {
+        const text = li.querySelector('span').textContent;
+        const done = li.classList.contains('done');
+        tasks.push({ text, done });
+      });
+      localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+    }
+
+    function loadTasks() {
+      const saved = localStorage.getItem(STORAGE_KEYS.tasks);
+      if (!saved) return;
+
+      const tasks = JSON.parse(saved);
+      const taskList = document.getElementById('tl');
+      taskList.innerHTML = '';
+
+      tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.innerHTML = `<input type="checkbox" onclick="this.parentNode.classList.toggle('done'); saveTasks();" ${task.done ? 'checked' : ''}> <span>${task.text}</span>`;
+        if (task.done) li.classList.add('done');
+        taskList.appendChild(li);
+      });
+    }
+
     function adT() {
       let i = document.getElementById('ti');
       let v = i.value.trim();
-      if (!v) return;
+      if (!v) {
+        showNotification('Skriv en uppgift först', true);
+        return;
+      }
 
       let taskList = document.getElementById('tl');
       let li = document.createElement('li');
-      li.innerHTML = `<input type="checkbox" onclick="this.parentNode.classList.toggle('done');"> <span>${v}</span>`;
+      li.innerHTML = `<input type="checkbox" onclick="this.parentNode.classList.toggle('done'); saveTasks();"> <span>${v}</span>`;
       taskList.appendChild(li);
       i.value = '';
+      saveTasks();
+      showNotification('✅ Uppgift sparad');
     }
 
     function shQ(id) {
@@ -701,10 +965,39 @@
       x.style.display = x.style.display === 'block' ? 'none' : 'block';
     }
 
+    function saveContacts() {
+      const contactList = document.getElementById('contactList');
+      const contacts = [];
+      contactList.querySelectorAll('li').forEach(li => {
+        const text = li.textContent.replace('👤 ', '');
+        const [name, number] = text.split(': ');
+        contacts.push({ name, number });
+      });
+      localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(contacts));
+    }
+
+    function loadContacts() {
+      const saved = localStorage.getItem(STORAGE_KEYS.contacts);
+      if (!saved) return;
+
+      const contacts = JSON.parse(saved);
+      const list = document.getElementById('contactList');
+      list.innerHTML = '';
+
+      contacts.forEach(c => {
+        const li = document.createElement('li');
+        li.innerHTML = `👤 ${c.name}: <a href="tel:${c.number.replace(/\s|-/g, '')}">${c.number}</a>`;
+        list.appendChild(li);
+      });
+    }
+
     function addContact() {
       let n = document.getElementById('contactName').value.trim();
       let p = document.getElementById('contactPhone').value.trim();
-      if (!n || !p) return alert('Fyll i båda fälten!');
+      if (!n || !p) {
+        showNotification('Fyll i båda fälten', true);
+        return;
+      }
 
       let list = document.getElementById('contactList');
       let li = document.createElement('li');
@@ -713,13 +1006,39 @@
 
       document.getElementById('contactName').value = '';
       document.getElementById('contactPhone').value = '';
+      saveContacts();
+      showNotification('📞 Kontakt sparad');
+    }
+
+    function savePlayers() {
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
+    }
+
+    function loadPlayers() {
+      const saved = localStorage.getItem(STORAGE_KEYS.players);
+      if (!saved) return;
+
+      players = JSON.parse(saved);
+      updateLeaderboard();
+      updatePlayerSelect();
+    }
+
+    function updatePlayerSelect() {
+      const select = document.getElementById('playerSelect');
+      select.innerHTML = '';
+      players.forEach(p => {
+        const option = document.createElement('option');
+        option.value = String(p.id);
+        option.textContent = p.name;
+        select.appendChild(option);
+      });
     }
 
     function updateLeaderboard() {
       let sorted = [...players].sort((a, b) => b.score - a.score);
       let html = '';
       sorted.forEach((p, index) => {
-        let icon = index === 0 ? '👑 ' : '';
+        let icon = index === 0 ? '👑 ' : `#${index + 1} `;
         html += `<li><span>${icon}${p.name}</span><span><b>${p.score}</b> p</span></li>`;
       });
       document.getElementById('leaderboard').innerHTML = html;
@@ -727,25 +1046,29 @@
 
     function addFriend() {
       let name = document.getElementById('pName').value.trim();
-      if (!name) return alert('Skriv ett namn!');
+      if (!name) {
+        showNotification('Skriv ett namn', true);
+        return;
+      }
 
-      let newId = players.length;
+      let newId = Math.max(...players.map(p => p.id), -1) + 1;
       players.push({ id: newId, name: name, score: 0 });
 
-      let select = document.getElementById('playerSelect');
-      let option = document.createElement('option');
-      option.value = String(newId);
-      option.textContent = name;
-      select.appendChild(option);
-
       document.getElementById('pName').value = '';
+      savePlayers();
+      updatePlayerSelect();
       updateLeaderboard();
+      showNotification(`${name} tillagd! 🎮`);
     }
 
     function resetScores() {
+      if (!confirm('Är du säker? Poängen kommer att nollställas.')) return;
+
       players.forEach(p => p.score = 0);
+      savePlayers();
       updateLeaderboard();
-      aiCoachMessage('Poängen är nollställd. Nu kör vi igen från noll!');
+      aiCoachMessage('Poängen är nollställda. Ni kör från noll igen! Lycka till!');
+      showNotification('🔄 Matchen nollställd');
     }
 
     function sdA() {
@@ -754,22 +1077,24 @@
       if (!msg) return;
 
       let cb = document.getElementById('cb');
-      cb.innerHTML += `<br><b>Du:</b> ${msg}`;
+      const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+      cb.innerHTML += `<br><b>Du ${time}:</b> ${msg}`;
 
       const lower = msg.toLowerCase();
       let reply = getCoachAdvice();
 
-      if (lower.includes('matte')) reply = 'Matte är smart att börja med när du är alert. Gör 5 frågor först, sedan tar du en liten paus.';
-      if (lower.includes('no')) reply = 'NO går snabbt om du repeterar begreppen. Skriv viktigaste ord från kapitlet och lär dig dem.';
-      if (lower.includes('so')) reply = 'SO blir lättare om du tänker på nyckelord. Gör en kort sammanfattning innan du svarar.';
-      if (lower.includes('språk') || lower.includes('spanska') || lower.includes('tyska') || lower.includes('franska')) reply = 'Språk är lättast att träna genom repetition. Säg orden högt och öva 5 minuter i rad.';
-      if (lower.includes('hjälp') || lower.includes('tips')) reply = 'Börja med det lättaste ämnet, sedan det svåraste. Kort och fokuserat ger bäst resultat.';
-      if (lower.includes('tack')) reply = 'Självklart! Du gör bra arbete. Fortsätt så.';
+      if (lower.includes('matte')) reply = '📐 Matte: Börja med det enklaste exemplet. Skriv upp stegen. Varje steg = en poäng!';
+      else if (lower.includes('no')) reply = '🔬 NO: Begreppen är nyckeln. Repetera orden högt 3 gånger, sedan gör du en fråga om det.';
+      else if (lower.includes('so')) reply = '🌍 SO: Tänk på nyckelord. Tidsperioder och namn. Gör en tidslinje om det hjälper.';
+      else if (lower.includes('språk') || lower.includes('spanska') || lower.includes('tyska') || lower.includes('franska')) reply = '🗣️ Språk: Säg orden högt! Repetition är guld. 5 ord per dag = bra progress.';
+      else if (lower.includes('hjälp') || lower.includes('tips')) reply = '💡 Tips: Börja enkelt, bygg upp tempo. Korta fokusblock är bättre än lång stress.';
+      else if (lower.includes('tack')) reply = 'Gärna! Du gör bra arbete. 💪';
 
       setTimeout(() => {
-        cb.innerHTML += `<br><b>AI:</b> ${reply}`;
+        const replyTime = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+        cb.innerHTML += `<br><b>AI ${replyTime}:</b> ${reply}`;
         cb.scrollTop = cb.scrollHeight;
-      }, 600);
+      }, 500);
 
       chatInput.value = '';
     }
@@ -794,16 +1119,29 @@
       let player = players.find(p => p.id === activePlayerId);
       if (player) {
         player.score += points;
-        aiCoachMessage(`${player.name} fick ${points} poäng i den här uppgiften. ${getCoachAdvice()}`);
-        alert(`${player.name} fick ${points} rätta svar!`);
+        savePlayers();
+        aiCoachMessage(`${player.name} fick ${points} poäng! ${getCoachAdvice()}`);
+        showNotification(`✨ ${player.name}: +${points} poäng!`);
       }
 
       updateLeaderboard();
       document.getElementById(subjectId).style.display = 'none';
     }
 
-    loadUserName();
-    upT();
+    function initApp() {
+      loadUserName();
+      loadTasks();
+      loadContacts();
+      loadPlayers();
+      upT();
+
+      const savedTimer = localStorage.getItem(STORAGE_KEYS.timerSettings);
+      if (savedTimer) {
+        document.getElementById('customMin').value = savedTimer;
+      }
+    }
+
+    initApp();
   </script>
 </body>
 </html>
