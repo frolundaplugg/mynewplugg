@@ -1,247 +1,615 @@
 <!DOCTYPE html>
-<html>
+<html lang="sv">
 <head>
-<meta charset="UTF-8">
-<title>Studieportal Åk 7</title>
-<style>
-/* Ursprunglig design från din allra första kod */
-body{font-family:sans-serif;background:#121214;color:#e0e0e6;padding:15px;margin:0;}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
-@media(max-width:600px){.grid{grid-template-columns:1fr;}}
-.box{background:#1a1a1e;padding:15px;border-radius:8px;border:1px solid #29292e;margin-bottom:15px;}
-button, .link-btn{background:#29292e;color:#fff;border:none;padding:10px;border-radius:4px;cursor:pointer;width:100%;margin-top:5px;display:block;text-align:center;text-decoration:none;box-sizing:border-box;font-size:0.9rem;font-weight:bold;}
-button:hover, .link-btn:hover {background:#4fa8ff;}
-input, select{width:100%;padding:6px;background:#121214;color:#fff;border:1px solid #29292e;border-radius:4px;box-sizing:border-box;margin-bottom:5px;}
-.chat{height:100px;overflow-y:auto;background:#121214;padding:8px;border-radius:4px;margin-bottom:5px;font-size:0.9rem;}
-.q-box{display:none;background:#222226;padding:10px;border-radius:4px;margin-top:5px;}
-.score-board{list-style:none;padding:0;margin:5px 0 0 0;}
-.score-board li{display:flex;justify-content:space-between;padding:8px;background:#121214;margin-bottom:5px;border-radius:4px;border-left:4px solid #a370f7;}
-.score-board li:first-child{border-left-color:#ffd700;font-weight:bold;}
-.write-input{margin:5px 0;background:#121214;color:#fff;border:1px solid #29292e;}
-.done{text-decoration: line-through; color: #888;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studieportal Åk 7</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-alt: #121826;
+      --panel: rgba(18, 24, 38, 0.88);
+      --panel-strong: #171f2d;
+      --border: rgba(148, 163, 184, 0.18);
+      --text: #edf2ff;
+      --muted: #b8c3db;
+      --primary: #7c9cff;
+      --primary-strong: #4f7cff;
+      --secondary: #a78bfa;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #182236 0%, var(--bg) 45%, #090d14 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 10px;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124, 156, 255, 0.14);
+      border: 1px solid rgba(124, 156, 255, 0.4);
+      border-radius: 999px;
+      padding: 7px 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .box.wide {
+      grid-column: 1 / -1;
+    }
+
+    .box h3 {
+      font-size: 1.15rem;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    button,
+    .link-btn,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    .link-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      font-weight: 700;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    button:hover,
+    .link-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .secondary {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .success {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .outline {
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    input,
+    select {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(226, 232, 240, 0.75);
+    }
+
+    .inline-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .inline-row input {
+      flex: 1;
+      margin: 0;
+    }
+
+    .inline-row button {
+      width: auto;
+      margin: 0;
+      min-width: 90px;
+    }
+
+    .timer-value {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin: 8px 0 12px;
+    }
+
+    .chat {
+      height: 130px;
+      overflow-y: auto;
+      background: rgba(11, 15, 21, 0.9);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      margin-bottom: 10px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .score-board,
+    .task-list,
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .score-board li,
+    .task-list li,
+    .contact-list li {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-left: 4px solid var(--secondary);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .score-board li:first-child {
+      border-left-color: var(--warning);
+      font-weight: 700;
+    }
+
+    .task-list li {
+      justify-content: flex-start;
+      gap: 10px;
+      border-left-color: var(--success);
+    }
+
+    .done {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .q-box {
+      display: none;
+      background: rgba(16, 22, 34, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .q-box p {
+      margin: 8px 0;
+      color: var(--text);
+    }
+
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .challenge-card {
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .challenge-card b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .question-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .question-row button {
+      width: auto;
+      margin: 0;
+      min-width: 95px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 16px 10px 40px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .inline-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .inline-row button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">📚 Min Studieportal</div>
+      <div class="badge">Årskurs 7 • Fokus & repetition</div>
+    </header>
 
-<h2>📚 Min Studieportal - Årskurs 7</h2>
-<div class="grid">
-  
-  <div class="box">
-    <h3>⏱️ Timer: <span id="t">25:00</span></h3>
-    <input id="customMin" type="number" value="25" style="width:70px;display:inline;"> 
-    <button onclick="setCustomTime()" style="width:auto;display:inline;margin:0 0 0 10px;background:#a370f7;">Sätt</button>
-    <button onclick="tgT()">Start/Paus</button>
-    <button onclick="rsT()" style="background:#333;">Nollställ</button>
-  </div>
-
-  <div class="box">
-    <h3>👥 Gruppstudier</h3>
-    <a href="https://meet.new" target="_blank" class="link-btn" style="background:#137333;">📞 Google Meet</a>
-    <a href="https://zoom.new" target="_blank" class="link-btn" style="background:#0b5cff;">📹 Zoom-möte</a>
-  </div>
-
-  <div class="box" style="grid-column:span 2;">
-    <h3>📞 Telefonbok</h3>
-    <input id="contactName" placeholder="Namn...">
-    <input id="contactPhone" placeholder="Nummer...">
-    <button onclick="addContact()" style="background:#2ecc71;">+ Spara</button>
-    <ul id="contactList" style="list-style:none;padding:0;"></ul>
-  </div>
-
-  <div class="box" style="grid-column:span 2;">
-    <h3>🏆 Topplista</h3>
-    <input id="pName" placeholder="Namn..." style="width:calc(100% - 110px);display:inline;">
-    <button onclick="addFriend()" style="width:100px;display:inline;margin:0 0 0 10px;">+ Spelare</button>
-    <button onclick="resetScores()" style="background:#ff6b6b;margin-top:10px;">Nollställ matchen</button>
-    <ul id="leaderboard" class="score-board">
-      <li><span>👑 Du</span><span>0 p</span></li>
-    </ul>
-  </div>
-
-  <div class="box">
-    <h3>🤖 AI-Coach</h3>
-    <div class="chat" id="cb">AI: Tjena! Dags för mixad frågesport för sjuan!</div>
-    <input id="ci" placeholder="Skriv...">
-    <button onclick="sdA()">Skicka</button>
-  </div>
-
-  <div class="box">
-    <h3>✅ Uppgifter</h3>
-    <input id="ti" placeholder="Ny läxa..."><button onclick="adT()">+ Spara</button>
-    <ul id="tl" style="list-style:none;padding:0;"></ul>
-  </div>
-
-  <div class="box" style="grid-column:span 2;">
-    <h3>📝 Ämnesutmaningar</h3>
-    <label><b>Vem svarar?</b></label>
-    <select id="playerSelect"><option value="0">Du</option></select>
-    
-    <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
-      
-      <div>
-        <b>Matte:</b> <button id="btn-m" onclick="shQ('m')">Öppna</button>
-        <div id="m" class="q-box">
-          <p>(-4)+(-5)?</p>
-          <input type="radio" name="m1" value="a"> -9 &nbsp; <input type="radio" name="m1" value="b"> -1<br>
-          <p>3x+5+2x-2?</p>
-          <input type="radio" name="m2" value="a"> 5x+3 &nbsp; <input type="radio" name="m2" value="b"> 5x-3<br>
-          <p>2x=16. Vad är x?</p>
-          <input id="m_ans3" class="write-input">
-          <button onclick="ckMix('m',['m1','m2'],['a','a'],['m_ans3'],['8'])">Rätta</button>
+    <div class="grid">
+      <div class="box">
+        <h3>⏱️ Timer</h3>
+        <div class="timer-value" id="t">25:00</div>
+        <div class="inline-row">
+          <input id="customMin" type="number" min="1" value="25" />
+          <button class="secondary" onclick="setCustomTime()">Sätt</button>
         </div>
+        <button onclick="tgT()">Start / Paus</button>
+        <button class="outline" onclick="rsT()">Nollställ</button>
       </div>
 
-      <div>
-        <b>🔬 NO:</b> <button id="btn-no" onclick="shQ('no')">Öppna</button>
-        <div id="no" class="q-box">
-          <p>Fotosyntes sker i?</p>
-          <input id="no_ans1" class="write-input">
-          <p>Tecken för Syre?</p>
-          <input id="no_ans2" class="write-input">
-          <p>Neutralt pH?</p>
-          <input type="radio" name="no3" value="5"> 5 &nbsp; <input type="radio" name="no3" value="7"> 7
-          <button onclick="ckMix('no',['no3'],['7'],['no_ans1','no_ans2'], ['kloroplasten','O'])">Rätta</button>
-        </div>
+      <div class="box">
+        <h3>👥 Gruppstudier</h3>
+        <a href="https://meet.new" target="_blank" class="link-btn success">📞 Google Meet</a>
+        <a href="https://zoom.new" target="_blank" class="link-btn secondary">📹 Zoom-möte</a>
       </div>
 
-      <div>
-        <b>🌍 SO:</b> <button id="btn-so" onclick="shQ('so')">Öppna</button>
-        <div id="so" class="q-box">
-          <p>Mandat i riksdagen?</p>
-          <input type="radio" name="so1" value="349"> 349 &nbsp; <input type="radio" name="so1" value="249"> 249<br>
-          <p>Äldsta religionen?</p>
-          <input type="radio" name="so2" value="j"> Judendomen &nbsp; <input type="radio" name="so2" value="i"> Islam<br>
-          <p>Muslimers heliga byggnad?</p>
-          <input id="so_ans3" class="write-input">
-          <button onclick="ckMix('so',['so1','so2'],['349','j'],['so_ans3'],['moskén'])">Rätta</button>
-        </div>
+      <div class="box wide">
+        <h3>📞 Telefonbok</h3>
+        <input id="contactName" placeholder="Namn..." />
+        <input id="contactPhone" placeholder="Nummer..." />
+        <button class="success" onclick="addContact()">+ Spara</button>
+        <ul id="contactList" class="contact-list"></ul>
       </div>
 
-      <div>
-        <b>🇪🇸 Spanska:</b> <button id="btn-s" onclick="shQ('s')">Öppna</button>
-        <div id="s" class="q-box">
-          <p>"Skola" på spanska?</p>
-          <input id="s_ans1" class="write-input">
-          <p>"Vad är klockan?"</p>
-          <input id="s_ans2" class="write-input">
-          <p>"Perro" betyder?</p>
-          <input type="radio" name="s3" value="k"> Katt &nbsp; <input type="radio" name="s3" value="h"> Hund
-          <button onclick="ckMix('s',['s3'],['h'],['s_ans1','s_ans2'], ['la escuela','que hora es'])">Rätta</button>
+      <div class="box wide">
+        <h3>🏆 Topplista</h3>
+        <div class="inline-row">
+          <input id="pName" placeholder="Namn..." />
+          <button class="secondary" onclick="addFriend()">+ Spelare</button>
         </div>
+        <button class="danger" onclick="resetScores()">Nollställ matchen</button>
+        <ul id="leaderboard" class="score-board">
+          <li><span>👑 Du</span><span>0 p</span></li>
+        </ul>
       </div>
 
-      <div>
-        <b>🇩🇪 Tyska:</b> <button id="btn-d" onclick="shQ('d')">Öppna</button>
-        <div id="d" class="q-box">
-          <p>"4" på tyska?</p>
-          <input id="d_ans1" class="write-input">
-          <p>"Vad heter du?"</p>
-          <input id="d_ans2" class="write-input">
-          <p>"Katze" betyder?</p>
-          <input type="radio" name="d3" value="k"> Katt &nbsp; <input type="radio" name="d3" value="h"> Hund
-          <button onclick="ckMix('d',['d3'],['k'],['d_ans1','d_ans2'], ['vier','wie heisst du'])">Rätta</button>
-        </div>
+      <div class="box">
+        <h3>🤖 AI-Coach</h3>
+        <div id="cb" class="chat">AI: Tjena! Dags för mixad frågesport för sjuan!</div>
+        <input id="ci" placeholder="Skriv..." />
+        <button onclick="sdA()">Skicka</button>
       </div>
 
-      <div>
-        <b>🇫🇷 Franska:</b> <button id="btn-f" onclick="shQ('f')">Öppna</button>
-        <div id="f" class="q-box">
-          <p>"Röd" på franska?</p>
-          <input id="f_ans1" class="write-input">
-          <p>"3" på franska?</p>
-          <input id="f_ans2" class="write-input">
-          <p>"Chat" betyder?</p>
-          <input type="radio" name="f3" value="k"> Katt &nbsp; <input type="radio" name="f3" value="h"> Hund
-          <button onclick="ckMix('f',['f3'],['k'],['f_ans1','f_ans2'], ['rouge','trois'])">Rätta</button>
-        </div>
+      <div class="box">
+        <h3>✅ Uppgifter</h3>
+        <input id="ti" placeholder="Ny läxa..." />
+        <button class="success" onclick="adT()">+ Spara</button>
+        <ul id="tl" class="task-list"></ul>
       </div>
 
+      <div class="box wide">
+        <h3>📝 Ämnesutmaningar</h3>
+        <label><b>Vem svarar?</b></label>
+        <select id="playerSelect">
+          <option value="0">Du</option>
+        </select>
+
+        <div class="challenge-grid">
+          <div class="challenge-card">
+            <div class="question-row"><b>Matte</b><button onclick="shQ('m')">Öppna</button></div>
+            <div id="m" class="q-box">
+              <p>(-4)+(-5)?</p>
+              <input type="radio" name="m1" value="a"> -9 &nbsp; <input type="radio" name="m1" value="b"> -1<br>
+              <p>3x+5+2x-2?</p>
+              <input type="radio" name="m2" value="a"> 5x+3 &nbsp; <input type="radio" name="m2" value="b"> 5x-3<br>
+              <p>2x=16. Vad är x?</p>
+              <input id="m_ans3" class="write-input" />
+              <button onclick="ckMix('m',['m1','m2'],['a','a'],['m_ans3'],['8'])">Rätta</button>
+            </div>
+          </div>
+
+          <div class="challenge-card">
+            <div class="question-row"><b>🔬 NO</b><button onclick="shQ('no')">Öppna</button></div>
+            <div id="no" class="q-box">
+              <p>Fotosyntes sker i?</p>
+              <input id="no_ans1" class="write-input" />
+              <p>Tecken för Syre?</p>
+              <input id="no_ans2" class="write-input" />
+              <p>Neutralt pH?</p>
+              <input type="radio" name="no3" value="5"> 5 &nbsp; <input type="radio" name="no3" value="7"> 7
+              <button onclick="ckMix('no',['no3'],['7'],['no_ans1','no_ans2'], ['kloroplasten','O'])">Rätta</button>
+            </div>
+          </div>
+
+          <div class="challenge-card">
+            <div class="question-row"><b>🌍 SO</b><button onclick="shQ('so')">Öppna</button></div>
+            <div id="so" class="q-box">
+              <p>Mandat i riksdagen?</p>
+              <input type="radio" name="so1" value="349"> 349 &nbsp; <input type="radio" name="so1" value="249"> 249<br>
+              <p>Äldsta religionen?</p>
+              <input type="radio" name="so2" value="j"> Judendomen &nbsp; <input type="radio" name="so2" value="i"> Islam<br>
+              <p>Muslimers heliga byggnad?</p>
+              <input id="so_ans3" class="write-input" />
+              <button onclick="ckMix('so',['so1','so2'],['349','j'],['so_ans3'],['moskén'])">Rätta</button>
+            </div>
+          </div>
+
+          <div class="challenge-card">
+            <div class="question-row"><b>🇪🇸 Spanska</b><button onclick="shQ('s')">Öppna</button></div>
+            <div id="s" class="q-box">
+              <p>"Skola" på spanska?</p>
+              <input id="s_ans1" class="write-input" />
+              <p>"Vad är klockan?"</p>
+              <input id="s_ans2" class="write-input" />
+              <p>"Perro" betyder?</p>
+              <input type="radio" name="s3" value="k"> Katt &nbsp; <input type="radio" name="s3" value="h"> Hund
+              <button onclick="ckMix('s',['s3'],['h'],['s_ans1','s_ans2'], ['la escuela','que hora es'])">Rätta</button>
+            </div>
+          </div>
+
+          <div class="challenge-card">
+            <div class="question-row"><b>🇩🇪 Tyska</b><button onclick="shQ('d')">Öppna</button></div>
+            <div id="d" class="q-box">
+              <p>"4" på tyska?</p>
+              <input id="d_ans1" class="write-input" />
+              <p>"Vad heter du?"</p>
+              <input id="d_ans2" class="write-input" />
+              <p>"Katze" betyder?</p>
+              <input type="radio" name="d3" value="k"> Katt &nbsp; <input type="radio" name="d3" value="h"> Hund
+              <button onclick="ckMix('d',['d3'],['k'],['d_ans1','d_ans2'], ['vier','wie heisst du'])">Rätta</button>
+            </div>
+          </div>
+
+          <div class="challenge-card">
+            <div class="question-row"><b>🇫🇷 Franska</b><button onclick="shQ('f')">Öppna</button></div>
+            <div id="f" class="q-box">
+              <p>"Röd" på franska?</p>
+              <input id="f_ans1" class="write-input" />
+              <p>"3" på franska?</p>
+              <input id="f_ans2" class="write-input" />
+              <p>"Chat" betyder?</p>
+              <input type="radio" name="f3" value="k"> Katt &nbsp; <input type="radio" name="f3" value="h"> Hund
+              <button onclick="ckMix('f',['f3'],['k'],['f_ans1','f_ans2'], ['rouge','trois'])">Rätta</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-let tm=25*60,ti=null,run=false,players=[{id:0,name:"Du",score:0}];
+  <script>
+    let tm = 25 * 60;
+    let ti = null;
+    let run = false;
+    let players = [{ id: 0, name: 'Du', score: 0 }];
 
-function upT(){let m=Math.floor(tm/60),s=tm%60;document.getElementById('t').textContent=`${m}:${s<10?'0':''}${s}`;}
-function setCustomTime(){if(!run){let v=parseInt(document.getElementById('customMin').value);if(!isNaN(v)&&v>0){tm=v*60;upT();}}}
-function tgT(){if(run){clearInterval(ti);run=false;}else{run=true;ti=setInterval(()=>{if(tm>0){tm--;upT();}else{clearInterval(ti);alert("Bra pluggat!");rsT();}},1000);}}
-function rsT(){clearInterval(ti);let v=parseInt(document.getElementById('customMin').value);tm=(!isNaN(v)&&v>0)?v*60:25*60;upT();run=false;}
-function adT(){let i=document.getElementById('ti'),v=i.value.trim();if(!v)return;document.getElementById('tl').innerHTML+=`<li><input type="checkbox" onclick="this.nextSibling.classList.toggle('done')"><span>${v}</span></li>`;i.value='';}
-function shQ(id){let x=document.getElementById(id);x.style.display=x.style.display==='block'?'none':'block';}
+    function upT() {
+      let m = Math.floor(tm / 60);
+      let s = tm % 60;
+      document.getElementById('t').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
 
-function addContact(){
-    let n=document.getElementById('contactName').value.trim(),p=document.getElementById('contactPhone').value.trim();if(!n||!p)return alert("Fyll i båda!");
-    document.getElementById('contactList').innerHTML+=`<li>👤 ${n}: <a href="tel:${p.replace(/\s|-/g,'')}">${p}</a></li>`;
-    document.getElementById('contactName').value='';document.getElementById('contactPhone').value='';
-}
+    function setCustomTime() {
+      if (!run) {
+        let v = parseInt(document.getElementById('customMin').value, 10);
+        if (!isNaN(v) && v > 0) {
+          tm = v * 60;
+          upT();
+        }
+      }
+    }
 
-function updateLeaderboard(){
-    let sorted=[...players].sort((a,b)=>b.score-a.score);let html="";
-    sorted.forEach((p,index)=>{let icon=index===0?"👑 ":"";html+=`<li><span>${icon}${p.name}</span><span><b>${p.score}</b> p</span></li>`;});
-    document.getElementById('leaderboard').innerHTML=html;
-}
+    function tgT() {
+      if (run) {
+        clearInterval(ti);
+        run = false;
+        return;
+      }
 
-function addFriend(){
-    let name = document.getElementById('pName').value.trim();
-    if(!name) return alert("Skriv ett namn!");
-    let newId = players.length;
-    players.push({id: newId, name: name, score: 0});
-    let select = document.getElementById('playerSelect');
-    select.innerHTML += `<option value="${newId}">${name}</option>`;
-    document.getElementById('pName').value = '';
-    updateLeaderboard();
-}
+      run = true;
+      ti = setInterval(() => {
+        if (tm > 0) {
+          tm--;
+          upT();
+        } else {
+          clearInterval(ti);
+          alert('Bra pluggat!');
+          rsT();
+        }
+      }, 1000);
+    }
 
-function resetScores(){
-    players.forEach(p => p.score = 0);
-    updateLeaderboard();
-}
+    function rsT() {
+      clearInterval(ti);
+      let v = parseInt(document.getElementById('customMin').value, 10);
+      tm = (!isNaN(v) && v > 0) ? v * 60 : 25 * 60;
+      upT();
+      run = false;
+    }
 
-function sdA(){
-    let chatInput = document.getElementById('ci');
-    let msg = chatInput.value.trim();
-    if(!msg) return;
-    let cb = document.getElementById('cb');
-    cb.innerHTML += `<br><b>Du:</b> ${msg}`;
-    setTimeout(() => {
+    function adT() {
+      let i = document.getElementById('ti');
+      let v = i.value.trim();
+      if (!v) return;
+
+      let taskList = document.getElementById('tl');
+      let li = document.createElement('li');
+      li.innerHTML = `<input type="checkbox" onclick="this.parentNode.classList.toggle('done');"> <span>${v}</span>`;
+      taskList.appendChild(li);
+      i.value = '';
+    }
+
+    function shQ(id) {
+      let x = document.getElementById(id);
+      x.style.display = x.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addContact() {
+      let n = document.getElementById('contactName').value.trim();
+      let p = document.getElementById('contactPhone').value.trim();
+      if (!n || !p) return alert('Fyll i båda fälten!');
+
+      let list = document.getElementById('contactList');
+      let li = document.createElement('li');
+      li.innerHTML = `👤 ${n}: <a href="tel:${p.replace(/\s|-/g, '')}">${p}</a>`;
+      list.appendChild(li);
+
+      document.getElementById('contactName').value = '';
+      document.getElementById('contactPhone').value = '';
+    }
+
+    function updateLeaderboard() {
+      let sorted = [...players].sort((a, b) => b.score - a.score);
+      let html = '';
+      sorted.forEach((p, index) => {
+        let icon = index === 0 ? '👑 ' : '';
+        html += `<li><span>${icon}${p.name}</span><span><b>${p.score}</b> p</span></li>`;
+      });
+      document.getElementById('leaderboard').innerHTML = html;
+    }
+
+    function addFriend() {
+      let name = document.getElementById('pName').value.trim();
+      if (!name) return alert('Skriv ett namn!');
+
+      let newId = players.length;
+      players.push({ id: newId, name: name, score: 0 });
+
+      let select = document.getElementById('playerSelect');
+      let option = document.createElement('option');
+      option.value = String(newId);
+      option.textContent = name;
+      select.appendChild(option);
+
+      document.getElementById('pName').value = '';
+      updateLeaderboard();
+    }
+
+    function resetScores() {
+      players.forEach(p => p.score = 0);
+      updateLeaderboard();
+    }
+
+    function sdA() {
+      let chatInput = document.getElementById('ci');
+      let msg = chatInput.value.trim();
+      if (!msg) return;
+
+      let cb = document.getElementById('cb');
+      cb.innerHTML += `<br><b>Du:</b> ${msg}`;
+      setTimeout(() => {
         cb.innerHTML += `<br><b>AI:</b> Grymt jobbat! Fortsätt plugga hårt! 💪`;
-Använd koden med försiktighet.
-cb.scrollTop = cb.scrollHeight;
-}, 800);
-chatInput.value = '';
-}
-function ckMix(subjectId, radioNames, radioAnswers, textIds, textAnswers){
-let points = 0;
-let activePlayerId = parseInt(document.getElementById('playerSelect').value);
-radioNames.forEach((name, idx) => {
-let radios = document.getElementsByName(name);
-radios.forEach(r => {
-if(r.checked && r.value === radioAnswers[idx]) points++;
-});
-});
-textIds.forEach((id, idx) => {
-let inputVal = document.getElementById(id).value.trim().toLowerCase();
-let correctVal = textAnswers[idx].toLowerCase();
-if(inputVal === correctVal) points++;
-});
-let player = players.find(p => p.id === activePlayerId);
-if(player) {
-player.score += points;
-alert(${player.name} fick ${points} rätta svar!);
-}
-updateLeaderboard();
-document.getElementById(subjectId).style.display = 'none'; // Fixad rad som inte kraschar!
-}
+        cb.scrollTop = cb.scrollHeight;
+      }, 800);
+      chatInput.value = '';
+    }
 
+    function ckMix(subjectId, radioNames, radioAnswers, textIds, textAnswers) {
+      let points = 0;
+      let activePlayerId = parseInt(document.getElementById('playerSelect').value, 10);
 
+      radioNames.forEach((name, idx) => {
+        let radios = document.getElementsByName(name);
+        radios.forEach(r => {
+          if (r.checked && r.value === radioAnswers[idx]) points++;
+        });
+      });
 
-Nu ser portalen ut exakt som din allra första version, men knapparna för att lägga till spelare, nollställa poäng och rätta svar fungerar helt perfekt.
+      textIds.forEach((id, idx) => {
+        let inputVal = document.getElementById(id).value.trim().toLowerCase();
+        let correctVal = textAnswers[idx].toLowerCase();
+        if (inputVal === correctVal) points++;
+      });
 
-<FollowUp>
-Gå till din länk och testa (kom ihåg **Ctrl + F5**)! 
+      let player = players.find(p => p.id === activePlayerId);
+      if (player) {
+        player.score += points;
+        alert(`${player.name} fick ${points} rätta svar!`);
+      }
 
-Berätta:
-* Fick du tillbaka det **ursprungliga utseendet** nu?
-* Går det bra att **rätta frågorna** och **lägga till kompisar** i listan nu?
-</FollowUp>
+      updateLeaderboard();
+      document.getElementById(subjectId).style.display = 'none';
+    }
+
+    upT();
+  </script>
+</body>
+</html>
