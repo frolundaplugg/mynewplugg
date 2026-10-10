@@ -6,7 +6,7 @@
   <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
   <meta name="theme-color" content="#8b5cf6" />
   <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white' text-anchor='middle' font-weight='bold'>📚</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white'>📚</text></svg>">
   <style>
     :root {
       --bg-1: #120b1d;
@@ -792,10 +792,20 @@
       timerSettings: 'studyportal-timer-settings'
     };
 
-    let tm = 25 * 60;
-    let ti = null;
-    let run = false;
-    let players = [{ id: 0, name: 'Du', score: 0 }];
+    const state = {
+      timerSeconds: 25 * 60,
+      timerId: null,
+      isRunning: false,
+      players: [{ id: 0, name: 'Du', score: 0 }]
+    };
+
+    function safeJsonParse(value, fallback) {
+      try {
+        return value ? JSON.parse(value) : fallback;
+      } catch (error) {
+        return fallback;
+      }
+    }
 
     function showNotification(message, isError = false) {
       const notif = document.createElement('div');
@@ -810,8 +820,8 @@
 
     function saveUserName() {
       const input = document.getElementById('usernameInput');
-      const name = input.value.trim();
       const greeting = document.getElementById('welcomeText');
+      const name = input.value.trim();
 
       if (!name) {
         greeting.textContent = 'Hej, elev!';
@@ -832,10 +842,10 @@
       const input = document.getElementById('usernameInput');
       const greeting = document.getElementById('welcomeText');
 
-      if (savedName) {
-        input.value = savedName;
-        greeting.textContent = `Hej, ${savedName}!`;
-      }
+      if (!savedName) return;
+
+      input.value = savedName;
+      greeting.textContent = `Hej, ${savedName}!`;
     }
 
     function aiCoachMessage(message) {
@@ -846,10 +856,10 @@
     }
 
     function getCoachAdvice() {
-      const totalScore = players.reduce((sum, p) => sum + p.score, 0);
+      const totalScore = state.players.reduce((sum, player) => sum + Number(player.score || 0), 0);
       const name = localStorage.getItem(STORAGE_KEYS.userName) || 'elev';
 
-      if (tm <= 10 * 60) {
+      if (state.timerSeconds <= 10 * 60) {
         return `${name}, du har lite tid kvar. Gör en snabb repetition och avsluta med det lättaste ämnet.`;
       }
 
@@ -865,143 +875,185 @@
     }
 
     function upT() {
-      let m = Math.floor(tm / 60);
-      let s = tm % 60;
-      document.getElementById('t').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+      const minutes = Math.floor(state.timerSeconds / 60);
+      const seconds = state.timerSeconds % 60;
+      document.getElementById('t').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
 
     function setCustomTime() {
-      if (!run) {
-        let v = parseInt(document.getElementById('customMin').value, 10);
-        if (!isNaN(v) && v > 0 && v <= 180) {
-          tm = v * 60;
-          localStorage.setItem(STORAGE_KEYS.timerSettings, v);
-          upT();
-          showNotification(`Timer satt till ${v} min`);
-        } else {
-          showNotification('Ange 1-180 minuter', true);
-        }
+      if (state.isRunning) {
+        return;
+      }
+
+      const value = parseInt(document.getElementById('customMin').value, 10);
+      if (!isNaN(value) && value > 0 && value <= 180) {
+        state.timerSeconds = value * 60;
+        localStorage.setItem(STORAGE_KEYS.timerSettings, String(value));
+        upT();
+        showNotification(`Timer satt till ${value} min`);
+      } else {
+        showNotification('Ange 1-180 minuter', true);
       }
     }
 
     function tgT() {
-      if (run) {
-        clearInterval(ti);
-        run = false;
+      if (state.isRunning) {
+        clearInterval(state.timerId);
+        state.isRunning = false;
         showNotification('⏸️ Pausad');
         return;
       }
 
-      run = true;
+      state.isRunning = true;
       showNotification('⏱️ Timer igång');
-      ti = setInterval(() => {
-        if (tm > 0) {
-          tm--;
+      state.timerId = setInterval(() => {
+        if (state.timerSeconds > 0) {
+          state.timerSeconds -= 1;
           upT();
-        } else {
-          clearInterval(ti);
-          run = false;
-          showNotification('🎉 Bra pluggat!');
-          aiCoachMessage('Grattis! Du har fokuserat tills tiden tog slut. Bra jobbat!');
-          rsT();
+          return;
         }
+
+        clearInterval(state.timerId);
+        state.isRunning = false;
+        showNotification('🎉 Bra pluggat!');
+        aiCoachMessage('Grattis! Du har fokuserat tills tiden tog slut. Bra jobbat!');
+        rsT();
       }, 1000);
     }
 
     function rsT() {
-      clearInterval(ti);
-      let v = parseInt(document.getElementById('customMin').value, 10);
-      tm = (!isNaN(v) && v > 0) ? v * 60 : 25 * 60;
+      clearInterval(state.timerId);
+      const value = parseInt(document.getElementById('customMin').value, 10);
+      state.timerSeconds = (!isNaN(value) && value > 0) ? value * 60 : 25 * 60;
+      state.isRunning = false;
       upT();
-      run = false;
     }
 
     function saveTasks() {
       const taskList = document.getElementById('tl');
-      const tasks = [];
-      taskList.querySelectorAll('li').forEach(li => {
-        const text = li.querySelector('span').textContent;
-        const done = li.classList.contains('done');
-        tasks.push({ text, done });
-      });
+      const tasks = Array.from(taskList.querySelectorAll('li')).map(li => ({
+        text: li.querySelector('span').textContent,
+        done: li.classList.contains('done')
+      }));
+
       localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
     }
 
     function loadTasks() {
-      const saved = localStorage.getItem(STORAGE_KEYS.tasks);
-      if (!saved) return;
-
-      const tasks = JSON.parse(saved);
+      const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
       const taskList = document.getElementById('tl');
       taskList.innerHTML = '';
 
-      tasks.forEach(task => {
+      saved.forEach(task => {
         const li = document.createElement('li');
-        li.innerHTML = `<input type="checkbox" onclick="this.parentNode.classList.toggle('done'); saveTasks();" ${task.done ? 'checked' : ''}> <span>${task.text}</span>`;
-        if (task.done) li.classList.add('done');
+        const checkbox = document.createElement('input');
+        const span = document.createElement('span');
+
+        checkbox.type = 'checkbox';
+        checkbox.checked = Boolean(task.done);
+        checkbox.addEventListener('change', () => {
+          li.classList.toggle('done', checkbox.checked);
+          saveTasks();
+        });
+
+        span.textContent = task.text;
+        li.appendChild(checkbox);
+        li.appendChild(span);
+
+        if (task.done) {
+          li.classList.add('done');
+        }
+
         taskList.appendChild(li);
       });
     }
 
     function adT() {
-      let i = document.getElementById('ti');
-      let v = i.value.trim();
-      if (!v) {
+      const input = document.getElementById('ti');
+      const value = input.value.trim();
+
+      if (!value) {
         showNotification('Skriv en uppgift först', true);
         return;
       }
 
-      let taskList = document.getElementById('tl');
-      let li = document.createElement('li');
-      li.innerHTML = `<input type="checkbox" onclick="this.parentNode.classList.toggle('done'); saveTasks();"> <span>${v}</span>`;
+      const taskList = document.getElementById('tl');
+      const li = document.createElement('li');
+      const checkbox = document.createElement('input');
+      const span = document.createElement('span');
+
+      checkbox.type = 'checkbox';
+      checkbox.addEventListener('change', () => {
+        li.classList.toggle('done', checkbox.checked);
+        saveTasks();
+      });
+
+      span.textContent = value;
+      li.appendChild(checkbox);
+      li.appendChild(span);
       taskList.appendChild(li);
-      i.value = '';
+
+      input.value = '';
       saveTasks();
       showNotification('✅ Uppgift sparad');
     }
 
     function shQ(id) {
-      let x = document.getElementById(id);
-      x.style.display = x.style.display === 'block' ? 'none' : 'block';
+      const box = document.getElementById(id);
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
     }
 
     function saveContacts() {
       const contactList = document.getElementById('contactList');
-      const contacts = [];
-      contactList.querySelectorAll('li').forEach(li => {
+      const contacts = Array.from(contactList.querySelectorAll('li')).map(li => {
         const text = li.textContent.replace('👤 ', '');
         const [name, number] = text.split(': ');
-        contacts.push({ name, number });
+        return { name, number };
       });
+
       localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(contacts));
     }
 
     function loadContacts() {
-      const saved = localStorage.getItem(STORAGE_KEYS.contacts);
-      if (!saved) return;
-
-      const contacts = JSON.parse(saved);
+      const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
       const list = document.getElementById('contactList');
       list.innerHTML = '';
 
-      contacts.forEach(c => {
+      saved.forEach(contact => {
         const li = document.createElement('li');
-        li.innerHTML = `👤 ${c.name}: <a href="tel:${c.number.replace(/\s|-/g, '')}">${c.number}</a>`;
+        const label = document.createElement('span');
+        const link = document.createElement('a');
+
+        label.textContent = `👤 ${contact.name}: `;
+        link.href = `tel:${(contact.number || '').replace(/\s|-/g, '')}`;
+        link.textContent = contact.number;
+
+        li.appendChild(label);
+        li.appendChild(link);
         list.appendChild(li);
       });
     }
 
     function addContact() {
-      let n = document.getElementById('contactName').value.trim();
-      let p = document.getElementById('contactPhone').value.trim();
+      const n = document.getElementById('contactName').value.trim();
+      const p = document.getElementById('contactPhone').value.trim();
+
       if (!n || !p) {
         showNotification('Fyll i båda fälten', true);
         return;
       }
 
-      let list = document.getElementById('contactList');
-      let li = document.createElement('li');
-      li.innerHTML = `👤 ${n}: <a href="tel:${p.replace(/\s|-/g, '')}">${p}</a>`;
+      const list = document.getElementById('contactList');
+      const li = document.createElement('li');
+      const label = document.createElement('span');
+      const link = document.createElement('a');
+
+      label.textContent = `👤 ${n}: `;
+      link.href = `tel:${p.replace(/\s|-/g, '')}`;
+      link.textContent = p;
+
+      li.appendChild(label);
+      li.appendChild(link);
       list.appendChild(li);
 
       document.getElementById('contactName').value = '';
@@ -1011,121 +1063,142 @@
     }
 
     function savePlayers() {
-      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(state.players));
     }
 
     function loadPlayers() {
-      const saved = localStorage.getItem(STORAGE_KEYS.players);
-      if (!saved) return;
-
-      players = JSON.parse(saved);
-      updateLeaderboard();
-      updatePlayerSelect();
+      const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
+      state.players = saved.length ? saved : [{ id: 0, name: 'Du', score: 0 }];
+      renderPlayerSelect();
+      renderLeaderboard();
     }
 
-    function updatePlayerSelect() {
-      const select = document.getElementById('playerSelect');
-      select.innerHTML = '';
-      players.forEach(p => {
+    function renderPlayerSelect() {
+      const playerSelect = document.getElementById('playerSelect');
+      playerSelect.innerHTML = '';
+
+      state.players.forEach(player => {
         const option = document.createElement('option');
-        option.value = String(p.id);
-        option.textContent = p.name;
-        select.appendChild(option);
+        option.value = String(player.id);
+        option.textContent = player.name;
+        playerSelect.appendChild(option);
       });
     }
 
-    function updateLeaderboard() {
-      let sorted = [...players].sort((a, b) => b.score - a.score);
-      let html = '';
-      sorted.forEach((p, index) => {
-        let icon = index === 0 ? '👑 ' : `#${index + 1} `;
-        html += `<li><span>${icon}${p.name}</span><span><b>${p.score}</b> p</span></li>`;
+    function renderLeaderboard() {
+      const leaderboard = document.getElementById('leaderboard');
+      leaderboard.innerHTML = '';
+
+      const sorted = [...state.players].sort((a, b) => b.score - a.score);
+      sorted.forEach(player => {
+        const li = document.createElement('li');
+        const label = document.createElement('span');
+        const score = document.createElement('span');
+
+        const icon = player.id === 0 ? '👑' : '🎯';
+        label.textContent = `${icon} ${player.name}`;
+        score.textContent = `${player.score} p`;
+
+        li.appendChild(label);
+        li.appendChild(score);
+        leaderboard.appendChild(li);
       });
-      document.getElementById('leaderboard').innerHTML = html;
     }
 
     function addFriend() {
-      let name = document.getElementById('pName').value.trim();
+      const input = document.getElementById('pName');
+      const name = input.value.trim();
       if (!name) {
-        showNotification('Skriv ett namn', true);
+        showNotification('Skriv ett namn först', true);
         return;
       }
 
-      let newId = Math.max(...players.map(p => p.id), -1) + 1;
-      players.push({ id: newId, name: name, score: 0 });
-
-      document.getElementById('pName').value = '';
+      const id = Date.now();
+      state.players.push({ id, name, score: 0 });
+      input.value = '';
       savePlayers();
-      updatePlayerSelect();
-      updateLeaderboard();
-      showNotification(`${name} tillagd! 🎮`);
+      renderPlayerSelect();
+      renderLeaderboard();
+      showNotification(`Spelare ${name} tillagd`);
     }
 
     function resetScores() {
-      if (!confirm('Är du säker? Poängen kommer att nollställas.')) return;
-
-      players.forEach(p => p.score = 0);
+      state.players = state.players.map(player => ({ ...player, score: 0 }));
       savePlayers();
-      updateLeaderboard();
-      aiCoachMessage('Poängen är nollställda. Ni kör från noll igen! Lycka till!');
-      showNotification('🔄 Matchen nollställd');
+      renderLeaderboard();
+      showNotification('Matchen nollställd');
+    }
+
+    function normalizeAnswer(value) {
+      return String(value || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    function ckMix(subject, radioNames, correctRadioValues, textInputIds, textCorrectValues) {
+      const selectedPlayerId = Number(document.getElementById('playerSelect').value || 0);
+      const player = state.players.find(item => item.id === selectedPlayerId) || state.players[0];
+      let correct = 0;
+      let totalChecks = 0;
+
+      radioNames.forEach((radioName, index) => {
+        totalChecks += 1;
+        const picked = document.querySelector(`input[name="${radioName}"]:checked`);
+        const expected = correctRadioValues[index];
+        if (picked && picked.value === expected) {
+          correct += 1;
+        }
+      });
+
+      textInputIds.forEach((inputId, index) => {
+        totalChecks += 1;
+        const input = document.getElementById(inputId);
+        const expected = textCorrectValues[index];
+        const actual = normalizeAnswer(input ? input.value : '');
+        if (actual === normalizeAnswer(expected)) {
+          correct += 1;
+        }
+      });
+
+      const points = correct === totalChecks ? 3 : correct > 0 ? 1 : 0;
+      player.score += points;
+      savePlayers();
+      renderLeaderboard();
+
+      const subjectLabel = subject.toUpperCase();
+      if (points > 0) {
+        showNotification(`${subjectLabel}: Rätt! +${points} p`);
+        aiCoachMessage(`${player.name} gjorde ett bra jobb i ${subjectLabel}!`);
+      } else {
+        showNotification(`${subjectLabel}: Försök igen`, true);
+        aiCoachMessage(`Nästa gång går det bättre i ${subjectLabel}. Repetera svaren och testa igen.`);
+      }
     }
 
     function sdA() {
-      let chatInput = document.getElementById('ci');
-      let msg = chatInput.value.trim();
-      if (!msg) return;
+      const input = document.getElementById('ci');
+      const query = input.value.trim();
 
-      let cb = document.getElementById('cb');
-      const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
-      cb.innerHTML += `<br><b>Du ${time}:</b> ${msg}`;
-
-      const lower = msg.toLowerCase();
-      let reply = getCoachAdvice();
-
-      if (lower.includes('matte')) reply = '📐 Matte: Börja med det enklaste exemplet. Skriv upp stegen. Varje steg = en poäng!';
-      else if (lower.includes('no')) reply = '🔬 NO: Begreppen är nyckeln. Repetera orden högt 3 gånger, sedan gör du en fråga om det.';
-      else if (lower.includes('so')) reply = '🌍 SO: Tänk på nyckelord. Tidsperioder och namn. Gör en tidslinje om det hjälper.';
-      else if (lower.includes('språk') || lower.includes('spanska') || lower.includes('tyska') || lower.includes('franska')) reply = '🗣️ Språk: Säg orden högt! Repetition är guld. 5 ord per dag = bra progress.';
-      else if (lower.includes('hjälp') || lower.includes('tips')) reply = '💡 Tips: Börja enkelt, bygg upp tempo. Korta fokusblock är bättre än lång stress.';
-      else if (lower.includes('tack')) reply = 'Gärna! Du gör bra arbete. 💪';
-
-      setTimeout(() => {
-        const replyTime = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
-        cb.innerHTML += `<br><b>AI ${replyTime}:</b> ${reply}`;
-        cb.scrollTop = cb.scrollHeight;
-      }, 500);
-
-      chatInput.value = '';
-    }
-
-    function ckMix(subjectId, radioNames, radioAnswers, textIds, textAnswers) {
-      let points = 0;
-      let activePlayerId = parseInt(document.getElementById('playerSelect').value, 10);
-
-      radioNames.forEach((name, idx) => {
-        let radios = document.getElementsByName(name);
-        radios.forEach(r => {
-          if (r.checked && r.value === radioAnswers[idx]) points++;
-        });
-      });
-
-      textIds.forEach((id, idx) => {
-        let inputVal = document.getElementById(id).value.trim().toLowerCase();
-        let correctVal = textAnswers[idx].toLowerCase();
-        if (inputVal === correctVal) points++;
-      });
-
-      let player = players.find(p => p.id === activePlayerId);
-      if (player) {
-        player.score += points;
-        savePlayers();
-        aiCoachMessage(`${player.name} fick ${points} poäng! ${getCoachAdvice()}`);
-        showNotification(`✨ ${player.name}: +${points} poäng!`);
+      if (!query) {
+        showNotification('Skriv en fråga först', true);
+        return;
       }
 
-      updateLeaderboard();
-      document.getElementById(subjectId).style.display = 'none';
+      aiCoachMessage(`Du: ${query}`);
+      input.value = '';
+
+      const lower = query.toLowerCase();
+      let reply = 'Det här är bra att öva på! Ta en kort repetition och fortsätt med det lättaste du kan göra direkt.';
+
+      if (lower.includes('timer') || lower.includes('fokus') || lower.includes('paus')) {
+        reply = 'Bra! Sätt en tydlig timer och fokusera på en sak i taget. 25 minuter går oftast snabbt när du håller dig till ett mål.';
+      } else if (lower.includes('matte') || lower.includes('räkning')) {
+        reply = 'Matte blir lättare med repetition. Gör först enklaste uppgifterna för att få fart, sen går du vidare till svårare.';
+      } else if (lower.includes('no') || lower.includes('natur') || lower.includes('biologi')) {
+        reply = 'Kom ihåg att börja med begreppen. När du kan fotosyntes, celler och ämnen blir resten mycket lättare.';
+      } else if (lower.includes('svenska') || lower.includes('språk') || lower.includes('franska') || lower.includes('spanska') || lower.includes('tyska')) {
+        reply = 'Öva med korta repetitioner: skriv ord, säg dem högt och använd dem i meningar. Det gör att du minns bättre.';
+      }
+
+      setTimeout(() => aiCoachMessage(reply), 300);
     }
 
     function initApp() {
@@ -1133,15 +1206,15 @@
       loadTasks();
       loadContacts();
       loadPlayers();
-      upT();
-
-      const savedTimer = localStorage.getItem(STORAGE_KEYS.timerSettings);
-      if (savedTimer) {
+      const savedTimer = parseInt(localStorage.getItem(STORAGE_KEYS.timerSettings), 10);
+      if (!isNaN(savedTimer) && savedTimer > 0 && savedTimer <= 180) {
+        state.timerSeconds = savedTimer * 60;
         document.getElementById('customMin').value = savedTimer;
       }
+      upT();
     }
 
-    initApp();
+    document.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
 </html>
