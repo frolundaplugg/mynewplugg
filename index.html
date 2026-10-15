@@ -203,7 +203,7 @@
       letter-spacing: 0.02em;
     }
 
-    button, .link-btn, input, select {
+    button, .link-btn, input, select, textarea {
       font: inherit;
       font-family: inherit;
     }
@@ -290,7 +290,7 @@
       box-shadow: 0 4px 12px rgba(148, 163, 184, 0.1);
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       background: rgba(15, 23, 42, 0.9);
       color: var(--text);
@@ -303,12 +303,12 @@
       font-size: 0.95rem;
     }
 
-    input:focus, select:focus {
+    input:focus, select:focus, textarea:focus {
       border-color: rgba(139, 92, 246, 0.6);
       box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
     }
 
-    input::placeholder {
+    input::placeholder, textarea::placeholder {
       color: rgba(226, 232, 240, 0.5);
     }
 
@@ -592,7 +592,7 @@
         margin-bottom: 12px;
       }
 
-      input, select {
+      input, select, textarea {
         padding: 10px 10px;
         font-size: 16px;
         margin-bottom: 8px;
@@ -781,19 +781,20 @@
           </div>
         </div>
 
-        <!-- New study plan box -->
         <div class="box wide" id="studyBox" style="margin-top:18px;">
-          <h3>📚 Studietips & Plan för prov</h3>
-          <p style="margin:0 0 8px 0; color:var(--muted);">Skriv in de kapitel/ämnen du behöver träna på (komma-separerat) och skapa en enkel studieplan.</p>
+          <h3>📚 Prov från Studiematerial</h3>
+          <p style="margin:0 0 8px 0; color:var(--muted);">Använd PowerPoint-studiematerialet för att skapa en enkel plan inför provet.</p>
+
+          <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" class="link-btn success" style="margin-bottom:12px;">📘 Öppna PowerPoint</a>
 
           <label style="display:block; margin-bottom:8px;">
-            <small style="color:var(--muted);">Ämne / prov:</small>
-            <input id="studySubject" placeholder="T.ex. Svenska - Kapitel 1-5" />
+            <small style="color:var(--muted);">PowerPoint / prov:</small>
+            <input id="studySubject" value="Prov från Studiematerial" placeholder="T.ex. Prov från Studiematerial" />
           </label>
 
           <label style="display:block; margin-bottom:8px;">
-            <small style="color:var(--muted);">Kapitel / ämnen (komma-separerade):</small>
-            <textarea id="studyTopics" placeholder="Ex: Kapitel 1, Kapitel 2, Grammatik, Glosor" style="width:100%;min-height:70px;border-radius:10px;padding:8px;background:rgba(15,23,42,0.9);color:var(--text);border:1px solid rgba(148,163,184,0.12);"></textarea>
+            <small style="color:var(--muted);">Delar att plugga (komma-separerat):</small>
+            <textarea id="studyTopics" placeholder="Ex: Slide 1, Slide 2, repetition, ordlista, begrepp" style="width:100%;min-height:70px;border-radius:10px;padding:8px;background:rgba(15,23,42,0.9);color:var(--text);border:1px solid rgba(148,163,184,0.12);"></textarea>
           </label>
 
           <div class="inline-row" style="margin-bottom:8px;">
@@ -808,7 +809,6 @@
 
           <div id="studyPlan" style="margin-top:12px; color:var(--muted);"></div>
         </div>
-
       </div>
     </div>
   </div>
@@ -1031,7 +1031,6 @@
     function addContact() {
       const nameInput = document.getElementById('contactName');
       const phoneInput = document.getElementById('contactPhone');
-      const list = document.getElementById('contactList');
       const name = nameInput.value.trim();
       const phone = phoneInput.value.trim();
 
@@ -1163,11 +1162,10 @@
       input.value = '';
     }
 
-    // --- New study plan functions ---
     function generateStudyPlan() {
       const topicsText = document.getElementById('studyTopics').value.trim();
       if (!topicsText) {
-        showNotification('Skriv ämnen eller kapitel, separera med kommatecken', true);
+        showNotification('Skriv vad du ska plugga i PowerPointen, separera med kommatecken', true);
         return;
       }
 
@@ -1186,7 +1184,7 @@
       }));
 
       const plan = {
-        subject: document.getElementById('studySubject').value.trim() || 'Studier',
+        subject: document.getElementById('studySubject').value.trim() || 'Prov från Studiematerial',
         days,
         hoursPerDay,
         items
@@ -1194,14 +1192,14 @@
 
       localStorage.setItem('studyportal-plan', JSON.stringify(plan));
       renderStudyPlan();
-      showNotification('Studieplan skapad');
+      showNotification('Provplan skapad från PowerPoint');
     }
 
     function renderStudyPlan() {
       const container = document.getElementById('studyPlan');
       const plan = safeJsonParse(localStorage.getItem('studyportal-plan'), null);
       if (!plan) {
-        container.innerHTML = '<p style="opacity:.8">Ingen plan sparad. Skapa en ny genom att fylla i ämnen och trycka på "Skapa plan".</p>';
+        container.innerHTML = '<p style="opacity:.8">Ingen provplan sparad. Skriv vad du ska träna på i PowerPointen och tryck på "Skapa plan".</p>';
         return;
       }
 
@@ -1234,9 +1232,8 @@
     function clearStudyPlan() {
       localStorage.removeItem('studyportal-plan');
       renderStudyPlan();
-      showNotification('Studieplan borttagen');
+      showNotification('Provplan borttagen');
     }
-    // --- end study plan functions ---
 
     function loadAll() {
       loadUserName();
@@ -1250,12 +1247,8 @@
       document.getElementById('customMin').value = value;
       state.timerSeconds = value * 60;
       upT();
-
-      // Render any saved study plan on load
       renderStudyPlan();
     }
-
-    // existing functions continue...
 
     loadAll();
   </script>
