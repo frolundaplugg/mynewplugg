@@ -783,7 +783,7 @@
 
         <div class="box wide" id="studyBox" style="margin-top:18px;">
           <h3>📚 Prov från Studiematerial</h3>
-          <p style="margin:0 0 8px 0; color:var(--muted);">Använd PowerPoint-studiematerialet för att skapa en enkel plan inför provet.</p>
+          <p style="margin:0 0 8px 0; color:var(--muted);">Använd PowerPoint-studiematerialet för att skapa en enkel plan inför provet eller generera frågor direkt från innehållet.</p>
 
           <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" class="link-btn success" style="margin-bottom:12px;">📘 Öppna PowerPoint</a>
 
@@ -806,6 +806,21 @@
             <button class="secondary" onclick="generateStudyPlan()">Skapa plan</button>
             <button class="outline" onclick="renderStudyPlan()">Visa sparad plan</button>
           </div>
+
+          <hr style="border:none;border-top:1px solid rgba(148,163,184,0.06);margin:12px 0;" />
+
+          <label style="display:block; margin-bottom:8px;">
+            <small style="color:var(--muted);">Klistra in innehåll från PowerPoint (slides eller anteckningar), en slide per rad:</small>
+            <textarea id="pptContent" placeholder="Klistra in slide-titlar eller korta anteckningar här, en rad per slide" style="width:100%;min-height:90px;border-radius:10px;padding:8px;background:rgba(15,23,42,0.9);color:var(--text);border:1px solid rgba(148,163,184,0.12);"></textarea>
+          </label>
+
+          <div class="inline-row" style="margin-bottom:8px;">
+            <button class="secondary" onclick="generatePPTQuestions()">Generera frågor från PowerPoint</button>
+            <button class="outline" onclick="renderPPTQuestions()">Visa frågor</button>
+            <button class="danger" onclick="clearPPTQuestions()">Rensa frågor</button>
+          </div>
+
+          <div id="pptQuestions" style="margin-top:12px; color:var(--muted);"></div>
 
           <div id="studyPlan" style="margin-top:12px; color:var(--muted);"></div>
         </div>
@@ -1162,6 +1177,7 @@
       input.value = '';
     }
 
+    // --- Study plan functions ---
     function generateStudyPlan() {
       const topicsText = document.getElementById('studyTopics').value.trim();
       if (!topicsText) {
@@ -1234,6 +1250,86 @@
       renderStudyPlan();
       showNotification('Provplan borttagen');
     }
+    // --- end study plan functions ---
+
+    // --- PPT question generator ---
+    function generatePPTQuestions() {
+      const raw = document.getElementById('pptContent').value.trim();
+      if (!raw) {
+        showNotification('Klistra in PowerPoint-innehåll (en slide per rad)', true);
+        return;
+      }
+
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      if (!lines.length) {
+        showNotification('Ingen giltig text hittades', true);
+        return;
+      }
+
+      const questions = lines.map((line, i) => ({
+        id: Date.now() + i,
+        prompt: `Beskriv innehållet i slide ${i+1}:`,
+        answer: line,
+        shown: false,
+        known: false
+      }));
+
+      localStorage.setItem('studyportal-ppt-questions', JSON.stringify(questions));
+      renderPPTQuestions();
+      showNotification('Frågor genererade från PowerPoint');
+    }
+
+    function renderPPTQuestions() {
+      const container = document.getElementById('pptQuestions');
+      const questions = safeJsonParse(localStorage.getItem('studyportal-ppt-questions'), []);
+      if (!questions || !questions.length) {
+        container.innerHTML = '<p style="opacity:.8">Inga frågor sparade. Klistra in slides och tryck "Generera frågor från PowerPoint".</p>';
+        return;
+      }
+
+      let html = '<ol style="padding-left:18px;margin:0;">';
+      questions.forEach(q => {
+        html += `<li style="margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(148,163,184,0.04);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><div><strong style=\"color:var(--text);\">${q.prompt}</strong><div style=\"opacity:.85;color:var(--muted);margin-top:6px;\">(Svar är dold — klicka "Visa svar")</div></div>
+          <div style=\"display:flex;gap:8px;align-items:center;\">
+            <button class=\"outline\" onclick=\"togglePPTAnswer(${q.id})\">Visa svar</button>
+            <label style=\"display:flex;align-items:center;gap:6px;\"><input type=\"checkbox\" data-ppt-id=\"${q.id}\" ${q.known ? 'checked' : ''} onchange=\"togglePPTKnown(${q.id}, this.checked)\"> Klar</label>
+          </div></div>
+          <div id=\"ppt_ans_${q.id}\" style=\"margin-top:8px;display:${q.shown ? 'block' : 'none'};color:var(--muted);\"><em>${escapeHtml(q.answer)}</em></div>
+        </li>`;
+      });
+      html += '</ol>';
+      container.innerHTML = html;
+    }
+
+    function togglePPTAnswer(id) {
+      const questions = safeJsonParse(localStorage.getItem('studyportal-ppt-questions'), []);
+      const q = questions.find(x => String(x.id) === String(id));
+      if (!q) return;
+      q.shown = !q.shown;
+      localStorage.setItem('studyportal-ppt-questions', JSON.stringify(questions));
+      renderPPTQuestions();
+    }
+
+    function togglePPTKnown(id, checked) {
+      const questions = safeJsonParse(localStorage.getItem('studyportal-ppt-questions'), []);
+      const q = questions.find(x => String(x.id) === String(id));
+      if (!q) return;
+      q.known = !!checked;
+      localStorage.setItem('studyportal-ppt-questions', JSON.stringify(questions));
+      renderPPTQuestions();
+    }
+
+    function clearPPTQuestions() {
+      localStorage.removeItem('studyportal-ppt-questions');
+      renderPPTQuestions();
+      showNotification('Frågor från PowerPoint rensade');
+    }
+
+    function escapeHtml(text) {
+      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    // --- end PPT question generator ---
 
     function loadAll() {
       loadUserName();
@@ -1247,7 +1343,10 @@
       document.getElementById('customMin').value = value;
       state.timerSeconds = value * 60;
       upT();
+
+      // Render any saved study plan and PPT questions on load
       renderStudyPlan();
+      renderPPTQuestions();
     }
 
     loadAll();
