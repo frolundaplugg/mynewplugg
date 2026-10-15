@@ -6,7 +6,7 @@
   <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
   <meta name="theme-color" content="#8b5cf6" />
   <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white'>📚</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white' text-anchor='middle'>📚</text></svg>" />
   <style>
     :root {
       --bg-1: #120b1d;
@@ -649,6 +649,7 @@
         <h3>👥 Gruppstudier</h3>
         <a href="https://meet.new" target="_blank" class="link-btn success">📞 Google Meet</a>
         <a href="https://zoom.new" target="_blank" class="link-btn secondary">📹 Zoom-möte</a>
+        <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" class="link-btn outline">📘 Studiematerial</a>
       </div>
 
       <div class="box wide">
@@ -998,110 +999,37 @@
       showNotification('✅ Uppgift sparad');
     }
 
-    function shQ(id) {
-      const box = document.getElementById(id);
-      box.style.display = box.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function saveContacts() {
-      const contactList = document.getElementById('contactList');
-      const contacts = Array.from(contactList.querySelectorAll('li')).map(li => {
-        const text = li.textContent.replace('👤 ', '');
-        const [name, number] = text.split(': ');
-        return { name, number };
-      });
-
-      localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(contacts));
-    }
-
-    function loadContacts() {
-      const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
-      const list = document.getElementById('contactList');
-      list.innerHTML = '';
-
-      saved.forEach(contact => {
-        const li = document.createElement('li');
-        const label = document.createElement('span');
-        const link = document.createElement('a');
-
-        label.textContent = `👤 ${contact.name}: `;
-        link.href = `tel:${(contact.number || '').replace(/\s|-/g, '')}`;
-        link.textContent = contact.number;
-
-        li.appendChild(label);
-        li.appendChild(link);
-        list.appendChild(li);
-      });
-    }
-
     function addContact() {
-      const n = document.getElementById('contactName').value.trim();
-      const p = document.getElementById('contactPhone').value.trim();
+      const nameInput = document.getElementById('contactName');
+      const phoneInput = document.getElementById('contactPhone');
+      const list = document.getElementById('contactList');
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
 
-      if (!n || !p) {
-        showNotification('Fyll i båda fälten', true);
+      if (!name || !phone) {
+        showNotification('Fyll i namn och telefonnummer', true);
         return;
       }
 
-      const list = document.getElementById('contactList');
-      const li = document.createElement('li');
-      const label = document.createElement('span');
-      const link = document.createElement('a');
-
-      label.textContent = `👤 ${n}: `;
-      link.href = `tel:${p.replace(/\s|-/g, '')}`;
-      link.textContent = p;
-
-      li.appendChild(label);
-      li.appendChild(link);
-      list.appendChild(li);
-
-      document.getElementById('contactName').value = '';
-      document.getElementById('contactPhone').value = '';
-      saveContacts();
+      const contact = { name, phone };
+      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
+      contacts.push(contact);
+      localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(contacts));
+      renderContacts();
+      nameInput.value = '';
+      phoneInput.value = '';
       showNotification('📞 Kontakt sparad');
     }
 
-    function savePlayers() {
-      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(state.players));
-    }
+    function renderContacts() {
+      const list = document.getElementById('contactList');
+      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
+      list.innerHTML = '';
 
-    function loadPlayers() {
-      const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
-      state.players = saved.length ? saved : [{ id: 0, name: 'Du', score: 0 }];
-      renderPlayerSelect();
-      renderLeaderboard();
-    }
-
-    function renderPlayerSelect() {
-      const playerSelect = document.getElementById('playerSelect');
-      playerSelect.innerHTML = '';
-
-      state.players.forEach(player => {
-        const option = document.createElement('option');
-        option.value = String(player.id);
-        option.textContent = player.name;
-        playerSelect.appendChild(option);
-      });
-    }
-
-    function renderLeaderboard() {
-      const leaderboard = document.getElementById('leaderboard');
-      leaderboard.innerHTML = '';
-
-      const sorted = [...state.players].sort((a, b) => b.score - a.score);
-      sorted.forEach(player => {
+      contacts.forEach(contact => {
         const li = document.createElement('li');
-        const label = document.createElement('span');
-        const score = document.createElement('span');
-
-        const icon = player.id === 0 ? '👑' : '🎯';
-        label.textContent = `${icon} ${player.name}`;
-        score.textContent = `${player.score} p`;
-
-        li.appendChild(label);
-        li.appendChild(score);
-        leaderboard.appendChild(li);
+        li.innerHTML = `<span>${contact.name}</span><a href="tel:${contact.phone}">${contact.phone}</a>`;
+        list.appendChild(li);
       });
     }
 
@@ -1113,108 +1041,114 @@
         return;
       }
 
+      const existing = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), []);
+      const players = existing.length ? existing : state.players;
       const id = Date.now();
-      state.players.push({ id, name, score: 0 });
+      players.push({ id, name, score: 0 });
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
       input.value = '';
-      savePlayers();
-      renderPlayerSelect();
       renderLeaderboard();
-      showNotification(`Spelare ${name} tillagd`);
+      updatePlayerSelect();
+      showNotification(`${name} lades till`);
     }
 
     function resetScores() {
-      state.players = state.players.map(player => ({ ...player, score: 0 }));
-      savePlayers();
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
+      players.forEach(player => { player.score = 0; });
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
       renderLeaderboard();
-      showNotification('Matchen nollställd');
+      showNotification('Poängen nollställdes');
     }
 
-    function normalizeAnswer(value) {
-      return String(value || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    function renderLeaderboard() {
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), state.players);
+      const leaderboard = document.getElementById('leaderboard');
+      leaderboard.innerHTML = '';
+
+      const sortedPlayers = [...players].sort((a, b) => (b.score || 0) - (a.score || 0));
+      sortedPlayers.forEach(player => {
+        const li = document.createElement('li');
+        const score = Number(player.score || 0);
+        li.innerHTML = `<span>${player.name}</span><span>${score} p</span>`;
+        leaderboard.appendChild(li);
+      });
     }
 
-    function ckMix(subject, radioNames, correctRadioValues, textInputIds, textCorrectValues) {
-      const selectedPlayerId = Number(document.getElementById('playerSelect').value || 0);
-      const player = state.players.find(item => item.id === selectedPlayerId) || state.players[0];
-      let correct = 0;
-      let totalChecks = 0;
+    function updatePlayerSelect() {
+      const select = document.getElementById('playerSelect');
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), state.players);
+      select.innerHTML = players.map((player, index) => `<option value="${index}">${player.name}</option>`).join('');
+    }
 
-      radioNames.forEach((radioName, index) => {
-        totalChecks += 1;
-        const picked = document.querySelector(`input[name="${radioName}"]:checked`);
-        const expected = correctRadioValues[index];
-        if (picked && picked.value === expected) {
-          correct += 1;
-        }
+    function shQ(id) {
+      const box = document.getElementById(id);
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function ckMix(subject, radioNames, radioAnswers, textIds, expectedTexts) {
+      const selected = radioNames.map((name, idx) => {
+        const chosen = document.querySelector(`input[name="${name}"]:checked`);
+        return chosen ? chosen.value : null;
       });
 
-      textInputIds.forEach((inputId, index) => {
-        totalChecks += 1;
-        const input = document.getElementById(inputId);
-        const expected = textCorrectValues[index];
-        const actual = normalizeAnswer(input ? input.value : '');
-        if (actual === normalizeAnswer(expected)) {
-          correct += 1;
-        }
+      const textValues = textIds.map(id => {
+        const element = document.getElementById(id);
+        return element ? element.value.trim().toLowerCase() : '';
       });
 
-      const points = correct === totalChecks ? 3 : correct > 0 ? 1 : 0;
-      player.score += points;
-      savePlayers();
+      const radioCorrect = selected.every((value, idx) => value === radioAnswers[idx]);
+      const textCorrect = textValues.every((value, idx) => value === expectedTexts[idx].toLowerCase());
+      const isCorrect = radioCorrect && textCorrect;
+
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), state.players);
+      const playerIndex = Number(document.getElementById('playerSelect').value);
+      if (playerIndex >= 0 && playerIndex < players.length) {
+        players[playerIndex].score = Number(players[playerIndex].score || 0) + (isCorrect ? 5 : 0);
+        localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
+      }
+
       renderLeaderboard();
-
-      const subjectLabel = subject.toUpperCase();
-      if (points > 0) {
-        showNotification(`${subjectLabel}: Rätt! +${points} p`);
-        aiCoachMessage(`${player.name} gjorde ett bra jobb i ${subjectLabel}!`);
+      if (isCorrect) {
+        showNotification('✅ Rätt svar! +5p');
       } else {
-        showNotification(`${subjectLabel}: Försök igen`, true);
-        aiCoachMessage(`Nästa gång går det bättre i ${subjectLabel}. Repetera svaren och testa igen.`);
+        showNotification('❌ Inte helt rätt, försök igen!', true);
       }
     }
 
     function sdA() {
       const input = document.getElementById('ci');
-      const query = input.value.trim();
-
-      if (!query) {
+      const value = input.value.trim();
+      const cb = document.getElementById('cb');
+      if (!value) {
         showNotification('Skriv en fråga först', true);
         return;
       }
 
-      aiCoachMessage(`Du: ${query}`);
+      const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+      cb.innerHTML += `<br><b>Du ${time}:</b> ${value}`;
+      const advice = getCoachAdvice();
+      setTimeout(() => {
+        cb.innerHTML += `<br><b>AI ${time}:</b> ${advice}`;
+        cb.scrollTop = cb.scrollHeight;
+      }, 400);
       input.value = '';
-
-      const lower = query.toLowerCase();
-      let reply = 'Det här är bra att öva på! Ta en kort repetition och fortsätt med det lättaste du kan göra direkt.';
-
-      if (lower.includes('timer') || lower.includes('fokus') || lower.includes('paus')) {
-        reply = 'Bra! Sätt en tydlig timer och fokusera på en sak i taget. 25 minuter går oftast snabbt när du håller dig till ett mål.';
-      } else if (lower.includes('matte') || lower.includes('räkning')) {
-        reply = 'Matte blir lättare med repetition. Gör först enklaste uppgifterna för att få fart, sen går du vidare till svårare.';
-      } else if (lower.includes('no') || lower.includes('natur') || lower.includes('biologi')) {
-        reply = 'Kom ihåg att börja med begreppen. När du kan fotosyntes, celler och ämnen blir resten mycket lättare.';
-      } else if (lower.includes('svenska') || lower.includes('språk') || lower.includes('franska') || lower.includes('spanska') || lower.includes('tyska')) {
-        reply = 'Öva med korta repetitioner: skriv ord, säg dem högt och använd dem i meningar. Det gör att du minns bättre.';
-      }
-
-      setTimeout(() => aiCoachMessage(reply), 300);
     }
 
-    function initApp() {
+    function loadAll() {
       loadUserName();
+      renderContacts();
+      renderLeaderboard();
+      updatePlayerSelect();
       loadTasks();
-      loadContacts();
-      loadPlayers();
-      const savedTimer = parseInt(localStorage.getItem(STORAGE_KEYS.timerSettings), 10);
-      if (!isNaN(savedTimer) && savedTimer > 0 && savedTimer <= 180) {
-        state.timerSeconds = savedTimer * 60;
-        document.getElementById('customMin').value = savedTimer;
-      }
+
+      const savedCustom = parseInt(localStorage.getItem(STORAGE_KEYS.timerSettings) || '25', 10);
+      const value = !isNaN(savedCustom) && savedCustom > 0 ? savedCustom : 25;
+      document.getElementById('customMin').value = value;
+      state.timerSeconds = value * 60;
       upT();
     }
 
-    document.addEventListener('DOMContentLoaded', initApp);
+    loadAll();
   </script>
 </body>
 </html>
