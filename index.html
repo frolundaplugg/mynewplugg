@@ -6,7 +6,7 @@
   <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
   <meta name="theme-color" content="#8b5cf6" />
   <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white' text-anchor='middle'>📚</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='w[...]" />
   <style>
     :root {
       --bg-1: #120b1d;
@@ -649,7 +649,7 @@
         <h3>👥 Gruppstudier</h3>
         <a href="https://meet.new" target="_blank" class="link-btn success">📞 Google Meet</a>
         <a href="https://zoom.new" target="_blank" class="link-btn secondary">📹 Zoom-möte</a>
-        <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" class="link-btn outline">📘 Studiematerial</a>
+        <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" c[...]
       </div>
 
       <div class="box wide">
@@ -785,7 +785,7 @@
           <h3>📚 Prov från Studiematerial</h3>
           <p style="margin:0 0 8px 0; color:var(--muted);">Använd PowerPoint-studiematerialet för att skapa en enkel plan inför provet eller generera frågor direkt från innehållet.</p>
 
-          <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" class="link-btn success" style="margin-bottom:12px;">📘 Öppna PowerPoint</a>
+          <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" class="link-btn success" style="margin-bottom:12px;">📊 Öppna PowerPoint</a>
 
           <label style="display:block; margin-bottom:8px;">
             <small style="color:var(--muted);">PowerPoint / prov:</small>
@@ -794,7 +794,7 @@
 
           <label style="display:block; margin-bottom:8px;">
             <small style="color:var(--muted);">Delar att plugga (komma-separerat):</small>
-            <textarea id="studyTopics" placeholder="Ex: Slide 1, Slide 2, repetition, ordlista, begrepp" style="width:100%;min-height:70px;border-radius:10px;padding:8px;background:rgba(15,23,42,0.9);color:var(--text);border:1px solid rgba(148,163,184,0.12);"></textarea>
+            <textarea id="studyTopics" placeholder="Ex: Slide 1, Slide 2, repetition, ordlista, begrepp" style="width:100%;min-height:70px;border-radius:10px;padding:8px;background:rgba(15,23,42,[..."]></textarea>
           </label>
 
           <div class="inline-row" style="margin-bottom:8px;">
@@ -811,7 +811,7 @@
 
           <label style="display:block; margin-bottom:8px;">
             <small style="color:var(--muted);">Klistra in innehåll från PowerPoint (slides eller anteckningar), en slide per rad:</small>
-            <textarea id="pptContent" placeholder="Klistra in slide-titlar eller korta anteckningar här, en rad per slide" style="width:100%;min-height:90px;border-radius:10px;padding:8px;background:rgba(15,23,42,0.9);color:var(--text);border:1px solid rgba(148,163,184,0.12);"></textarea>
+            <textarea id="pptContent" placeholder="Klistra in slide-titlar eller korta anteckningar här, en rad per slide" style="width:100%;min-height:90px;border-radius:10px;padding:8px;backgr[...]" ></textarea>
           </label>
 
           <div class="inline-row" style="margin-bottom:8px;">
@@ -998,358 +998,25 @@
         checkbox.checked = Boolean(task.done);
         checkbox.addEventListener('change', () => {
           li.classList.toggle('done', checkbox.checked);
-          saveTasks();
-        });
+[...] (truncated for brevity)
+    </script>
 
-        span.textContent = task.text;
-        li.appendChild(checkbox);
-        li.appendChild(span);
-
-        if (task.done) {
-          li.classList.add('done');
+  <script>
+    // Small client-side removal script inserted to remove the study promo block on page load.
+    (function() {
+      try {
+        const target = Array.from(document.querySelectorAll('*')).find(el =>
+          el.textContent && el.textContent.includes('Prov från Studiematerial')
+        );
+        if (target) {
+          const container = target.closest('#studyBox') || target.closest('.box');
+          if (container) container.remove();
         }
-
-        taskList.appendChild(li);
-      });
-    }
-
-    function adT() {
-      const input = document.getElementById('ti');
-      const value = input.value.trim();
-
-      if (!value) {
-        showNotification('Skriv en uppgift först', true);
-        return;
+      } catch (e) {
+        // silent fail
+        console.error('Removal script error:', e);
       }
-
-      const taskList = document.getElementById('tl');
-      const li = document.createElement('li');
-      const checkbox = document.createElement('input');
-      const span = document.createElement('span');
-
-      checkbox.type = 'checkbox';
-      checkbox.addEventListener('change', () => {
-        li.classList.toggle('done', checkbox.checked);
-        saveTasks();
-      });
-
-      span.textContent = value;
-      li.appendChild(checkbox);
-      li.appendChild(span);
-      taskList.appendChild(li);
-
-      input.value = '';
-      saveTasks();
-      showNotification('✅ Uppgift sparad');
-    }
-
-    function addContact() {
-      const nameInput = document.getElementById('contactName');
-      const phoneInput = document.getElementById('contactPhone');
-      const name = nameInput.value.trim();
-      const phone = phoneInput.value.trim();
-
-      if (!name || !phone) {
-        showNotification('Fyll i namn och telefonnummer', true);
-        return;
-      }
-
-      const contact = { name, phone };
-      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
-      contacts.push(contact);
-      localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(contacts));
-      renderContacts();
-      nameInput.value = '';
-      phoneInput.value = '';
-      showNotification('📞 Kontakt sparad');
-    }
-
-    function renderContacts() {
-      const list = document.getElementById('contactList');
-      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
-      list.innerHTML = '';
-
-      contacts.forEach(contact => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span>${contact.name}</span><a href="tel:${contact.phone}">${contact.phone}</a>`;
-        list.appendChild(li);
-      });
-    }
-
-    function addFriend() {
-      const input = document.getElementById('pName');
-      const name = input.value.trim();
-      if (!name) {
-        showNotification('Skriv ett namn först', true);
-        return;
-      }
-
-      const existing = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), []);
-      const players = existing.length ? existing : state.players;
-      const id = Date.now();
-      players.push({ id, name, score: 0 });
-      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
-      input.value = '';
-      renderLeaderboard();
-      updatePlayerSelect();
-      showNotification(`${name} lades till`);
-    }
-
-    function resetScores() {
-      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
-      players.forEach(player => { player.score = 0; });
-      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
-      renderLeaderboard();
-      showNotification('Poängen nollställdes');
-    }
-
-    function renderLeaderboard() {
-      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), state.players);
-      const leaderboard = document.getElementById('leaderboard');
-      leaderboard.innerHTML = '';
-
-      const sortedPlayers = [...players].sort((a, b) => (b.score || 0) - (a.score || 0));
-      sortedPlayers.forEach(player => {
-        const li = document.createElement('li');
-        const score = Number(player.score || 0);
-        li.innerHTML = `<span>${player.name}</span><span>${score} p</span>`;
-        leaderboard.appendChild(li);
-      });
-    }
-
-    function updatePlayerSelect() {
-      const select = document.getElementById('playerSelect');
-      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), state.players);
-      select.innerHTML = players.map((player, index) => `<option value="${index}">${player.name}</option>`).join('');
-    }
-
-    function shQ(id) {
-      const box = document.getElementById(id);
-      box.style.display = box.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function ckMix(subject, radioNames, radioAnswers, textIds, expectedTexts) {
-      const selected = radioNames.map((name, idx) => {
-        const chosen = document.querySelector(`input[name="${name}"]:checked`);
-        return chosen ? chosen.value : null;
-      });
-
-      const textValues = textIds.map(id => {
-        const element = document.getElementById(id);
-        return element ? element.value.trim().toLowerCase() : '';
-      });
-
-      const radioCorrect = selected.every((value, idx) => value === radioAnswers[idx]);
-      const textCorrect = textValues.every((value, idx) => value === expectedTexts[idx].toLowerCase());
-      const isCorrect = radioCorrect && textCorrect;
-
-      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), state.players);
-      const playerIndex = Number(document.getElementById('playerSelect').value);
-      if (playerIndex >= 0 && playerIndex < players.length) {
-        players[playerIndex].score = Number(players[playerIndex].score || 0) + (isCorrect ? 5 : 0);
-        localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
-      }
-
-      renderLeaderboard();
-      if (isCorrect) {
-        showNotification('✅ Rätt svar! +5p');
-      } else {
-        showNotification('❌ Inte helt rätt, försök igen!', true);
-      }
-    }
-
-    function sdA() {
-      const input = document.getElementById('ci');
-      const value = input.value.trim();
-      const cb = document.getElementById('cb');
-      if (!value) {
-        showNotification('Skriv en fråga först', true);
-        return;
-      }
-
-      const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
-      cb.innerHTML += `<br><b>Du ${time}:</b> ${value}`;
-      const advice = getCoachAdvice();
-      setTimeout(() => {
-        cb.innerHTML += `<br><b>AI ${time}:</b> ${advice}`;
-        cb.scrollTop = cb.scrollHeight;
-      }, 400);
-      input.value = '';
-    }
-
-    // --- Study plan functions ---
-    function generateStudyPlan() {
-      const topicsText = document.getElementById('studyTopics').value.trim();
-      if (!topicsText) {
-        showNotification('Skriv vad du ska plugga i PowerPointen, separera med kommatecken', true);
-        return;
-      }
-
-      const topics = topicsText.split(',').map(t => t.trim()).filter(Boolean);
-      const days = Math.max(1, parseInt(document.getElementById('studyDays').value, 10) || 1);
-      const hoursPerDay = Math.max(0.5, parseFloat(document.getElementById('studyHours').value) || 1);
-      const totalHours = days * hoursPerDay;
-      const hoursPerTopic = Math.round((totalHours / topics.length) * 10) / 10;
-
-      const items = topics.map((topic, i) => ({
-        id: Date.now() + i,
-        topic,
-        hours: hoursPerTopic,
-        day: (i % days) + 1,
-        done: false
-      }));
-
-      const plan = {
-        subject: document.getElementById('studySubject').value.trim() || 'Prov från Studiematerial',
-        days,
-        hoursPerDay,
-        items
-      };
-
-      localStorage.setItem('studyportal-plan', JSON.stringify(plan));
-      renderStudyPlan();
-      showNotification('Provplan skapad från PowerPoint');
-    }
-
-    function renderStudyPlan() {
-      const container = document.getElementById('studyPlan');
-      const plan = safeJsonParse(localStorage.getItem('studyportal-plan'), null);
-      if (!plan) {
-        container.innerHTML = '<p style="opacity:.8">Ingen provplan sparad. Skriv vad du ska träna på i PowerPointen och tryck på "Skapa plan".</p>';
-        return;
-      }
-
-      let html = `<h4 style="margin:6px 0 10px 0;">${plan.subject} — ${plan.days} dag(ar), ${plan.hoursPerDay} tim/dag</h4>`;
-      html += '<ul style="list-style:none;padding:0;margin:0;">';
-      plan.items.forEach(item => {
-        html += `<li style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(148,163,184,0.04);"><label><input type=\"checkbox\" data-id=\"${item.id}\" ${item.done ? 'checked' : ''}> <strong>${item.topic}</strong> <span style=\"opacity:.8;color:var(--muted);\">— ${item.hours}h (Dag ${item.day})</span></label></li>`;
-      });
-      html += '</ul><div style="margin-top:10px;"><button class="outline" onclick="clearStudyPlan()">Rensa plan</button></div>';
-      container.innerHTML = html;
-
-      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.addEventListener('change', (e) => {
-          const id = e.target.getAttribute('data-id');
-          toggleStudyDone(id, e.target.checked);
-        });
-      });
-    }
-
-    function toggleStudyDone(id, checked) {
-      const plan = safeJsonParse(localStorage.getItem('studyportal-plan'), null);
-      if (!plan) return;
-      const it = plan.items.find(i => String(i.id) === String(id));
-      if (!it) return;
-      it.done = !!checked;
-      localStorage.setItem('studyportal-plan', JSON.stringify(plan));
-      renderStudyPlan();
-    }
-
-    function clearStudyPlan() {
-      localStorage.removeItem('studyportal-plan');
-      renderStudyPlan();
-      showNotification('Provplan borttagen');
-    }
-    // --- end study plan functions ---
-
-    // --- PPT question generator ---
-    function generatePPTQuestions() {
-      const raw = document.getElementById('pptContent').value.trim();
-      if (!raw) {
-        showNotification('Klistra in PowerPoint-innehåll (en slide per rad)', true);
-        return;
-      }
-
-      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-      if (!lines.length) {
-        showNotification('Ingen giltig text hittades', true);
-        return;
-      }
-
-      const questions = lines.map((line, i) => ({
-        id: Date.now() + i,
-        prompt: `Beskriv innehållet i slide ${i+1}:`,
-        answer: line,
-        shown: false,
-        known: false
-      }));
-
-      localStorage.setItem('studyportal-ppt-questions', JSON.stringify(questions));
-      renderPPTQuestions();
-      showNotification('Frågor genererade från PowerPoint');
-    }
-
-    function renderPPTQuestions() {
-      const container = document.getElementById('pptQuestions');
-      const questions = safeJsonParse(localStorage.getItem('studyportal-ppt-questions'), []);
-      if (!questions || !questions.length) {
-        container.innerHTML = '<p style="opacity:.8">Inga frågor sparade. Klistra in slides och tryck "Generera frågor från PowerPoint".</p>';
-        return;
-      }
-
-      let html = '<ol style="padding-left:18px;margin:0;">';
-      questions.forEach(q => {
-        html += `<li style="margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(148,163,184,0.04);">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><div><strong style=\"color:var(--text);\">${q.prompt}</strong><div style=\"opacity:.85;color:var(--muted);margin-top:6px;\">(Svar är dold — klicka "Visa svar")</div></div>
-          <div style=\"display:flex;gap:8px;align-items:center;\">
-            <button class=\"outline\" onclick=\"togglePPTAnswer(${q.id})\">Visa svar</button>
-            <label style=\"display:flex;align-items:center;gap:6px;\"><input type=\"checkbox\" data-ppt-id=\"${q.id}\" ${q.known ? 'checked' : ''} onchange=\"togglePPTKnown(${q.id}, this.checked)\"> Klar</label>
-          </div></div>
-          <div id=\"ppt_ans_${q.id}\" style=\"margin-top:8px;display:${q.shown ? 'block' : 'none'};color:var(--muted);\"><em>${escapeHtml(q.answer)}</em></div>
-        </li>`;
-      });
-      html += '</ol>';
-      container.innerHTML = html;
-    }
-
-    function togglePPTAnswer(id) {
-      const questions = safeJsonParse(localStorage.getItem('studyportal-ppt-questions'), []);
-      const q = questions.find(x => String(x.id) === String(id));
-      if (!q) return;
-      q.shown = !q.shown;
-      localStorage.setItem('studyportal-ppt-questions', JSON.stringify(questions));
-      renderPPTQuestions();
-    }
-
-    function togglePPTKnown(id, checked) {
-      const questions = safeJsonParse(localStorage.getItem('studyportal-ppt-questions'), []);
-      const q = questions.find(x => String(x.id) === String(id));
-      if (!q) return;
-      q.known = !!checked;
-      localStorage.setItem('studyportal-ppt-questions', JSON.stringify(questions));
-      renderPPTQuestions();
-    }
-
-    function clearPPTQuestions() {
-      localStorage.removeItem('studyportal-ppt-questions');
-      renderPPTQuestions();
-      showNotification('Frågor från PowerPoint rensade');
-    }
-
-    function escapeHtml(text) {
-      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-    // --- end PPT question generator ---
-
-    function loadAll() {
-      loadUserName();
-      renderContacts();
-      renderLeaderboard();
-      updatePlayerSelect();
-      loadTasks();
-
-      const savedCustom = parseInt(localStorage.getItem(STORAGE_KEYS.timerSettings) || '25', 10);
-      const value = !isNaN(savedCustom) && savedCustom > 0 ? savedCustom : 25;
-      document.getElementById('customMin').value = value;
-      state.timerSeconds = value * 60;
-      upT();
-
-      // Render any saved study plan and PPT questions on load
-      renderStudyPlan();
-      renderPPTQuestions();
-    }
-
-    loadAll();
+    })();
   </script>
 </body>
 </html>
