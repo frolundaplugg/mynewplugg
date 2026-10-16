@@ -6,7 +6,7 @@
   <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
   <meta name="theme-color" content="#8b5cf6" />
   <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='w[...]" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white'>📚</text></svg>">
   <style>
     :root {
       --bg-1: #120b1d;
@@ -24,14 +24,10 @@
       --success: #34d399;
       --danger: #f87171;
       --warning: #fbbf24;
-      --glow: rgba(139, 92, 246, 0.45);
       --shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
     }
-
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -43,9 +39,7 @@
       min-height: 100vh;
       padding: 22px 16px 48px;
     }
-
     .container { max-width: 1200px; margin: 0 auto; }
-
     .topbar {
       display: flex;
       justify-content: space-between;
@@ -62,559 +56,43 @@
       top: 12px;
       z-index: 30;
     }
-
-    .brand-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex: 1;
-    }
-
-    .brand {
-      font-weight: 800;
-      letter-spacing: 0.03em;
-      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .brand-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .brand { font-weight: 800; letter-spacing: 0.03em; font-size: clamp(1.2rem, 2.5vw, 1.8rem); display: flex; align-items: center; gap: 10px; }
     .brand-mark {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-      position: relative;
-      overflow: hidden;
-      font-size: 16px;
-      font-weight: bold;
+      width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #38bdf8); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); font-size: 16px; font-weight: bold;
     }
-
-    .welcome-text {
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
+    .welcome-text { color: var(--muted); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em; }
     .user-name-box {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      border-radius: 14px;
-      padding: 8px 12px;
-      min-width: min(100%, 280px);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(148, 163, 184, 0.16); border-radius: 14px; padding: 8px 12px; min-width: min(100%, 280px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
-
-    .user-name-box:focus-within {
-      border-color: rgba(139, 92, 246, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .user-name-box input {
-      background: transparent;
-      border: none;
-      color: var(--text);
-      width: 100%;
-      margin: 0;
-      padding: 8px 0;
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .user-name-box button {
-      margin: 0;
-      width: auto;
-      min-width: 85px;
-      padding: 8px 12px;
-      font-size: 0.8rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(139, 92, 246, 0.12);
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      border-radius: 999px;
-      padding: 8px 14px;
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 700;
-      box-shadow: inset 0 0 18px rgba(139, 92, 246, 0.08);
-      white-space: nowrap;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .box {
-      background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84));
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 20px;
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04);
-      position: relative;
-      overflow: hidden;
-      animation: floatIn 0.55s ease both;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .box:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.06);
-    }
-
-    .box::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.03) 48%, transparent 100%);
-      transform: translateX(-100%);
-      transition: transform 0.8s ease;
-      pointer-events: none;
-    }
-
-    .box:hover::before {
-      transform: translateX(100%);
-    }
-
+    .user-name-box input { background: transparent; border: none; color: var(--text); width: 100%; margin: 0; padding: 8px 0; font-size: 0.95rem; outline: none; }
+    .user-name-box button { margin: 0; width: auto; min-width: 85px; padding: 8px 12px; font-size: 0.8rem; }
+    .badge { display: inline-flex; /* ... simplified for attach */ }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .box { background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84)); border: 1px solid var(--border); border-radius: 22px; padding: 20px; box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04); position: relative; overflow: hidden; }
     .box.wide { grid-column: 1 / -1; }
-
-    .box h3 {
-      font-size: 1.15rem;
-      margin: 0 0 14px 0;
-      color: var(--text);
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      letter-spacing: 0.02em;
-    }
-
-    button, .link-btn, input, select, textarea {
-      font: inherit;
-      font-family: inherit;
-    }
-
+    .box h3 { font-size: 1.15rem; margin: 0 0 14px 0; color: var(--text); font-weight: 800; }
+    button, .link-btn, input, select, textarea { font: inherit; }
     button, .link-btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 11px 16px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-      text-align: center;
-      text-decoration: none;
-      display: block;
-      font-weight: 700;
-      font-size: 0.95rem;
-      transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 10px 18px rgba(109, 78, 251, 0.3);
-      position: relative;
-      overflow: hidden;
+      color: white; border: none; border-radius: 12px; padding: 11px 16px; cursor: pointer; width: 100%; margin-top: 10px; text-align: center; text-decoration: none; display: block; font-weight: 700; font-size: 0.95rem;
     }
-
-    button::after, .link-btn::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.28), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
-    }
-
-    button:hover::after, .link-btn:hover::after {
-      transform: translateX(100%);
-    }
-
-    button:hover, .link-btn:hover {
-      filter: brightness(1.08);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 26px rgba(109, 78, 251, 0.38);
-    }
-
-    button:active {
-      transform: translateY(0px);
-    }
-
-    .secondary {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.28);
-    }
-
-    .secondary:hover {
-      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.35);
-    }
-
-    .danger {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      box-shadow: 0 10px 18px rgba(220, 38, 38, 0.25);
-    }
-
-    .danger:hover {
-      box-shadow: 0 12px 26px rgba(220, 38, 38, 0.3);
-    }
-
-    .success {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      box-shadow: 0 10px 18px rgba(34, 197, 94, 0.25);
-    }
-
-    .success:hover {
-      box-shadow: 0 12px 26px rgba(34, 197, 94, 0.3);
-    }
-
-    .outline {
-      background: rgba(148, 163, 184, 0.08);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      box-shadow: none;
-      color: var(--text);
-    }
-
-    .outline:hover {
-      background: rgba(148, 163, 184, 0.12);
-      box-shadow: 0 4px 12px rgba(148, 163, 184, 0.1);
-    }
-
+    .secondary { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .outline { background: rgba(148, 163, 184, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); color: var(--text); }
     input, select, textarea {
-      width: 100%;
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text);
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      border-radius: 12px;
-      padding: 11px 12px;
-      margin-bottom: 10px;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      font-size: 0.95rem;
+      width: 100%; background: rgba(15, 23, 42, 0.9); color: var(--text); border: 1px solid rgba(148, 163, 184, 0.18); border-radius: 12px; padding: 11px 12px; margin-bottom: 10px; outline: none; font-size: 0.95rem;
     }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: rgba(139, 92, 246, 0.6);
-      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: rgba(226, 232, 240, 0.5);
-    }
-
-    .inline-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-
-    .inline-row input {
-      flex: 1;
-      margin: 0;
-      margin-bottom: 10px;
-    }
-
-    .inline-row button {
-      width: auto;
-      margin: 0;
-      margin-bottom: 10px;
-      min-width: 95px;
-      flex-shrink: 0;
-    }
-
-    .timer-value {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      margin: 14px 0 20px;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 0 20px rgba(139, 92, 246, 0.32);
-      color: #60a5fa;
-    }
-
-    .chat {
-      height: 150px;
-      overflow-y: auto;
-      background: rgba(10, 16, 24, 0.9);
-      padding: 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      margin-bottom: 10px;
-      line-height: 1.6;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .chat::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .chat::-webkit-scrollbar-track {
-      background: rgba(148, 163, 184, 0.05);
-      border-radius: 10px;
-    }
-
-    .chat::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, 0.2);
-      border-radius: 10px;
-    }
-
-    .chat::-webkit-scrollbar-thumb:hover {
-      background: rgba(148, 163, 184, 0.3);
-    }
-
-    .score-board, .task-list, .contact-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .score-board li, .task-list li, .contact-list li {
-      background: rgba(15, 23, 42, 0.82);
-      border: 1px solid rgba(148, 163, 184, 0.08);
-      border-left: 4px solid var(--secondary);
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      transition: transform 0.15s ease, border-color 0.15s ease;
-      word-break: break-word;
-    }
-
-    .score-board li:first-child {
-      border-left-color: var(--warning);
-      font-weight: 800;
-    }
-
-    .task-list li {
-      justify-content: flex-start;
-      gap: 12px;
-      border-left-color: var(--success);
-    }
-
-    .task-list input[type="checkbox"] {
-      width: auto;
-      margin: 0;
-      cursor: pointer;
-      accent-color: var(--success);
-    }
-
-    .score-board li:hover, .task-list li:hover, .contact-list li:hover {
-      transform: translateX(4px);
-      border-color: rgba(139, 92, 246, 0.26);
-    }
-
-    .done {
-      text-decoration: line-through;
-      opacity: 0.5;
-    }
-
-    .q-box {
-      display: none;
-      background: rgba(15, 20, 30, 0.96);
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 12px;
-      animation: slideDown 0.25s ease;
-    }
-
-    .q-box p {
-      margin: 10px 0;
-      color: var(--text);
-      font-size: 0.95rem;
-    }
-
-    .q-box input[type="text"],
-    .q-box input[type="number"] {
-      margin-bottom: 8px;
-    }
-
-    .challenge-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .challenge-card {
-      background: rgba(15, 23, 42, 0.72);
-      border: 1px solid rgba(148, 163, 184, 0.1);
-      border-radius: 16px;
-      padding: 14px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .challenge-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 28px rgba(15, 23, 42, 0.25);
-      border-color: rgba(139, 92, 246, 0.2);
-    }
-
-    .challenge-card b {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 1.05rem;
-      color: var(--text);
-    }
-
-    .question-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .question-row button {
-      width: auto;
-      margin: 0;
-      min-width: 85px;
-      padding: 8px 12px;
-      font-size: 0.85rem;
-    }
-
-    .notification {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(34, 197, 94, 0.95);
-      color: white;
-      padding: 14px 18px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
-      animation: slideInRight 0.3s ease;
-      z-index: 40;
-      max-width: 300px;
-      font-weight: 600;
-    }
-
-    .notification.error {
-      background: rgba(239, 68, 68, 0.95);
-      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
-    }
-
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(100px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    @media (max-width: 768px) {
-      body { padding: 16px 12px 40px; }
-
-      .topbar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-      }
-
-      .brand-wrap { width: 100%; }
-
-      .user-name-box {
-        width: 100%;
-        min-width: 0;
-      }
-
-      .badge {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .inline-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .inline-row input { margin-bottom: 0; }
-      .inline-row button { width: 100%; margin-bottom: 0; margin-top: 10px; }
-
-      .grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      button, .link-btn {
-        padding: 12px 14px;
-        font-size: 0.95rem;
-      }
-
-      .timer-value {
-        font-size: 2.2rem;
-      }
-
-      .challenge-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body { padding: 12px 8px 32px; }
-
-      .topbar {
-        padding: 14px 12px;
-        margin-bottom: 16px;
-      }
-
-      .brand {
-        font-size: 1.3rem;
-      }
-
-      .box {
-        padding: 16px;
-        border-radius: 18px;
-      }
-
-      .box h3 {
-        font-size: 1rem;
-        margin-bottom: 12px;
-      }
-
-      input, select, textarea {
-        padding: 10px 10px;
-        font-size: 16px;
-        margin-bottom: 8px;
-      }
-
-      button {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-        margin-top: 8px;
-      }
-
-      .chat {
-        height: 120px;
-        padding: 10px;
-        font-size: 0.85rem;
-      }
-
-      .score-board li, .task-list li {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-      }
-    }
+    .inline-row { display: flex; gap: 10px; align-items: flex-end; }
+    .inline-row input { flex: 1; margin: 0; }
+    .timer-value { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: 0.05em; margin: 14px 0 20px; font-variant-numeric: tabular-nums; color: #60a5fa; }
+    .chat { height: 150px; overflow-y: auto; background: rgba(10, 16, 24, 0.9); padding: 14px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.14); margin-bottom: 10px; line-height: 1.6; color: var(--muted); font-size: 0.9rem; }
+    .score-board, .task-list, .contact-list { list-style: none; padding: 0; margin: 0; }
+    .score-board li, .task-list li, .contact-list li { background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(148, 163, 184, 0.08); border-left: 4px solid var(--secondary); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .done { text-decoration: line-through; opacity: 0.5; }
+    .notification { position: fixed; bottom: 20px; right: 20px; background: rgba(34, 197, 94, 0.95); color: white; padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3); z-index: 40; max-width: 300px; font-weight: 600; }
+    .notification.error { background: rgba(239, 68, 68, 0.95); }
   </style>
 </head>
 <body>
@@ -624,12 +102,10 @@
         <div class="brand"><span class="brand-mark">📚</span> Min Studieportal</div>
         <div id="welcomeText" class="welcome-text">Hej, elev!</div>
       </div>
-
       <div class="user-name-box">
         <input id="usernameInput" type="text" placeholder="Ditt namn" autocomplete="off" />
         <button class="secondary" onclick="saveUserName()">Spara</button>
       </div>
-
       <div class="badge">Årskurs 7 • Fokus & Repetition</div>
     </header>
 
@@ -649,7 +125,6 @@
         <h3>👥 Gruppstudier</h3>
         <a href="https://meet.new" target="_blank" class="link-btn success">📞 Google Meet</a>
         <a href="https://zoom.new" target="_blank" class="link-btn secondary">📹 Zoom-möte</a>
-        <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" c[...]
       </div>
 
       <div class="box wide">
@@ -667,9 +142,7 @@
           <button class="secondary" onclick="addFriend()">+ Spelare</button>
         </div>
         <button class="danger" onclick="resetScores()">Nollställ matchen</button>
-        <ul id="leaderboard" class="score-board">
-          <li><span>👑 Du</span><span>0 p</span></li>
-        </ul>
+        <ul id="leaderboard" class="score-board"><li><span>👑 Du</span><span>0 p</span></li></ul>
       </div>
 
       <div class="box">
@@ -685,113 +158,46 @@
         <button class="success" onclick="adT()">+ Spara</button>
         <ul id="tl" class="task-list"></ul>
       </div>
+    </div>
+  </div>
 
-      <div class="box wide">
-        <h3>📝 Ämnesutmaningar</h3>
-        <label><b>Vem svarar?</b></label>
-        <select id="playerSelect">
-          <option value="0">Du</option>
-        </select>
+  <script>
+    const STORAGE_KEYS = { userName: 'studyportal-user', contacts: 'studyportal-contacts', players: 'studyportal-players', tasks: 'studyportal-tasks', timerSettings: 'studyportal-timer-settings' };
+    const state = { timerSeconds: 25 * 60, timerId: null, isRunning: false, players: [{ id: 0, name: 'Du', score: 0 }] };
 
-        <div class="challenge-grid">
-          <div class="challenge-card">
-            <div class="question-row"><b>Matte</b><button onclick="shQ('m')">Öppna</button></div>
-            <div id="m" class="q-box">
-              <p><strong>Fråga 1:</strong> (-4)+(-5)?</p>
-              <label><input type="radio" name="m1" value="a"> -9</label>
-              <label><input type="radio" name="m1" value="b"> -1</label>
-              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> 3x+5+2x-2?</p>
-              <label><input type="radio" name="m2" value="a"> 5x+3</label>
-              <label><input type="radio" name="m2" value="b"> 5x-3</label>
-              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> 2x=16. Vad är x?</p>
-              <input id="m_ans3" class="write-input" placeholder="Svar..." />
-              <button onclick="ckMix('m',['m1','m2'],['a','a'],['m_ans3'],['8'])">✓ Rätta</button>
-            </div>
-          </div>
-
-          <div class="challenge-card">
-            <div class="question-row"><b>🔬 NO</b><button onclick="shQ('no')">Öppna</button></div>
-            <div id="no" class="q-box">
-              <p><strong>Fråga 1:</strong> Fotosyntes sker i?</p>
-              <input id="no_ans1" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> Tecken för Syre?</p>
-              <input id="no_ans2" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> Neutralt pH?</p>
-              <label><input type="radio" name="no3" value="5"> 5</label>
-              <label><input type="radio" name="no3" value="7"> 7</label>
-              <button onclick="ckMix('no',['no3'],['7'],['no_ans1','no_ans2'], ['kloroplasten','O'])">✓ Rätta</button>
-            </div>
-          </div>
-
-          <div class="challenge-card">
-            <div class="question-row"><b>🌍 SO</b><button onclick="shQ('so')">Öppna</button></div>
-            <div id="so" class="q-box">
-              <p><strong>Fråga 1:</strong> Mandat i riksdagen?</p>
-              <label><input type="radio" name="so1" value="349"> 349</label>
-              <label><input type="radio" name="so1" value="249"> 249</label>
-              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> Äldsta religionen?</p>
-              <label><input type="radio" name="so2" value="j"> Judendomen</label>
-              <label><input type="radio" name="so2" value="i"> Islam</label>
-              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> Muslimers heliga byggnad?</p>
-              <input id="so_ans3" class="write-input" placeholder="Svar..." />
-              <button onclick="ckMix('so',['so1','so2'],['349','j'],['so_ans3'],['moskén'])">✓ Rätta</button>
-            </div>
-          </div>
-
-          <div class="challenge-card">
-            <div class="question-row"><b>🇪🇸 Spanska</b><button onclick="shQ('s')">Öppna</button></div>
-            <div id="s" class="q-box">
-              <p><strong>Fråga 1:</strong> "Skola" på spanska?</p>
-              <input id="s_ans1" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> "Vad är klockan?"</p>
-              <input id="s_ans2" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> "Perro" betyder?</p>
-              <label><input type="radio" name="s3" value="k"> Katt</label>
-              <label><input type="radio" name="s3" value="h"> Hund</label>
-              <button onclick="ckMix('s',['s3'],['h'],['s_ans1','s_ans2'], ['la escuela','que hora es'])">✓ Rätta</button>
-            </div>
-          </div>
-
-          <div class="challenge-card">
-            <div class="question-row"><b>🇩🇪 Tyska</b><button onclick="shQ('d')">Öppna</button></div>
-            <div id="d" class="q-box">
-              <p><strong>Fråga 1:</strong> "4" på tyska?</p>
-              <input id="d_ans1" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> "Vad heter du?"</p>
-              <input id="d_ans2" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> "Katze" betyder?</p>
-              <label><input type="radio" name="d3" value="k"> Katt</label>
-              <label><input type="radio" name="d3" value="h"> Hund</label>
-              <button onclick="ckMix('d',['d3'],['k'],['d_ans1','d_ans2'], ['vier','wie heisst du'])">✓ Rätta</button>
-            </div>
-          </div>
-
-          <div class="challenge-card">
-            <div class="question-row"><b>🇫🇷 Franska</b><button onclick="shQ('f')">Öppna</button></div>
-            <div id="f" class="q-box">
-              <p><strong>Fråga 1:</strong> "Röd" på franska?</p>
-              <input id="f_ans1" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 2:</strong> "3" på franska?</p>
-              <input id="f_ans2" class="write-input" placeholder="Svar..." />
-              <p style="margin-top: 12px;"><strong>Fråga 3:</strong> "Chat" betyder?</p>
-              <label><input type="radio" name="f3" value="k"> Katt</label>
-              <label><input type="radio" name="f3" value="h"> Hund</label>
-              <button onclick="ckMix('f',['f3'],['k'],['f_ans1','f_ans2'], ['rouge','trois'])">✓ Rätta</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="box wide" id="studyBox" style="margin-top:18px;">
-          <h3>📚 Prov från Studiematerial</h3>
-          <p style="margin:0 0 8px 0; color:var(--muted);">Använd PowerPoint-studiematerialet för att skapa en enkel plan inför provet eller generera frågor direkt från innehållet.</p>
-
-          <a href="https://powerpoint.cloud.microsoft/open/onedrive/?docId=750777C69321C4FA%21s918d42e75cc2406096f1bef5d4282a48&driveId=750777C69321C4FA" target="_blank" rel="noopener noreferrer" class="link-btn success" style="margin-bottom:12px;">📊 Öppna PowerPoint</a>
-
-          <label style="display:block; margin-bottom:8px;">
-            <small style="color:var(--muted);">PowerPoint / prov:</small>
-            <input id="studySubject" value="Prov från Studiematerial" placeholder="T.ex. Prov från Studiematerial" />
-          </label>
-
-          <label style="display:block; margin-bottom:8px;">
-            <small style="color:var(--muted);">Delar att plugga (komma-separerat):</small>
-            <textarea id="studyTopics" placeholder="Ex: Slide 1, Slide 2, repetition, ordlista, begrepp" style="width:100%;min-height:70px;border-radius:10px;padding:8px;background:rgba(15,23,42,[...]
+    function safeJsonParse(value, fallback) { try { return value ? JSON.parse(value) : fallback; } catch (error) { return fallback; } }
+    function showNotification(message, isError = false) { const notif = document.createElement('div'); notif.className = 'notification' + (isError ? ' error' : ''); notif.textContent = message; document.body.appendChild(notif); setTimeout(() => { notif.remove(); }, 3000); }
+    function saveUserName() { const input=document.getElementById('usernameInput'); const greeting=document.getElementById('welcomeText'); const name=input.value.trim(); if (!name) { greeting.textContent='Hej, elev!'; localStorage.removeItem(STORAGE_KEYS.userName); showNotification('Namn borttaget'); return; } localStorage.setItem(STORAGE_KEYS.userName, name); greeting.textContent=`Hej, ${name}!`; input.value = name; showNotification(`Hej ${name}! 👋`); }
+    function loadUserName() { const savedName = localStorage.getItem(STORAGE_KEYS.userName); const input = document.getElementById('usernameInput'); const greeting = document.getElementById('welcomeText'); if (!savedName) return; input.value = savedName; greeting.textContent = `Hej, ${savedName}!`; }
+    function aiCoachMessage(message) { const cb = document.getElementById('cb'); const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }); cb.innerHTML += `<br><b>AI ${time}:</b> ${message}`; cb.scrollTop = cb.scrollHeight; }
+    function upT() { const minutes = Math.floor(state.timerSeconds / 60); const seconds = state.timerSeconds % 60; document.getElementById('t').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; }
+    function setCustomTime() { if (state.isRunning) return; const value = parseInt(document.getElementById('customMin').value, 10); if (!isNaN(value) && value > 0 && value <= 180) { state.timerSeconds = value * 60; localStorage.setItem(STORAGE_KEYS.timerSettings, String(value)); upT(); showNotification(`Timer satt till ${value} min`); } else { showNotification('Ange 1-180 minuter', true); } }
+    function tgT() { if (state.isRunning) { clearInterval(state.timerId); state.isRunning = false; showNotification('⏸️ Pausad'); return; } state.isRunning = true; showNotification('⏱️ Timer igång'); state.timerId = setInterval(() => { if (state.timerSeconds > 0) { state.timerSeconds -= 1; upT(); return; } clearInterval(state.timerId); state.isRunning = false; showNotification('🎉 Bra pluggat!'); aiCoachMessage('Grattis! Du har fokuserat tills tiden tog slut. Bra jobbat!'); rsT(); }, 1000); }
+    function rsT() { clearInterval(state.timerId); const value = parseInt(document.getElementById('customMin').value, 10); state.timerSeconds = (!isNaN(value) && value > 0) ? value * 60 : 25 * 60; state.isRunning = false; upT(); }
+    function addContact() { const name = document.getElementById('contactName').value.trim(); const phone = document.getElementById('contactPhone').value.trim(); if (!name || !phone) { showNotification('Fyll i namn och nummer', true); return; } const list = document.getElementById('contactList'); const li = document.createElement('li'); li.innerHTML = `<span>${name}</span><span>${phone}</span>`; list.appendChild(li); document.getElementById('contactName').value=''; document.getElementById('contactPhone').value=''; }
+    function addFriend() { const name = document.getElementById('pName').value.trim(); if (!name) { showNotification('Skriv ett namn', true); return; } const list = document.getElementById('leaderboard'); const li = document.createElement('li'); li.innerHTML = `<span>👤 ${name}</span><span>0 p</span>`; list.appendChild(li); document.getElementById('pName').value=''; }
+    function resetScores() { document.getElementById('leaderboard').innerHTML = '<li><span>👑 Du</span><span>0 p</span></li>'; }
+    function adT() { const name = document.getElementById('ti').value.trim(); if (!name) { showNotification('Skriv en uppgift', true); return; } const list = document.getElementById('tl'); const li = document.createElement('li'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.addEventListener('change', () => { li.classList.toggle('done', checkbox.checked); localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(Array.from(list.querySelectorAll('li')).map(item => ({ text: item.querySelector('span').textContent, done: item.classList.contains('done') })))); }); const span = document.createElement('span'); span.textContent = name; li.appendChild(checkbox); li.appendChild(span); list.appendChild(li); document.getElementById('ti').value=''; localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(Array.from(list.querySelectorAll('li')).map(item => ({ text: item.querySelector('span').textContent, done: item.classList.contains('done') })))); }
+    function loadTasks() { const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []); const list = document.getElementById('tl'); list.innerHTML = ''; saved.forEach(task => { const li = document.createElement('li'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.checked = Boolean(task.done); checkbox.addEventListener('change', () => { li.classList.toggle('done', checkbox.checked); localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(Array.from(list.querySelectorAll('li')).map(item => ({ text: item.querySelector('span').textContent, done: item.classList.contains('done') })))); }); const span = document.createElement('span'); span.textContent = task.text; li.appendChild(checkbox); li.appendChild(span); if (task.done) li.classList.add('done'); list.appendChild(li); }); }
+    function sdA() { const question = document.getElementById('ci').value.trim(); if (!question) { showNotification('Skriv en fråga', true); return; } const answers = [
+      'Bra jobbat! Fortsätt med en liten repetition och ta en kort paus mellan övningarna.',
+      'Det viktigaste nu är att fokusera på det du kan göra direkt. Börja med det lättaste ämnet först.',
+      'Du har redan kommit långt. Sätt en liten målbild för nästa 10 minuter och gör den.'
+    ]; const answer = answers[Math.floor(Math.random() * answers.length)]; aiCoachMessage(`${question} — ${answer}`); document.getElementById('ci').value=''; }
+    loadUserName();
+    loadTasks();
+    rsT();
+    (function () {
+      try {
+        const target = Array.from(document.querySelectorAll('*')).find(el => el.textContent && el.textContent.includes('Prov från Studiematerial'));
+        if (target) {
+          const container = target.closest('#studyBox') || target.closest('.box');
+          if (container) container.remove();
+        }
+      } catch (e) {
+        console.error('Study promo removal script error:', e);
+      }
+    })();
+  </script>
+</body>
+</html>
