@@ -6,7 +6,7 @@
   <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
   <meta name="theme-color" content="#8b5cf6" />
   <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white'>📚</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white'>📚</text></svg>" />
   <style>
     :root {
       --bg-1: #120b1d;
@@ -59,24 +59,25 @@
     .brand-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; }
     .brand { font-weight: 800; letter-spacing: 0.03em; font-size: clamp(1.2rem, 2.5vw, 1.8rem); display: flex; align-items: center; gap: 10px; }
     .brand-mark {
-      width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #38bdf8); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); font-size: 16px; font-weight: bold;
+      width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #38bdf8); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(139, 92, 246, 0.45);
     }
     .welcome-text { color: var(--muted); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em; }
     .user-name-box {
-      display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(148, 163, 184, 0.16); border-radius: 14px; padding: 8px 12px; min-width: min(100%, 280px); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(148, 163, 184, 0.16); border-radius: 14px; padding: 8px 12px; min-width: min(100%, 280px);
     }
     .user-name-box input { background: transparent; border: none; color: var(--text); width: 100%; margin: 0; padding: 8px 0; font-size: 0.95rem; outline: none; }
     .user-name-box button { margin: 0; width: auto; min-width: 85px; padding: 8px 12px; font-size: 0.8rem; }
-    .badge { display: inline-flex; /* ... simplified for attach */ }
+    .badge { display: inline-flex; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-    .box { background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84)); border: 1px solid var(--border); border-radius: 22px; padding: 20px; box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04); position: relative; overflow: hidden; }
+    .box { background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84)); border: 1px solid var(--border); border-radius: 22px; padding: 20px; box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.02); }
     .box.wide { grid-column: 1 / -1; }
     .box h3 { font-size: 1.15rem; margin: 0 0 14px 0; color: var(--text); font-weight: 800; }
     button, .link-btn, input, select, textarea { font: inherit; }
     button, .link-btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-      color: white; border: none; border-radius: 12px; padding: 11px 16px; cursor: pointer; width: 100%; margin-top: 10px; text-align: center; text-decoration: none; display: block; font-weight: 700; font-size: 0.95rem;
+      color: white; border: none; border-radius: 12px; padding: 11px 16px; cursor: pointer; width: 100%; margin-top: 10px; text-align: center; text-decoration: none; display: block; font-weight: 700; transition: transform 0.15s ease, opacity 0.2s ease; box-shadow: 0 8px 18px rgba(109, 78, 251, 0.2);
     }
+    button:hover, .link-btn:hover { transform: translateY(-1px); opacity: 0.98; }
     .secondary { background: linear-gradient(135deg, #3b82f6, #2563eb); }
     .danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
     .success { background: linear-gradient(135deg, #22c55e, #16a34a); }
@@ -87,11 +88,11 @@
     .inline-row { display: flex; gap: 10px; align-items: flex-end; }
     .inline-row input { flex: 1; margin: 0; }
     .timer-value { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: 0.05em; margin: 14px 0 20px; font-variant-numeric: tabular-nums; color: #60a5fa; }
-    .chat { height: 150px; overflow-y: auto; background: rgba(10, 16, 24, 0.9); padding: 14px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.14); margin-bottom: 10px; line-height: 1.6; color: var(--muted); font-size: 0.9rem; }
+    .chat { height: 150px; overflow-y: auto; background: rgba(10, 16, 24, 0.9); padding: 14px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.14); margin-bottom: 10px; line-height: 1.6; }
     .score-board, .task-list, .contact-list { list-style: none; padding: 0; margin: 0; }
-    .score-board li, .task-list li, .contact-list li { background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(148, 163, 184, 0.08); border-left: 4px solid var(--secondary); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .score-board li, .task-list li, .contact-list li { background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(148, 163, 184, 0.08); border-left: 4px solid var(--secondary); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
     .done { text-decoration: line-through; opacity: 0.5; }
-    .notification { position: fixed; bottom: 20px; right: 20px; background: rgba(34, 197, 94, 0.95); color: white; padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3); z-index: 40; max-width: 300px; font-weight: 600; }
+    .notification { position: fixed; bottom: 20px; right: 20px; background: rgba(34, 197, 94, 0.95); color: white; padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3); z-index: 99; }
     .notification.error { background: rgba(239, 68, 68, 0.95); }
   </style>
 </head>
@@ -166,24 +167,21 @@
     const state = { timerSeconds: 25 * 60, timerId: null, isRunning: false, players: [{ id: 0, name: 'Du', score: 0 }] };
 
     function safeJsonParse(value, fallback) { try { return value ? JSON.parse(value) : fallback; } catch (error) { return fallback; } }
-    function showNotification(message, isError = false) { const notif = document.createElement('div'); notif.className = 'notification' + (isError ? ' error' : ''); notif.textContent = message; document.body.appendChild(notif); setTimeout(() => { notif.remove(); }, 3000); }
-    function saveUserName() { const input=document.getElementById('usernameInput'); const greeting=document.getElementById('welcomeText'); const name=input.value.trim(); if (!name) { greeting.textContent='Hej, elev!'; localStorage.removeItem(STORAGE_KEYS.userName); showNotification('Namn borttaget'); return; } localStorage.setItem(STORAGE_KEYS.userName, name); greeting.textContent=`Hej, ${name}!`; input.value = name; showNotification(`Hej ${name}! 👋`); }
-    function loadUserName() { const savedName = localStorage.getItem(STORAGE_KEYS.userName); const input = document.getElementById('usernameInput'); const greeting = document.getElementById('welcomeText'); if (!savedName) return; input.value = savedName; greeting.textContent = `Hej, ${savedName}!`; }
-    function aiCoachMessage(message) { const cb = document.getElementById('cb'); const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }); cb.innerHTML += `<br><b>AI ${time}:</b> ${message}`; cb.scrollTop = cb.scrollHeight; }
+    function showNotification(message, isError = false) { const notif = document.createElement('div'); notif.className = 'notification' + (isError ? ' error' : ''); notif.textContent = message; document.body.appendChild(notif); setTimeout(() => notif.remove(), 1800); }
+    function saveUserName() { const input=document.getElementById('usernameInput'); const greeting=document.getElementById('welcomeText'); const name=input.value.trim(); if (!name) { greeting.textContent='Hej, elev!'; localStorage.removeItem(STORAGE_KEYS.userName); return; } localStorage.setItem(STORAGE_KEYS.userName, name); greeting.textContent=`Hej, ${name}!`; }
+    function loadUserName() { const savedName = localStorage.getItem(STORAGE_KEYS.userName); const input = document.getElementById('usernameInput'); const greeting = document.getElementById('welcomeText'); if (savedName) { input.value = savedName; greeting.textContent = `Hej, ${savedName}!`; } }
+    function userCoachMessage(message) { const cb = document.getElementById('cb'); const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }); cb.innerHTML += `<br><b>Du</b> (${time}): ${message}`; cb.scrollTop = cb.scrollHeight; }
+    function aiCoachMessage(message) { const cb = document.getElementById('cb'); const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }); cb.innerHTML += `<br><b>AI</b> (${time}): ${message}`; cb.scrollTop = cb.scrollHeight; }
     function upT() { const minutes = Math.floor(state.timerSeconds / 60); const seconds = state.timerSeconds % 60; document.getElementById('t').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; }
-    function setCustomTime() { if (state.isRunning) return; const value = parseInt(document.getElementById('customMin').value, 10); if (!isNaN(value) && value > 0 && value <= 180) { state.timerSeconds = value * 60; localStorage.setItem(STORAGE_KEYS.timerSettings, String(value)); upT(); showNotification(`Timer satt till ${value} min`); } else { showNotification('Ange 1-180 minuter', true); } }
-    function tgT() { if (state.isRunning) { clearInterval(state.timerId); state.isRunning = false; showNotification('⏸️ Pausad'); return; } state.isRunning = true; showNotification('⏱️ Timer igång'); state.timerId = setInterval(() => { if (state.timerSeconds > 0) { state.timerSeconds -= 1; upT(); return; } clearInterval(state.timerId); state.isRunning = false; showNotification('🎉 Bra pluggat!'); aiCoachMessage('Grattis! Du har fokuserat tills tiden tog slut. Bra jobbat!'); rsT(); }, 1000); }
+    function setCustomTime() { if (state.isRunning) return; const value = parseInt(document.getElementById('customMin').value, 10); if (!isNaN(value) && value > 0 && value <= 180) { state.timerSeconds = value * 60; upT(); showNotification(`Timer satt till ${value} min`); } }
+    function tgT() { if (state.isRunning) { clearInterval(state.timerId); state.isRunning = false; showNotification('⏸️ Pausad'); return; } state.isRunning = true; showNotification('⏱️ Timer igång'); state.timerId = setInterval(() => { if (state.timerSeconds > 0) { state.timerSeconds--; upT(); } else { clearInterval(state.timerId); state.isRunning = false; showNotification('⏰ Klar! Ta en kort paus.', true); } }, 1000); }
     function rsT() { clearInterval(state.timerId); const value = parseInt(document.getElementById('customMin').value, 10); state.timerSeconds = (!isNaN(value) && value > 0) ? value * 60 : 25 * 60; state.isRunning = false; upT(); }
     function addContact() { const name = document.getElementById('contactName').value.trim(); const phone = document.getElementById('contactPhone').value.trim(); if (!name || !phone) { showNotification('Fyll i namn och nummer', true); return; } const list = document.getElementById('contactList'); const li = document.createElement('li'); li.innerHTML = `<span>${name}</span><span>${phone}</span>`; list.appendChild(li); document.getElementById('contactName').value=''; document.getElementById('contactPhone').value=''; }
-    function addFriend() { const name = document.getElementById('pName').value.trim(); if (!name) { showNotification('Skriv ett namn', true); return; } const list = document.getElementById('leaderboard'); const li = document.createElement('li'); li.innerHTML = `<span>👤 ${name}</span><span>0 p</span>`; list.appendChild(li); document.getElementById('pName').value=''; }
+    function addFriend() { const name = document.getElementById('pName').value.trim(); if (!name) { showNotification('Skriv ett namn', true); return; } const list = document.getElementById('leaderboard'); const li = document.createElement('li'); li.innerHTML = `<span>🏆 ${name}</span><span>0 p</span>`; list.appendChild(li); document.getElementById('pName').value=''; }
     function resetScores() { document.getElementById('leaderboard').innerHTML = '<li><span>👑 Du</span><span>0 p</span></li>'; }
-    function adT() { const name = document.getElementById('ti').value.trim(); if (!name) { showNotification('Skriv en uppgift', true); return; } const list = document.getElementById('tl'); const li = document.createElement('li'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.addEventListener('change', () => { li.classList.toggle('done', checkbox.checked); localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(Array.from(list.querySelectorAll('li')).map(item => ({ text: item.querySelector('span').textContent, done: item.classList.contains('done') })))); }); const span = document.createElement('span'); span.textContent = name; li.appendChild(checkbox); li.appendChild(span); list.appendChild(li); document.getElementById('ti').value=''; localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(Array.from(list.querySelectorAll('li')).map(item => ({ text: item.querySelector('span').textContent, done: item.classList.contains('done') })))); }
-    function loadTasks() { const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []); const list = document.getElementById('tl'); list.innerHTML = ''; saved.forEach(task => { const li = document.createElement('li'); const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.checked = Boolean(task.done); checkbox.addEventListener('change', () => { li.classList.toggle('done', checkbox.checked); localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(Array.from(list.querySelectorAll('li')).map(item => ({ text: item.querySelector('span').textContent, done: item.classList.contains('done') })))); }); const span = document.createElement('span'); span.textContent = task.text; li.appendChild(checkbox); li.appendChild(span); if (task.done) li.classList.add('done'); list.appendChild(li); }); }
-    function sdA() { const question = document.getElementById('ci').value.trim(); if (!question) { showNotification('Skriv en fråga', true); return; } const answers = [
-      'Bra jobbat! Fortsätt med en liten repetition och ta en kort paus mellan övningarna.',
-      'Det viktigaste nu är att fokusera på det du kan göra direkt. Börja med det lättaste ämnet först.',
-      'Du har redan kommit långt. Sätt en liten målbild för nästa 10 minuter och gör den.'
-    ]; const answer = answers[Math.floor(Math.random() * answers.length)]; aiCoachMessage(`${question} — ${answer}`); document.getElementById('ci').value=''; }
+    function adT() { const name = document.getElementById('ti').value.trim(); if (!name) { showNotification('Skriv en uppgift', true); return; } const list = document.getElementById('tl'); const li = document.createElement('li'); li.innerHTML = `<span>${name}</span><button class="outline" onclick="this.parentNode.classList.toggle('done')">Klar</button>`; list.appendChild(li); document.getElementById('ti').value=''; }
+    function loadTasks() { const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []); const list = document.getElementById('tl'); list.innerHTML = ''; saved.forEach(task => { const li = document.createElement('li'); li.innerHTML = `<span>${task}</span><button class="outline" onclick="this.parentNode.classList.toggle('done')">Klar</button>`; list.appendChild(li); }); }
+    function sdA() { const question = document.getElementById('ci').value.trim(); if (!question) { showNotification('Skriv en fråga', true); return; } userCoachMessage(question); const answers = [ 'Bra jobbat! Fortsätt med en liten repetition och ta en kort paus mellan övningarna.', 'Det viktigaste nu är att fokusera på det du kan göra direkt. Börja med det lättaste ämnet först.', 'Du har redan kommit långt. Sätt en liten målbild för nästa 10 minuter och gör den.' ]; const answer = answers[Math.floor(Math.random() * answers.length)]; aiCoachMessage(answer); document.getElementById('ci').value=''; }
     loadUserName();
     loadTasks();
     rsT();
