@@ -6,7 +6,7 @@
   <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
   <meta name="theme-color" content="#8b5cf6" />
   <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white'>📚</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white' text-anchor='middle'>📚</text></svg>">
   <style>
     :root {
       --bg-1: #120b1d;
@@ -26,8 +26,10 @@
       --warning: #fbbf24;
       --shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
     }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -39,7 +41,9 @@
       min-height: 100vh;
       padding: 22px 16px 48px;
     }
+
     .container { max-width: 1200px; margin: 0 auto; }
+
     .topbar {
       display: flex;
       justify-content: space-between;
@@ -56,44 +60,237 @@
       top: 12px;
       z-index: 30;
     }
+
     .brand-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; }
     .brand { font-weight: 800; letter-spacing: 0.03em; font-size: clamp(1.2rem, 2.5vw, 1.8rem); display: flex; align-items: center; gap: 10px; }
+
     .brand-mark {
-      width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #38bdf8); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(139, 92, 246, 0.45);
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
     }
+
     .welcome-text { color: var(--muted); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em; }
+
     .user-name-box {
-      display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(148, 163, 184, 0.16); border-radius: 14px; padding: 8px 12px; min-width: min(100%, 280px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 14px;
+      padding: 8px 12px;
+      min-width: min(100%, 280px);
     }
-    .user-name-box input { background: transparent; border: none; color: var(--text); width: 100%; margin: 0; padding: 8px 0; font-size: 0.95rem; outline: none; }
-    .user-name-box button { margin: 0; width: auto; min-width: 85px; padding: 8px 12px; font-size: 0.8rem; }
+
+    .user-name-box input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      width: 100%;
+      margin: 0;
+      padding: 8px 0;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .user-name-box button {
+      margin: 0;
+      width: auto;
+      min-width: 85px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+    }
+
     .badge { display: inline-flex; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-    .box { background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84)); border: 1px solid var(--border); border-radius: 22px; padding: 20px; box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.02); }
+
+    .box {
+      background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
     .box.wide { grid-column: 1 / -1; }
     .box h3 { font-size: 1.15rem; margin: 0 0 14px 0; color: var(--text); font-weight: 800; }
+
     button, .link-btn, input, select, textarea { font: inherit; }
+
     button, .link-btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-      color: white; border: none; border-radius: 12px; padding: 11px 16px; cursor: pointer; width: 100%; margin-top: 10px; text-align: center; text-decoration: none; display: block; font-weight: 700; transition: transform 0.15s ease, opacity 0.2s ease; box-shadow: 0 8px 18px rgba(109, 78, 251, 0.2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      transition: transform 0.18s ease, opacity 0.18s ease;
     }
+
     button:hover, .link-btn:hover { transform: translateY(-1px); opacity: 0.98; }
+
     .secondary { background: linear-gradient(135deg, #3b82f6, #2563eb); }
     .danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
     .success { background: linear-gradient(135deg, #22c55e, #16a34a); }
-    .outline { background: rgba(148, 163, 184, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); color: var(--text); }
-    input, select, textarea {
-      width: 100%; background: rgba(15, 23, 42, 0.9); color: var(--text); border: 1px solid rgba(148, 163, 184, 0.18); border-radius: 12px; padding: 11px 12px; margin-bottom: 10px; outline: none; font-size: 0.95rem;
+    .outline {
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: var(--text);
     }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 12px;
+      padding: 11px 12px;
+      margin-bottom: 10px;
+      outline: none;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.12);
+    }
+
+    input::placeholder, textarea::placeholder { color: #93a7cc; }
+
     .inline-row { display: flex; gap: 10px; align-items: flex-end; }
     .inline-row input { flex: 1; margin: 0; }
-    .timer-value { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; letter-spacing: 0.05em; margin: 14px 0 20px; font-variant-numeric: tabular-nums; color: #60a5fa; }
-    .chat { height: 150px; overflow-y: auto; background: rgba(10, 16, 24, 0.9); padding: 14px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.14); margin-bottom: 10px; line-height: 1.6; }
+
+    .timer-value {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      margin: 14px 0 20px;
+      font-variant-numeric: tabular-nums;
+      color: #60a5fa;
+    }
+
+    .chat {
+      height: 180px;
+      overflow-y: auto;
+      background: rgba(10, 16, 24, 0.9);
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      margin-bottom: 10px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-message {
+      max-width: 90%;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .chat-message.user {
+      background: rgba(59, 130, 246, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.25);
+      align-self: flex-end;
+    }
+
+    .chat-message.assistant {
+      background: rgba(139, 92, 246, 0.14);
+      border: 1px solid rgba(167, 139, 250, 0.25);
+      align-self: flex-start;
+    }
+
+    .chat-message.typing {
+      opacity: 0.92;
+    }
+
+    .chat-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      opacity: 0.8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .chat-text { white-space: pre-wrap; }
+
+    .dot-loader {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 18px;
+    }
+
+    .dot-loader span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+      display: block;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+
+    .dot-loader span:nth-child(2) { animation-delay: 0.15s; }
+    .dot-loader span:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+      40% { transform: translateY(-4px); opacity: 1; }
+    }
+
     .score-board, .task-list, .contact-list { list-style: none; padding: 0; margin: 0; }
-    .score-board li, .task-list li, .contact-list li { background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(148, 163, 184, 0.08); border-left: 4px solid var(--secondary); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .score-board li, .task-list li, .contact-list li {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      border-left: 4px solid var(--secondary);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
     .done { text-decoration: line-through; opacity: 0.5; }
-    .notification { position: fixed; bottom: 20px; right: 20px; background: rgba(34, 197, 94, 0.95); color: white; padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3); z-index: 99; }
-    .notification.error { background: rgba(239, 68, 68, 0.95); }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(34, 197, 94, 0.95);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.28);
+      z-index: 99;
+      font-weight: 700;
+      animation: slideUp 0.25s ease;
+    }
+
+    .notification.error {
+      background: rgba(239, 68, 68, 0.95);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.25);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(14px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -148,7 +345,7 @@
 
       <div class="box">
         <h3>🤖 AI-Coach</h3>
-        <div id="cb" class="chat">AI: Tjena! Dags för fokuserad studier! Säg till om du behöver tips eller motivation.</div>
+        <div id="cb" class="chat"></div>
         <input id="ci" placeholder="Skriv fråga..." />
         <button onclick="sdA()">📤 Skicka</button>
       </div>
@@ -163,39 +360,333 @@
   </div>
 
   <script>
-    const STORAGE_KEYS = { userName: 'studyportal-user', contacts: 'studyportal-contacts', players: 'studyportal-players', tasks: 'studyportal-tasks', timerSettings: 'studyportal-timer-settings' };
-    const state = { timerSeconds: 25 * 60, timerId: null, isRunning: false, players: [{ id: 0, name: 'Du', score: 0 }] };
+    const STORAGE_KEYS = {
+      userName: 'studyportal-user',
+      contacts: 'studyportal-contacts',
+      players: 'studyportal-players',
+      tasks: 'studyportal-tasks',
+      timerSettings: 'studyportal-timer-settings'
+    };
 
-    function safeJsonParse(value, fallback) { try { return value ? JSON.parse(value) : fallback; } catch (error) { return fallback; } }
-    function showNotification(message, isError = false) { const notif = document.createElement('div'); notif.className = 'notification' + (isError ? ' error' : ''); notif.textContent = message; document.body.appendChild(notif); setTimeout(() => notif.remove(), 1800); }
-    function saveUserName() { const input=document.getElementById('usernameInput'); const greeting=document.getElementById('welcomeText'); const name=input.value.trim(); if (!name) { greeting.textContent='Hej, elev!'; localStorage.removeItem(STORAGE_KEYS.userName); return; } localStorage.setItem(STORAGE_KEYS.userName, name); greeting.textContent=`Hej, ${name}!`; }
-    function loadUserName() { const savedName = localStorage.getItem(STORAGE_KEYS.userName); const input = document.getElementById('usernameInput'); const greeting = document.getElementById('welcomeText'); if (savedName) { input.value = savedName; greeting.textContent = `Hej, ${savedName}!`; } }
-    function userCoachMessage(message) { const cb = document.getElementById('cb'); const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }); cb.innerHTML += `<br><b>Du</b> (${time}): ${message}`; cb.scrollTop = cb.scrollHeight; }
-    function aiCoachMessage(message) { const cb = document.getElementById('cb'); const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }); cb.innerHTML += `<br><b>AI</b> (${time}): ${message}`; cb.scrollTop = cb.scrollHeight; }
-    function upT() { const minutes = Math.floor(state.timerSeconds / 60); const seconds = state.timerSeconds % 60; document.getElementById('t').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; }
-    function setCustomTime() { if (state.isRunning) return; const value = parseInt(document.getElementById('customMin').value, 10); if (!isNaN(value) && value > 0 && value <= 180) { state.timerSeconds = value * 60; upT(); showNotification(`Timer satt till ${value} min`); } }
-    function tgT() { if (state.isRunning) { clearInterval(state.timerId); state.isRunning = false; showNotification('⏸️ Pausad'); return; } state.isRunning = true; showNotification('⏱️ Timer igång'); state.timerId = setInterval(() => { if (state.timerSeconds > 0) { state.timerSeconds--; upT(); } else { clearInterval(state.timerId); state.isRunning = false; showNotification('⏰ Klar! Ta en kort paus.', true); } }, 1000); }
-    function rsT() { clearInterval(state.timerId); const value = parseInt(document.getElementById('customMin').value, 10); state.timerSeconds = (!isNaN(value) && value > 0) ? value * 60 : 25 * 60; state.isRunning = false; upT(); }
-    function addContact() { const name = document.getElementById('contactName').value.trim(); const phone = document.getElementById('contactPhone').value.trim(); if (!name || !phone) { showNotification('Fyll i namn och nummer', true); return; } const list = document.getElementById('contactList'); const li = document.createElement('li'); li.innerHTML = `<span>${name}</span><span>${phone}</span>`; list.appendChild(li); document.getElementById('contactName').value=''; document.getElementById('contactPhone').value=''; }
-    function addFriend() { const name = document.getElementById('pName').value.trim(); if (!name) { showNotification('Skriv ett namn', true); return; } const list = document.getElementById('leaderboard'); const li = document.createElement('li'); li.innerHTML = `<span>🏆 ${name}</span><span>0 p</span>`; list.appendChild(li); document.getElementById('pName').value=''; }
-    function resetScores() { document.getElementById('leaderboard').innerHTML = '<li><span>👑 Du</span><span>0 p</span></li>'; }
-    function adT() { const name = document.getElementById('ti').value.trim(); if (!name) { showNotification('Skriv en uppgift', true); return; } const list = document.getElementById('tl'); const li = document.createElement('li'); li.innerHTML = `<span>${name}</span><button class="outline" onclick="this.parentNode.classList.toggle('done')">Klar</button>`; list.appendChild(li); document.getElementById('ti').value=''; }
-    function loadTasks() { const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []); const list = document.getElementById('tl'); list.innerHTML = ''; saved.forEach(task => { const li = document.createElement('li'); li.innerHTML = `<span>${task}</span><button class="outline" onclick="this.parentNode.classList.toggle('done')">Klar</button>`; list.appendChild(li); }); }
-    function sdA() { const question = document.getElementById('ci').value.trim(); if (!question) { showNotification('Skriv en fråga', true); return; } userCoachMessage(question); const answers = [ 'Bra jobbat! Fortsätt med en liten repetition och ta en kort paus mellan övningarna.', 'Det viktigaste nu är att fokusera på det du kan göra direkt. Börja med det lättaste ämnet först.', 'Du har redan kommit långt. Sätt en liten målbild för nästa 10 minuter och gör den.' ]; const answer = answers[Math.floor(Math.random() * answers.length)]; aiCoachMessage(answer); document.getElementById('ci').value=''; }
+    const state = {
+      timerSeconds: 25 * 60,
+      timerId: null,
+      isRunning: false,
+      players: [{ id: 0, name: 'Du', score: 0 }],
+      aiHistory: []
+    };
+
+    function safeJsonParse(value, fallback) {
+      try { return value ? JSON.parse(value) : fallback; } catch (error) { return fallback; }
+    }
+
+    function showNotification(message, isError = false) {
+      const notif = document.createElement('div');
+      notif.className = 'notification' + (isError ? ' error' : '');
+      notif.textContent = message;
+      document.body.appendChild(notif);
+      setTimeout(() => notif.remove(), 2200);
+    }
+
+    function saveUserName() {
+      const input = document.getElementById('usernameInput');
+      const greeting = document.getElementById('welcomeText');
+      const name = input.value.trim();
+      if (!name) {
+        greeting.textContent = 'Hej, elev!';
+        localStorage.removeItem(STORAGE_KEYS.userName);
+        showNotification('Skriv ditt namn först', true);
+        return;
+      }
+      localStorage.setItem(STORAGE_KEYS.userName, name);
+      greeting.textContent = `Hej, ${name}!`;
+      showNotification(`Välkommen, ${name}!`);
+    }
+
+    function loadUserName() {
+      const savedName = localStorage.getItem(STORAGE_KEYS.userName);
+      const input = document.getElementById('usernameInput');
+      const greeting = document.getElementById('welcomeText');
+      if (savedName) {
+        input.value = savedName;
+        greeting.textContent = `Hej, ${savedName}!`;
+      }
+    }
+
+    function escapeHtml(value = '') {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function appendChatMessage(role, message) {
+      const chatBox = document.getElementById('cb');
+      const bubble = document.createElement('div');
+      const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+      const label = role === 'user' ? 'Du' : 'AI';
+      bubble.className = `chat-message ${role}`;
+      bubble.innerHTML = `
+        <div class="chat-label">${label} • ${time}</div>
+        <div class="chat-text">${escapeHtml(message).replace(/\n/g, '<br>')}</div>
+      `;
+      chatBox.appendChild(bubble);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const chatBox = document.getElementById('cb');
+      if (document.getElementById('aiTyping')) return;
+
+      const typing = document.createElement('div');
+      typing.id = 'aiTyping';
+      typing.className = 'chat-message assistant typing';
+      typing.innerHTML = `
+        <div class="chat-label">AI • skriver...</div>
+        <div class="chat-text">
+          <span class="dot-loader"><span></span><span></span><span></span></span>
+        </div>
+      `;
+      chatBox.appendChild(typing);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      const typing = document.getElementById('aiTyping');
+      if (typing) typing.remove();
+    }
+
+    function buildAiCoachReply(question) {
+      const q = question.toLowerCase();
+      const userName = document.getElementById('usernameInput').value.trim() || 'elev';
+      const recentTopics = state.aiHistory.slice(-3).map(item => item.toLowerCase()).join(' ');
+
+      if (q.includes('matte') || q.includes('räkning') || q.includes('algebra')) {
+        return `Hej ${userName}! För matte är det smart att göra 3 saker: 1) skriv varje steg, 2) kontrollera svaret, 3) gör en lätt repetition innan du börjar. Vill du ha en snabb 10-minuters mattetipsplan?`;
+      }
+
+      if (q.includes('engelska') || q.includes('språk') || q.includes('ord')) {
+        return `Hej ${userName}! För engelska kan du träna med två metoder: lär 5 nya ord och använd dem i en mening direkt. Skriv också en kort mening om dagens lektion så blir det lättare att komma ihåg.`;
+      }
+
+      if (q.includes('plugga') || q.includes('studera') || q.includes('hjälp')) {
+        return `Hej ${userName}! Ett bra sätt att plugga är att börja med det svåraste i 15 minuter, ta en kort paus och avsluta med repetition. Det hjälper dig att hålla fokus och känna dig mer trygg.`;
+      }
+
+      if (q.includes('motivation') || q.includes('trött') || q.includes('svårt')) {
+        return `Hej ${userName}! Du behöver inte göra allt på en gång. Sätt ett litet mål, till exempel 10 minuter, och gör sedan ett lite större mål. Små steg ger snabb motivation.`;
+      }
+
+      if (q.includes('läxa') || q.includes('uppgift') || q.includes('hemarbete')) {
+        return `Hej ${userName}! För läxor kan du göra detta: läs instruktionen först, gör den enklaste delen, kontrollera sedan om du missat något viktigt. Det gör uppgiften mycket lättare.`;
+      }
+
+      if (q.includes('plan') || q.includes('schema') || q.includes('idag')) {
+        return `Hej ${userName}! Här är en enkel studieplan för idag: 15 min matte, 15 min svenska, 10 min repetition, 5 min paus, sedan 15 min läxa. Det ger fokus utan att bli för tungt.`;
+      }
+
+      if (recentTopics.includes('matte') && q.includes('hur')) {
+        return `Hej ${userName}! Eftersom du har frågat om matte tidigare, prova att lösa en enklare uppgift först för att få flyt. Då blir nästa uppgift lättare att förstå.`;
+      }
+
+      return `Hej ${userName}! Bra fråga. För att lyckas med din studie är det viktigast att välja ett tydligt mål, genomföra det i korta block och ta korta pauser. Om du vill kan jag hjälpa dig att göra en personlig studieplan för just det du behöver.`;
+    }
+
+    function sdA() {
+      const question = document.getElementById('ci').value.trim();
+      if (!question) {
+        showNotification('Skriv en fråga först', true);
+        return;
+      }
+
+      appendChatMessage('user', question);
+      state.aiHistory.push(question);
+      document.getElementById('ci').value = '';
+      showTypingIndicator();
+
+      setTimeout(() => {
+        const reply = buildAiCoachReply(question);
+        hideTypingIndicator();
+        appendChatMessage('assistant', reply);
+        state.aiHistory.push(reply);
+      }, 450);
+    }
+
+    function upT() {
+      const minutes = Math.floor(state.timerSeconds / 60);
+      const seconds = state.timerSeconds % 60;
+      document.getElementById('t').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function setCustomTime() {
+      if (state.isRunning) return;
+      const value = parseInt(document.getElementById('customMin').value, 10);
+      if (!isNaN(value) && value > 0 && value <= 180) {
+        state.timerSeconds = value * 60;
+        upT();
+        localStorage.setItem(STORAGE_KEYS.timerSettings, JSON.stringify({ minutes: value }));
+        showNotification(`Timer satt till ${value} minuter`);
+      } else {
+        showNotification('Ange ett tal mellan 1 och 180', true);
+      }
+    }
+
+    function tgT() {
+      if (state.isRunning) {
+        clearInterval(state.timerId);
+        state.isRunning = false;
+        showNotification('⏸️ Pausad');
+        return;
+      }
+
+      state.isRunning = true;
+      showNotification('⏱️ Timer startad');
+      state.timerId = setInterval(() => {
+        if (state.timerSeconds <= 0) {
+          clearInterval(state.timerId);
+          state.isRunning = false;
+          showNotification('🎉 Tiden är slut! Ta en kort paus.', false);
+          return;
+        }
+        state.timerSeconds -= 1;
+        upT();
+      }, 1000);
+    }
+
+    function rsT() {
+      clearInterval(state.timerId);
+      const value = parseInt(document.getElementById('customMin').value, 10);
+      state.timerSeconds = (!isNaN(value) && value > 0) ? value * 60 : 25 * 60;
+      state.isRunning = false;
+      upT();
+    }
+
+    function addContact() {
+      const name = document.getElementById('contactName').value.trim();
+      const phone = document.getElementById('contactPhone').value.trim();
+      if (!name || !phone) {
+        showNotification('Skriv namn och nummer', true);
+        return;
+      }
+
+      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
+      contacts.push({ id: Date.now(), name, phone });
+      localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(contacts));
+      renderContacts();
+      document.getElementById('contactName').value = '';
+      document.getElementById('contactPhone').value = '';
+      showNotification('Kontakt sparad');
+    }
+
+    function renderContacts() {
+      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
+      const list = document.getElementById('contactList');
+      list.innerHTML = '';
+
+      contacts.forEach((contact) => {
+        const item = document.createElement('li');
+        item.innerHTML = `<span>${escapeHtml(contact.name)}</span><span>${escapeHtml(contact.phone)}</span>`;
+        list.appendChild(item);
+      });
+    }
+
+    function addFriend() {
+      const name = document.getElementById('pName').value.trim();
+      if (!name) {
+        showNotification('Skriv ett namn', true);
+        return;
+      }
+
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
+      const nextId = Date.now();
+      players.push({ id: nextId, name, score: 0 });
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
+      renderLeaderboard();
+      document.getElementById('pName').value = '';
+      showNotification(`${name} tillagd`);
+    }
+
+    function resetScores() {
+      const players = [{ id: 0, name: 'Du', score: 0 }];
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
+      renderLeaderboard();
+      showNotification('Poängen är nollställd');
+    }
+
+    function renderLeaderboard() {
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
+      const list = document.getElementById('leaderboard');
+      list.innerHTML = '';
+
+      players.forEach((player, idx) => {
+        const item = document.createElement('li');
+        item.innerHTML = `<span>${idx === 0 ? '👑' : '🏅'} ${escapeHtml(player.name)}</span><span>${player.score} p</span>`;
+        list.appendChild(item);
+      });
+    }
+
+    function adT() {
+      const name = document.getElementById('ti').value.trim();
+      if (!name) {
+        showNotification('Skriv en uppgift', true);
+        return;
+      }
+
+      const tasks = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      tasks.push({ id: Date.now(), text: name, done: false });
+      localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+      loadTasks();
+      document.getElementById('ti').value = '';
+      showNotification('Uppgift sparad');
+    }
+
+    function loadTasks() {
+      const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      const list = document.getElementById('tl');
+      list.innerHTML = '';
+
+      saved.forEach(task => {
+        const item = document.createElement('li');
+        item.className = task.done ? 'done' : '';
+        item.innerHTML = `
+          <span>${escapeHtml(task.text)}</span>
+          <button class="outline" data-id="${task.id}" onclick="toggleTask('${task.id}')">${task.done ? 'Ångra' : 'Klar'}</button>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function toggleTask(id) {
+      const tasks = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      const updated = tasks.map(task => task.id === Number(id) ? { ...task, done: !task.done } : task);
+      localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(updated));
+      loadTasks();
+    }
+
+    document.getElementById('ci').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        sdA();
+      }
+    });
+
     loadUserName();
     loadTasks();
+    renderContacts();
+    renderLeaderboard();
     rsT();
-    (function () {
-      try {
-        const target = Array.from(document.querySelectorAll('*')).find(el => el.textContent && el.textContent.includes('Prov från Studiematerial'));
-        if (target) {
-          const container = target.closest('#studyBox') || target.closest('.box');
-          if (container) container.remove();
-        }
-      } catch (e) {
-        console.error('Study promo removal script error:', e);
-      }
-    })();
+
+    const savedTimerMinutes = safeJsonParse(localStorage.getItem(STORAGE_KEYS.timerSettings), null);
+    if (savedTimerMinutes && savedTimerMinutes.minutes) {
+      document.getElementById('customMin').value = savedTimerMinutes.minutes;
+      state.timerSeconds = savedTimerMinutes.minutes * 60;
+      upT();
+    }
+
+    const chatBox = document.getElementById('cb');
+    const initialMessage = 'AI: Tjena! Dags för fokuserad studier! Säg till om du behöver tips eller motivation.';
+    appendChatMessage('assistant', initialMessage.replace(/^AI:\s*/i, ''));
   </script>
 </body>
 </html>
