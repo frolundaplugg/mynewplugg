@@ -365,7 +365,8 @@
       contacts: 'studyportal-contacts',
       players: 'studyportal-players',
       tasks: 'studyportal-tasks',
-      timerSettings: 'studyportal-timer-settings'
+      timerSettings: 'studyportal-timer-settings',
+      aiHistory: 'studyportal-ai-history'
     };
 
     const state = {
@@ -373,8 +374,12 @@
       timerId: null,
       isRunning: false,
       players: [{ id: 0, name: 'Du', score: 0 }],
-      aiHistory: []
+      aiHistory: safeJsonParse(localStorage.getItem(STORAGE_KEYS.aiHistory), [])
     };
+
+    const AI_ENDPOINT = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000/api/chat'
+      : '/api/chat';
 
     function safeJsonParse(value, fallback) {
       try { return value ? JSON.parse(value) : fallback; } catch (error) { return fallback; }
@@ -458,43 +463,33 @@
       if (typing) typing.remove();
     }
 
-    function buildAiCoachReply(question) {
-      const q = question.toLowerCase();
-      const userName = document.getElementById('usernameInput').value.trim() || 'elev';
-      const recentTopics = state.aiHistory.slice(-3).map(item => item.toLowerCase()).join(' ');
-
-      if (q.includes('matte') || q.includes('räkning') || q.includes('algebra')) {
-        return `Hej ${userName}! För matte är det smart att göra 3 saker: 1) skriv varje steg, 2) kontrollera svaret, 3) gör en lätt repetition innan du börjar. Vill du ha en snabb 10-minuters mattetipsplan?`;
-      }
-
-      if (q.includes('engelska') || q.includes('språk') || q.includes('ord')) {
-        return `Hej ${userName}! För engelska kan du träna med två metoder: lär 5 nya ord och använd dem i en mening direkt. Skriv också en kort mening om dagens lektion så blir det lättare att komma ihåg.`;
-      }
-
-      if (q.includes('plugga') || q.includes('studera') || q.includes('hjälp')) {
-        return `Hej ${userName}! Ett bra sätt att plugga är att börja med det svåraste i 15 minuter, ta en kort paus och avsluta med repetition. Det hjälper dig att hålla fokus och känna dig mer trygg.`;
-      }
-
-      if (q.includes('motivation') || q.includes('trött') || q.includes('svårt')) {
-        return `Hej ${userName}! Du behöver inte göra allt på en gång. Sätt ett litet mål, till exempel 10 minuter, och gör sedan ett lite större mål. Små steg ger snabb motivation.`;
-      }
-
-      if (q.includes('läxa') || q.includes('uppgift') || q.includes('hemarbete')) {
-        return `Hej ${userName}! För läxor kan du göra detta: läs instruktionen först, gör den enklaste delen, kontrollera sedan om du missat något viktigt. Det gör uppgiften mycket lättare.`;
-      }
-
-      if (q.includes('plan') || q.includes('schema') || q.includes('idag')) {
-        return `Hej ${userName}! Här är en enkel studieplan för idag: 15 min matte, 15 min svenska, 10 min repetition, 5 min paus, sedan 15 min läxa. Det ger fokus utan att bli för tungt.`;
-      }
-
-      if (recentTopics.includes('matte') && q.includes('hur')) {
-        return `Hej ${userName}! Eftersom du har frågat om matte tidigare, prova att lösa en enklare uppgift först för att få flyt. Då blir nästa uppgift lättare att förstå.`;
-      }
-
-      return `Hej ${userName}! Bra fråga. För att lyckas med din studie är det viktigast att välja ett tydligt mål, genomföra det i korta block och ta korta pauser. Om du vill kan jag hjälpa dig att göra en personlig studieplan för just det du behöver.`;
+    function persistAiHistory() {
+      localStorage.setItem(STORAGE_KEYS.aiHistory, JSON.stringify(state.aiHistory.slice(-20)));
     }
 
-    function sdA() {
+    async function sendToAi(question) {
+      const userName = document.getElementById('usernameInput').value.trim() || 'elev';
+      const history = state.aiHistory.slice(-8);
+
+      const response = await fetch(AI_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question,
+          userName,
+          history
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Något gick fel');
+      }
+
+      return data.reply;
+    }
+
+    async function sdA() {
       const question = document.getElementById('ci').value.trim();
       if (!question) {
         showNotification('Skriv en fråga först', true);
@@ -502,16 +497,24 @@
       }
 
       appendChatMessage('user', question);
-      state.aiHistory.push(question);
+      state.aiHistory.push({ role: 'user', content: question });
+      persistAiHistory();
       document.getElementById('ci').value = '';
       showTypingIndicator();
 
-      setTimeout(() => {
-        const reply = buildAiCoachReply(question);
-        hideTypingIndicator();
+      try {
+        const reply = await sendToAi(question);
         appendChatMessage('assistant', reply);
-        state.aiHistory.push(reply);
-      }, 450);
+        state.aiHistory.push({ role: 'assistant', content: reply });
+        persistAiHistory();
+      } catch (error) {
+        const fallback = 'Tyvärr gick det inte att få ett svar just nu. Försök igen om en stund.';
+        appendChatMessage('assistant', fallback);
+        showNotification('AI-tjänsten svarade inte', true);
+        console.error(error);
+      } finally {
+        hideTypingIndicator();
+      }
     }
 
     function upT() {
@@ -685,8 +688,8 @@
     }
 
     const chatBox = document.getElementById('cb');
-    const initialMessage = 'AI: Tjena! Dags för fokuserad studier! Säg till om du behöver tips eller motivation.';
-    appendChatMessage('assistant', initialMessage.replace(/^AI:\s*/i, ''));
+    const initialMessage = 'Hej! Jag är din studiecoach. Skriv en fråga och jag hjälper dig med fokus, repetition eller motivation.';
+    appendChatMessage('assistant', initialMessage);
   </script>
 </body>
 </html>
