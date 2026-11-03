@@ -1,276 +1,695 @@
 <!DOCTYPE html>
 <html lang="sv">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kunna inför provet</title>
-    <style>
-      :root {
-        --bg: #e8e7e5;
-        --page-bg: #f3f3f1;
-        --header: #1f4d50;
-        --header-text: #eef3f1;
-        --row-light: #dfeae7;
-        --row-dark: #d5e4e0;
-        --line: #c7d1ce;
-        --text: #1b2a2b;
-        --muted: #586f72;
-        --accent: #58687a;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Min Studieportal - En fokuserad studieapp för årskurs 7 med timer, uppgifter, quiz och AI-coach." />
+  <meta name="theme-color" content="#8b5cf6" />
+  <title>Min Studieportal - Fokus & Repetition för Årskurs 7</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%238b5cf6' width='100' height='100'/><text x='50' y='70' font-size='60' fill='white'>📚</text></svg>">
+  <style>
+    :root {
+      --bg-1: #120b1d;
+      --bg-2: #1a1230;
+      --bg-3: #0d1525;
+      --panel: rgba(17, 24, 39, 0.85);
+      --panel-strong: rgba(18, 29, 46, 0.96);
+      --panel-soft: rgba(26, 35, 52, 0.8);
+      --border: rgba(148, 163, 184, 0.18);
+      --text: #edf3ff;
+      --muted: #bcc9e6;
+      --primary: #8b5cf6;
+      --primary-strong: #6d4efb;
+      --secondary: #38bdf8;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+    }
 
-      * { box-sizing: border-box; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-      body {
-        margin: 0;
-        background: var(--bg);
-        font-family: Arial, Helvetica, sans-serif;
-        color: var(--text);
-      }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(139, 92, 246, 0.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 24%),
+        linear-gradient(180deg, var(--bg-2), var(--bg-1) 26%, var(--bg-3) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 22px 16px 48px;
+    }
 
-      .page {
-        max-width: 980px;
-        margin: 30px auto;
-        background: var(--page-bg);
-        border: 1px solid #d4d4d2;
-        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
-      }
+    .container { max-width: 1200px; margin: 0 auto; }
 
-      .hero {
-        background: var(--header);
-        color: var(--header-text);
-        display: flex;
-        align-items: stretch;
-        justify-content: space-between;
-        min-height: 180px;
-        padding: 24px 0 18px 24px;
-      }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 22px;
+      background: rgba(14, 20, 31, 0.82);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04);
+      margin-bottom: 28px;
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 12px;
+      z-index: 30;
+    }
 
-      .hero-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        flex: 1;
-      }
+    .brand-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .brand { font-weight: 800; letter-spacing: 0.03em; font-size: clamp(1.2rem, 2.5vw, 1.8rem); display: flex; align-items: center; gap: 10px; }
 
-      h1 {
-        margin: 0;
-        font-size: clamp(2.2rem, 2vw + 1.5rem, 3.4rem);
-        line-height: 1.1;
-        font-weight: 700;
-      }
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #8b5cf6, #38bdf8);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    }
 
-      .subtitle {
-        margin-top: 14px;
-        font-size: 0.95rem;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.92);
-      }
+    .welcome-text { color: var(--muted); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em; }
 
-      .hero-image {
-        width: 260px;
-        min-width: 180px;
-        background:
-          linear-gradient(rgba(18, 54, 57, 0.25), rgba(18, 54, 57, 0.25)),
-          url('https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
-        border-left: 1px solid rgba(255,255,255,0.18);
-      }
+    .user-name-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 14px;
+      padding: 8px 12px;
+      min-width: min(100%, 280px);
+    }
 
-      .section {
-        border-top: 1px solid var(--line);
-      }
+    .user-name-box input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      width: 100%;
+      margin: 0;
+      padding: 8px 0;
+      font-size: 0.95rem;
+      outline: none;
+    }
 
-      .section-title {
-        background: rgba(255,255,255,0.12);
-        color: #2c5d67;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        font-size: 0.78rem;
-        font-weight: 700;
-        padding: 14px 18px 12px;
-      }
+    .user-name-box button {
+      margin: 0;
+      width: auto;
+      min-width: 85px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+    }
 
-      .checklist {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
+    .badge { display: inline-flex; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 
-      .checklist li {
-        display: flex;
-        align-items: center;
-        min-height: 60px;
-        padding: 0 16px 0 12px;
-        border-top: 1px solid var(--line);
-      }
+    .box {
+      background: linear-gradient(180deg, rgba(17,24,39,0.9), rgba(16,20,32,0.84));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.03);
+    }
 
-      .checklist li:nth-child(odd) {
-        background: var(--row-light);
-      }
+    .box.wide { grid-column: 1 / -1; }
+    .box h3 { font-size: 1.15rem; margin: 0 0 14px 0; color: var(--text); font-weight: 800; }
 
-      .checklist li:nth-child(even) {
-        background: var(--row-dark);
-      }
+    button, .link-btn, input, select, textarea { font: inherit; }
 
-      .checklist input[type='checkbox'] {
-        width: 18px;
-        height: 18px;
-        accent-color: #2d5e62;
-        margin-right: 12px;
-        flex-shrink: 0;
-      }
+    button, .link-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
 
-      .label {
-        flex: 1;
-        font-size: 1.04rem;
-        line-height: 1.45;
-        color: var(--text);
-      }
+    button:hover, .link-btn:hover { transform: translateY(-1px); opacity: 0.98; }
 
-      .tag {
-        color: var(--accent);
-        font-size: 0.92rem;
-        font-weight: 700;
-        white-space: nowrap;
-        margin-left: 8px;
-      }
+    .secondary { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .outline {
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: var(--text);
+    }
 
-      @media (max-width: 720px) {
-        .hero {
-          flex-direction: column;
-          padding-left: 18px;
-          padding-right: 0;
-        }
+    input, select, textarea {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 12px;
+      padding: 11px 12px;
+      margin-bottom: 10px;
+      outline: none;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.12);
+    }
 
-        .hero-image {
-          width: 100%;
-          min-height: 140px;
-          border-left: none;
-          border-top: 1px solid rgba(255,255,255,0.18);
-        }
+    input::placeholder, textarea::placeholder { color: #93a7cc; }
 
-        .label {
-          font-size: 0.96rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="page">
-      <header class="hero">
-        <div class="hero-content">
-          <h1>Kunna inför provet</h1>
-          <div class="subtitle">Årskurs 7 &nbsp; Lektion 1–6</div>
+    .inline-row { display: flex; gap: 10px; align-items: flex-end; }
+    .inline-row input { flex: 1; margin: 0; }
+
+    .timer-value {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      margin: 14px 0 20px;
+      font-variant-numeric: tabular-nums;
+      color: #60a5fa;
+    }
+
+    .chat {
+      height: 180px;
+      overflow-y: auto;
+      background: rgba(10, 16, 24, 0.9);
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      margin-bottom: 10px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-message {
+      max-width: 90%;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .chat-message.user {
+      background: rgba(59, 130, 246, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.25);
+      align-self: flex-end;
+    }
+
+    .chat-message.assistant {
+      background: rgba(139, 92, 246, 0.14);
+      border: 1px solid rgba(167, 139, 250, 0.25);
+      align-self: flex-start;
+    }
+
+    .chat-message.typing {
+      opacity: 0.92;
+    }
+
+    .chat-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      opacity: 0.8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .chat-text { white-space: pre-wrap; }
+
+    .dot-loader {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 18px;
+    }
+
+    .dot-loader span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.8);
+      display: block;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+
+    .dot-loader span:nth-child(2) { animation-delay: 0.15s; }
+    .dot-loader span:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+      40% { transform: translateY(-4px); opacity: 1; }
+    }
+
+    .score-board, .task-list, .contact-list { list-style: none; padding: 0; margin: 0; }
+    .score-board li, .task-list li, .contact-list li {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      border-left: 4px solid var(--secondary);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .done { text-decoration: line-through; opacity: 0.5; }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(34, 197, 94, 0.95);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.28);
+      z-index: 99;
+      font-weight: 700;
+      animation: slideUp 0.25s ease;
+    }
+
+    .notification.error {
+      background: rgba(239, 68, 68, 0.95);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.25);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(14px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand"><span class="brand-mark">📚</span> Min Studieportal</div>
+        <div id="welcomeText" class="welcome-text">Hej, elev!</div>
+      </div>
+      <div class="user-name-box">
+        <input id="usernameInput" type="text" placeholder="Ditt namn" autocomplete="off" />
+        <button class="secondary" onclick="saveUserName()">Spara</button>
+      </div>
+      <div class="badge">Årskurs 7 • Fokus & Repetition</div>
+    </header>
+
+    <div class="grid">
+      <div class="box">
+        <h3>⏱️ Timer</h3>
+        <div class="timer-value" id="t">25:00</div>
+        <div class="inline-row">
+          <input id="customMin" type="number" min="1" max="180" value="25" placeholder="Minuter" />
+          <button class="secondary" onclick="setCustomTime()">Sätt</button>
         </div>
-        <div class="hero-image" aria-label="Nature image"></div>
-      </header>
+        <button onclick="tgT()">▶️ Start / Paus</button>
+        <button class="outline" onclick="rsT()">🔄 Nollställ</button>
+      </div>
 
-      <section class="section">
-        <div class="section-title">Livet behöver energi</div>
-        <ul class="checklist">
-          <li>
-            <input type="checkbox" id="q1" />
-            <label class="label" for="q1">Jag kan förklara fotosyntesens viktigaste ämnen och solens roll.</label>
-            <span class="tag">• L1</span>
-          </li>
-          <li>
-            <input type="checkbox" id="q2" />
-            <label class="label" for="q2">Jag kan förklara att växter och djur använder cellandning för att få tillgång till energi.</label>
-            <span class="tag">• L1</span>
-          </li>
-        </ul>
-      </section>
+      <div class="box">
+        <h3>👥 Gruppstudier</h3>
+        <a href="https://meet.new" target="_blank" class="link-btn success">📞 Google Meet</a>
+        <a href="https://zoom.new" target="_blank" class="link-btn secondary">📹 Zoom-möte</a>
+      </div>
 
-      <section class="section">
-        <div class="section-title">Samband i ekosystem</div>
-        <ul class="checklist">
-          <li>
-            <input type="checkbox" id="q3" />
-            <label class="label" for="q3">Jag kan läsa en ny text för att få information om hur organismer påverkar varandra.</label>
-            <span class="tag">• L2</span>
-          </li>
-          <li>
-            <input type="checkbox" id="q4" />
-            <label class="label" for="q4">Jag kan förklara varför föda och andra resurser begränsar hur stor en population kan bli.</label>
-            <span class="tag">• L4</span>
-          </li>
-        </ul>
-      </section>
+      <div class="box wide">
+        <h3>📞 Telefonbok</h3>
+        <input id="contactName" placeholder="Namn..." />
+        <input id="contactPhone" placeholder="Nummer..." />
+        <button class="success" onclick="addContact()">+ Spara</button>
+        <ul id="contactList" class="contact-list"></ul>
+      </div>
 
-      <section class="section">
-        <div class="section-title">Energi och kretslopp</div>
-        <ul class="checklist">
-          <li>
-            <input type="checkbox" id="q5" />
-            <label class="label" for="q5">Jag kan förklara varför mindre energi kan fås när den förs vidare högre upp i en näringskedja.</label>
-            <span class="tag">• L3</span>
-          </li>
-          <li>
-            <input type="checkbox" id="q6" />
-            <label class="label" for="q6">Jag kan förklara nedbrytarnas betydelse och varför ämnen, som till exempel kol, cirkulerar.</label>
-            <span class="tag">• L3</span>
-          </li>
-        </ul>
-      </section>
+      <div class="box wide">
+        <h3>🏆 Topplista</h3>
+        <div class="inline-row">
+          <input id="pName" placeholder="Namn..." />
+          <button class="secondary" onclick="addFriend()">+ Spelare</button>
+        </div>
+        <button class="danger" onclick="resetScores()">Nollställ matchen</button>
+        <ul id="leaderboard" class="score-board"><li><span>👑 Du</span><span>0 p</span></li></ul>
+      </div>
 
-      <section class="section">
-        <div class="section-title">Människan och naturen</div>
-        <ul class="checklist">
-          <li>
-            <input type="checkbox" id="q7" />
-            <label class="label" for="q7">Jag kan tolka ett diagram och förstå hur människans påverkan på naturen förändras över tid.</label>
-            <span class="tag">• L5</span>
-          </li>
-          <li>
-            <input type="checkbox" id="q8" />
-            <label class="label" for="q8">Jag kan förklara pollinering, biologisk mångfald och dess betydelse för människan.</label>
-            <span class="tag">• L6</span>
-          </li>
-        </ul>
-      </section>
+      <div class="box">
+        <h3>🤖 AI-Coach</h3>
+        <div id="cb" class="chat"></div>
+        <input id="ci" placeholder="Skriv fråga..." />
+        <button onclick="sdA()">📤 Skicka</button>
+      </div>
 
-      <section class="section">
-        <div class="section-title">Använd och granska information</div>
-        <ul class="checklist">
-          <li>
-            <input type="checkbox" id="q9" />
-            <label class="label" for="q9">Jag kan läsa en datatabell och motivera ett miljöval med en fördel och en nackdel.</label>
-            <span class="tag">• L5–6</span>
-          </li>
-          <li>
-            <input type="checkbox" id="q10" />
-            <label class="label" for="q10">Jag kan granska ett påstående och förhålla det till olika källor.</label>
-            <span class="tag">• Väckans träning</span>
-          </li>
-        </ul>
-      </section>
+      <div class="box">
+        <h3>✅ Uppgifter</h3>
+        <input id="ti" placeholder="Ny läxa..." />
+        <button class="success" onclick="adT()">+ Spara</button>
+        <ul id="tl" class="task-list"></ul>
+      </div>
     </div>
+  </div>
 
-    <script>
-      const storageKey = 'kunna-inf%C3%B6r-provet-checks';
-      const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+  <script>
+    const STORAGE_KEYS = {
+      userName: 'studyportal-user',
+      contacts: 'studyportal-contacts',
+      players: 'studyportal-players',
+      tasks: 'studyportal-tasks',
+      timerSettings: 'studyportal-timer-settings',
+      aiHistory: 'studyportal-ai-history'
+    };
 
-      function loadChecks() {
-        const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
-        checkboxes.forEach((checkbox) => {
-          checkbox.checked = !!saved[checkbox.id];
-        });
+    const state = {
+      timerSeconds: 25 * 60,
+      timerId: null,
+      isRunning: false,
+      players: [{ id: 0, name: 'Du', score: 0 }],
+      aiHistory: safeJsonParse(localStorage.getItem(STORAGE_KEYS.aiHistory), [])
+    };
+
+    const AI_ENDPOINT = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000/api/chat'
+      : '/api/chat';
+
+    function safeJsonParse(value, fallback) {
+      try { return value ? JSON.parse(value) : fallback; } catch (error) { return fallback; }
+    }
+
+    function showNotification(message, isError = false) {
+      const notif = document.createElement('div');
+      notif.className = 'notification' + (isError ? ' error' : '');
+      notif.textContent = message;
+      document.body.appendChild(notif);
+      setTimeout(() => notif.remove(), 2200);
+    }
+
+    function saveUserName() {
+      const input = document.getElementById('usernameInput');
+      const greeting = document.getElementById('welcomeText');
+      const name = input.value.trim();
+      if (!name) {
+        greeting.textContent = 'Hej, elev!';
+        localStorage.removeItem(STORAGE_KEYS.userName);
+        showNotification('Skriv ditt namn först', true);
+        return;
       }
+      localStorage.setItem(STORAGE_KEYS.userName, name);
+      greeting.textContent = `Hej, ${name}!`;
+      showNotification(`Välkommen, ${name}!`);
+    }
 
-      function saveChecks() {
-        const state = {};
-        checkboxes.forEach((checkbox) => {
-          state[checkbox.id] = checkbox.checked;
-        });
-        localStorage.setItem(storageKey, JSON.stringify(state));
+    function loadUserName() {
+      const savedName = localStorage.getItem(STORAGE_KEYS.userName);
+      const input = document.getElementById('usernameInput');
+      const greeting = document.getElementById('welcomeText');
+      if (savedName) {
+        input.value = savedName;
+        greeting.textContent = `Hej, ${savedName}!`;
       }
+    }
 
-      checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', saveChecks);
+    function escapeHtml(value = '') {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function appendChatMessage(role, message) {
+      const chatBox = document.getElementById('cb');
+      const bubble = document.createElement('div');
+      const time = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+      const label = role === 'user' ? 'Du' : 'AI';
+      bubble.className = `chat-message ${role}`;
+      bubble.innerHTML = `
+        <div class="chat-label">${label} • ${time}</div>
+        <div class="chat-text">${escapeHtml(message).replace(/\n/g, '<br>')}</div>
+      `;
+      chatBox.appendChild(bubble);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const chatBox = document.getElementById('cb');
+      if (document.getElementById('aiTyping')) return;
+
+      const typing = document.createElement('div');
+      typing.id = 'aiTyping';
+      typing.className = 'chat-message assistant typing';
+      typing.innerHTML = `
+        <div class="chat-label">AI • skriver...</div>
+        <div class="chat-text">
+          <span class="dot-loader"><span></span><span></span><span></span></span>
+        </div>
+      `;
+      chatBox.appendChild(typing);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      const typing = document.getElementById('aiTyping');
+      if (typing) typing.remove();
+    }
+
+    function persistAiHistory() {
+      localStorage.setItem(STORAGE_KEYS.aiHistory, JSON.stringify(state.aiHistory.slice(-20)));
+    }
+
+    async function sendToAi(question) {
+      const userName = document.getElementById('usernameInput').value.trim() || 'elev';
+      const history = state.aiHistory.slice(-8);
+
+      const response = await fetch(AI_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question,
+          userName,
+          history
+        })
       });
 
-      loadChecks();
-    </script>
-  </body>
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Något gick fel');
+      }
+
+      return data.reply;
+    }
+
+    async function sdA() {
+      const question = document.getElementById('ci').value.trim();
+      if (!question) {
+        showNotification('Skriv en fråga först', true);
+        return;
+      }
+
+      appendChatMessage('user', question);
+      state.aiHistory.push({ role: 'user', content: question });
+      persistAiHistory();
+      document.getElementById('ci').value = '';
+      showTypingIndicator();
+
+      try {
+        const reply = await sendToAi(question);
+        appendChatMessage('assistant', reply);
+        state.aiHistory.push({ role: 'assistant', content: reply });
+        persistAiHistory();
+      } catch (error) {
+        const fallback = 'Tyvärr gick det inte att få ett svar just nu. Försök igen om en stund.';
+        appendChatMessage('assistant', fallback);
+        showNotification('AI-tjänsten svarade inte', true);
+        console.error(error);
+      } finally {
+        hideTypingIndicator();
+      }
+    }
+
+    function upT() {
+      const minutes = Math.floor(state.timerSeconds / 60);
+      const seconds = state.timerSeconds % 60;
+      document.getElementById('t').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function setCustomTime() {
+      if (state.isRunning) return;
+      const value = parseInt(document.getElementById('customMin').value, 10);
+      if (!isNaN(value) && value > 0 && value <= 180) {
+        state.timerSeconds = value * 60;
+        upT();
+        localStorage.setItem(STORAGE_KEYS.timerSettings, JSON.stringify({ minutes: value }));
+        showNotification(`Timer satt till ${value} minuter`);
+      } else {
+        showNotification('Ange ett tal mellan 1 och 180', true);
+      }
+    }
+
+    function tgT() {
+      if (state.isRunning) {
+        clearInterval(state.timerId);
+        state.isRunning = false;
+        showNotification('⏸️ Pausad');
+        return;
+      }
+
+      state.isRunning = true;
+      showNotification('⏱️ Timer startad');
+      state.timerId = setInterval(() => {
+        if (state.timerSeconds <= 0) {
+          clearInterval(state.timerId);
+          state.isRunning = false;
+          showNotification('🎉 Tiden är slut! Ta en kort paus.', false);
+          return;
+        }
+        state.timerSeconds -= 1;
+        upT();
+      }, 1000);
+    }
+
+    function rsT() {
+      clearInterval(state.timerId);
+      const value = parseInt(document.getElementById('customMin').value, 10);
+      state.timerSeconds = (!isNaN(value) && value > 0) ? value * 60 : 25 * 60;
+      state.isRunning = false;
+      upT();
+    }
+
+    function addContact() {
+      const name = document.getElementById('contactName').value.trim();
+      const phone = document.getElementById('contactPhone').value.trim();
+      if (!name || !phone) {
+        showNotification('Skriv namn och nummer', true);
+        return;
+      }
+
+      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
+      contacts.push({ id: Date.now(), name, phone });
+      localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(contacts));
+      renderContacts();
+      document.getElementById('contactName').value = '';
+      document.getElementById('contactPhone').value = '';
+      showNotification('Kontakt sparad');
+    }
+
+    function renderContacts() {
+      const contacts = safeJsonParse(localStorage.getItem(STORAGE_KEYS.contacts), []);
+      const list = document.getElementById('contactList');
+      list.innerHTML = '';
+
+      contacts.forEach((contact) => {
+        const item = document.createElement('li');
+        item.innerHTML = `<span>${escapeHtml(contact.name)}</span><span>${escapeHtml(contact.phone)}</span>`;
+        list.appendChild(item);
+      });
+    }
+
+    function addFriend() {
+      const name = document.getElementById('pName').value.trim();
+      if (!name) {
+        showNotification('Skriv ett namn', true);
+        return;
+      }
+
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
+      const nextId = Date.now();
+      players.push({ id: nextId, name, score: 0 });
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
+      renderLeaderboard();
+      document.getElementById('pName').value = '';
+      showNotification(`${name} tillagd`);
+    }
+
+    function resetScores() {
+      const players = [{ id: 0, name: 'Du', score: 0 }];
+      localStorage.setItem(STORAGE_KEYS.players, JSON.stringify(players));
+      renderLeaderboard();
+      showNotification('Poängen är nollställd');
+    }
+
+    function renderLeaderboard() {
+      const players = safeJsonParse(localStorage.getItem(STORAGE_KEYS.players), [{ id: 0, name: 'Du', score: 0 }]);
+      const list = document.getElementById('leaderboard');
+      list.innerHTML = '';
+
+      players.forEach((player, idx) => {
+        const item = document.createElement('li');
+        item.innerHTML = `<span>${idx === 0 ? '👑' : '🏅'} ${escapeHtml(player.name)}</span><span>${player.score} p</span>`;
+        list.appendChild(item);
+      });
+    }
+
+    function adT() {
+      const name = document.getElementById('ti').value.trim();
+      if (!name) {
+        showNotification('Skriv en uppgift', true);
+        return;
+      }
+
+      const tasks = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      tasks.push({ id: Date.now(), text: name, done: false });
+      localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+      loadTasks();
+      document.getElementById('ti').value = '';
+      showNotification('Uppgift sparad');
+    }
+
+    function loadTasks() {
+      const saved = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      const list = document.getElementById('tl');
+      list.innerHTML = '';
+
+      saved.forEach(task => {
+        const item = document.createElement('li');
+        item.className = task.done ? 'done' : '';
+        item.innerHTML = `
+          <span>${escapeHtml(task.text)}</span>
+          <button class="outline" data-id="${task.id}" onclick="toggleTask('${task.id}')">${task.done ? 'Ångra' : 'Klar'}</button>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function toggleTask(id) {
+      const tasks = safeJsonParse(localStorage.getItem(STORAGE_KEYS.tasks), []);
+      const updated = tasks.map(task => task.id === Number(id) ? { ...task, done: !task.done } : task);
+      localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(updated));
+      loadTasks();
+    }
+
+    document.getElementById('ci').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        sdA();
+      }
+    });
+
+    loadUserName();
+    loadTasks();
+    renderContacts();
+    renderLeaderboard();
+    rsT();
+
+    const savedTimerMinutes = safeJsonParse(localStorage.getItem(STORAGE_KEYS.timerSettings), null);
+    if (savedTimerMinutes && savedTimerMinutes.minutes) {
+      document.getElementById('customMin').value = savedTimerMinutes.minutes;
+      state.timerSeconds = savedTimerMinutes.minutes * 60;
+      upT();
+    }
+
+    const chatBox = document.getElementById('cb');
+    const initialMessage = 'Hej! Jag är din studiecoach. Skriv en fråga och jag hjälper dig med fokus, repetition eller motivation.';
+    appendChatMessage('assistant', initialMessage);
+  </script>
+</body>
 </html>
